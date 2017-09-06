@@ -1,6 +1,7 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
 import com.github.rodionovsasha.commentservice.dto.MessageResponse;
+import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException;
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException;
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import lombok.val;
@@ -35,7 +36,7 @@ public class ExceptionHandlerController {
         return handleException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.getReasonPhrase());
     }
 
-    @ExceptionHandler({UserNotFoundException.class, TopicNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, TopicNotFoundException.class, CommentNotFoundException.class})
     @ResponseBody
     public ResponseEntity<MessageResponse> notFoundHandler(Exception e) {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());
