@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rodionovsasha/comment-service.svg?branch=master)](https://travis-ci.org/rodionovsasha/comment-service)
+[![Build Status](https://travis-ci.org/rodionovsasha/CommentService.svg?branch=master)](https://travis-ci.org/rodionovsasha/CommentService)
 
 # Comment Service
 Demo project to show how JFixtures works on practice  
