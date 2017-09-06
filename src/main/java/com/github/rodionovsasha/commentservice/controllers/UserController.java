@@ -5,8 +5,6 @@ import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,6 @@ import static com.github.rodionovsasha.commentservice.AppConfig.API_BASE_URL;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping(API_BASE_URL)
@@ -42,15 +39,13 @@ public class UserController {
     @ApiOperation("Add user")
     @PostMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-        val newUser = service.addUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.addUser(user), HttpStatus.CREATED);
     }
 
     @ApiOperation("Update user")
     @PutMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@Valid @RequestBody User user) throws UserNotFoundException {
-        val updatedUser = service.updateUser(user);
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(service.updateUser(user));
     }
 
     @ApiOperation("Delete user")

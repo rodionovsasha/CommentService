@@ -5,8 +5,6 @@ import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,6 @@ import javax.validation.Valid;
 import static com.github.rodionovsasha.commentservice.AppConfig.API_BASE_URL;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping(API_BASE_URL)
@@ -33,15 +30,13 @@ public class TopicController {
     @ApiOperation("Add topic")
     @PostMapping(value = TOPIC_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Topic> addTopic(@Valid @RequestBody Topic topic) {
-        val newTopic = service.addTopic(topic);
-        return new ResponseEntity<>(newTopic, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.addTopic(topic), HttpStatus.CREATED);
     }
 
     @ApiOperation("Update topic")
     @PutMapping(value = TOPIC_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateTopic(@Valid @RequestBody Topic topic) throws TopicNotFoundException {
-        val updatedTopic = service.updateTopic(topic);
-        return ResponseEntity.ok(updatedTopic);
+        return ResponseEntity.ok(service.updateTopic(topic));
     }
 
     @ApiOperation("Delete topic")
