@@ -1,0 +1,16 @@
+columns:
+  concerns:
+    add_creation_date:
+      date: sql:CURRENT_TIMESTAMP()
+
+  apply:
+    tables_with_date:
+      to: topic, comment
+      concerns: add_creation_date
+
+refs:
+    comment:
+      user_id: user
+      topic_id: topic
+    topic:
+      user_id: user

@@ -4,26 +4,22 @@ import com.github.rodionovsasha.commentservice.entities.User;
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import com.github.rodionovsasha.commentservice.repositories.UserRepository;
 import com.github.rodionovsasha.commentservice.services.UserService;
+import lombok.AllArgsConstructor;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository repository;
 
     @Override
     @Transactional
     public User addUser(User user) {
-        return userRepository.saveAndFlush(user);
+        return repository.saveAndFlush(user);
     }
 
     @Override
@@ -33,18 +29,18 @@ public class UserServiceImpl implements UserService {
         currentUser.setName(user.getName());
         currentUser.setAge(user.getAge());
         currentUser.setEnabled(user.isEnabled());
-        return userRepository.saveAndFlush(currentUser);
+        return repository.saveAndFlush(currentUser);
     }
 
     @Override
     public void deleteUser(long id) {
-        userRepository.delete(id);
+        repository.delete(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public User getUserById(long id) throws UserNotFoundException {
-        val user = userRepository.findOne(id);
+        val user = repository.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("User with id '" + id + "' not found");
         }
@@ -54,6 +50,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 }

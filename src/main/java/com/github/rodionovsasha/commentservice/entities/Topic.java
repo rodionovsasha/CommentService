@@ -3,6 +3,7 @@ package com.github.rodionovsasha.commentservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor
-@Entity @Getter
+@Entity @Getter @Setter
 public class Topic {
     @Id @GeneratedValue
     private long id;
