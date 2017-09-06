@@ -1,21 +1,12 @@
 language: java
 
-sudo: false
-
 jdk:
   - oraclejdk8
 
-install: true
-
-script: mvn clean install
-
-branches:
-  only:
-  - master
-
 cache:
   directories:
-    - $HOME/.m2
+    - $HOME/.m2/repository/
+    - $HOME/.m2/wrapper/
 
 notifications:
   email: true
