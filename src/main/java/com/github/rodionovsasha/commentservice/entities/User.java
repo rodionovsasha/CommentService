@@ -28,9 +28,4 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new LinkedList<>();
-
-    public User(final String name, final int age) {
-        this.name = name;
-        this.age = age;
-    }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ExceptionHandlerController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<MessageResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+    public ResponseEntity<MessageResponse> fieldErrorsHandler(MethodArgumentNotValidException e) {
         val bindingResult = e.getBindingResult();
         val errors = new StringBuilder();
         bindingResult.getFieldErrors().forEach(

@@ -13,7 +13,7 @@ public class AppConfig {
 
     @Bean
     CommandLineRunner runner(UserRepository userRepository, TopicRepository topicRepository, CommentRepository commentRepository) {
-        //load demo data before running the application
+        //here load demo data before running the application
         return null;
     }
 }

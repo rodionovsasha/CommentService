@@ -24,10 +24,4 @@ public class Comment {
 
     @JoinColumn @ManyToOne @JsonIgnore
     private Topic topic;
-
-    public Comment(final String content, final User user, final Topic topic) {
-        this.content = content;
-        this.user = user;
-        this.topic = topic;
-    }
 }

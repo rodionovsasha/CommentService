@@ -26,9 +26,4 @@ public class Topic {
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new LinkedList<>();
-
-    public Topic(final String name, final User user) {
-        this.name = name;
-        this.user = user;
-    }
 }
