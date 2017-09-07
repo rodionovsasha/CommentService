@@ -49,9 +49,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <jfixtures.version>1.0.21</jfixtures.version>
-        <swagger.version>2.7.0</swagger.version>
-        <swagger-annotations.version>1.5.16</swagger-annotations.version>
+        <jfixtures.version>1.0.24</jfixtures.version>
     </properties>
 
     <dependencies>
@@ -95,24 +93,6 @@
             <artifactId>jfixtures</artifactId>
             <version>${jfixtures.version}</version>
             <scope>test</scope>
-        </dependency>
-        <!-- Swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-annotations.version}</version>
         </dependency>
     </dependencies>
 

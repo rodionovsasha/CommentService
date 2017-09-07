@@ -3,7 +3,6 @@ package com.github.rodionovsasha.commentservice.controllers;
 import com.github.rodionovsasha.commentservice.entities.User;
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import com.github.rodionovsasha.commentservice.services.UserService;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,32 +22,27 @@ public class UserController {
     private static final String USER_BASE_PATH = "/user";
     private final UserService service;
 
-    @ApiOperation("Get all users")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<User> getAllUsers() {
         return service.findAllUsers();
     }
 
 
-    @ApiOperation("Get user by ID")
     @GetMapping(value = USER_BASE_PATH + "/{id}", produces = APPLICATION_JSON_VALUE)
     public User getUser(@PathVariable final long id) throws UserNotFoundException {
         return service.getUserById(id);
     }
 
-    @ApiOperation("Add user")
     @PostMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(service.addUser(user), HttpStatus.CREATED);
     }
 
-    @ApiOperation("Update user")
     @PutMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@Valid @RequestBody User user) throws UserNotFoundException {
         return ResponseEntity.ok(service.updateUser(user));
     }
 
-    @ApiOperation("Delete user")
     @DeleteMapping(USER_BASE_PATH + "/{id}")
     public ResponseEntity deleteUser(@PathVariable final long id) {
         service.deleteUser(id);

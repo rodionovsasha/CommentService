@@ -4,8 +4,7 @@
 Demo project to show how JFixtures works on practice  
 https://github.com/vkorobkov/jfixtures
 
-## Rest JSON API v1 Documentation (with swagger)
+## Rest JSON API
 <pre>
 http://localhost:8080/v1/api
-http://localhost:8080/swagger-ui.html
 </pre>
