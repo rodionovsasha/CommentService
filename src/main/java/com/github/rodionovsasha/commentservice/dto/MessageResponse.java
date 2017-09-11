@@ -8,6 +8,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class MessageResponse implements Serializable {
+    private static final long serialVersionUID = 28116440335967L;
+
     private final int responseCode;
     private final String statusMessage;
 }

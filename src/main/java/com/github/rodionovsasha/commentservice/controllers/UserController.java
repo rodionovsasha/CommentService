@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.github.rodionovsasha.commentservice.AppConfig.API_BASE_URL;
+import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 

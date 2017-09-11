@@ -7,13 +7,16 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter @Setter
 @Entity
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 28116440335967L;
+
     @Id @GeneratedValue
     private long id;
     @NotBlank

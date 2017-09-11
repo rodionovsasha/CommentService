@@ -1,8 +1,9 @@
-package com.github.rodionovsasha.commentservice.services.impl
+package com.github.rodionovsasha.commentservice.services
 
 import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.repositories.UserRepository
+import com.github.rodionovsasha.commentservice.services.impl.UserServiceImpl
 import spock.lang.Specification
 
 class UserServiceTest extends Specification {
