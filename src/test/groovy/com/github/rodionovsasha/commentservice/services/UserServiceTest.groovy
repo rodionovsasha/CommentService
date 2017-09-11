@@ -63,9 +63,6 @@ class UserServiceTest extends Specification {
     }
 
     def "should get user"() {
-        given:
-        repository.findOne(1) >> user
-
         when:
         def result = service.getUserById(1)
 
@@ -89,9 +86,6 @@ class UserServiceTest extends Specification {
     }
 
     def "should get all users"() {
-        given:
-        repository.findAll() >> [user]
-
         when:
         def result = service.findAllUsers()
 
