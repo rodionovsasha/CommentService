@@ -2,7 +2,7 @@ package com.github.rodionovsasha.commentservice.controllers
 
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
-import com.github.rodionovsasha.commentservice.services.TopicService
+import com.github.rodionovsasha.commentservice.services.impl.TopicServiceImpl
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class TopicControllerTest extends Specification {
-    def service = Mock(TopicService)
+    def service = Mock(TopicServiceImpl)
     def controller = new TopicController(service)
     def topic = new Topic()
     def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
@@ -34,7 +34,7 @@ class TopicControllerTest extends Specification {
         response.contentAsString.contains("\"id\":0,\"name\":\"Topic name\"")
     }
 
-    def "should not get topic"() {
+    def "should not get topic if not exists"() {
         given:
         service.getTopicById(1) >> {topic -> throw new TopicNotFoundException("Not found")}
 
@@ -45,6 +45,16 @@ class TopicControllerTest extends Specification {
         response.status == NOT_FOUND.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
         response.contentAsString == '{"responseCode":404,"statusMessage":"Not found"}'
+    }
+
+    def "should not get topic if id is not correct"() {
+        when:
+        def response = mockMvc.perform(get(API_BASE_URL + "/topic/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response
+
+        then:
+        response.status == INTERNAL_SERVER_ERROR.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString.contains('{"responseCode":500,"statusMessage":"Failed to convert value of type \'java.lang.String\' to required type \'long\';')
     }
 
     def "should add a new topic"() {

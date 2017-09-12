@@ -2,7 +2,7 @@ package com.github.rodionovsasha.commentservice.controllers
 
 import com.github.rodionovsasha.commentservice.entities.Comment
 import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException
-import com.github.rodionovsasha.commentservice.services.CommentService
+import com.github.rodionovsasha.commentservice.services.impl.CommentServiceImpl
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class CommentControllerTest extends Specification {
-    def service = Mock(CommentService)
+    def service = Mock(CommentServiceImpl)
     def controller = new CommentController(service)
     def comment = new Comment()
     def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
@@ -34,7 +34,7 @@ class CommentControllerTest extends Specification {
         response.contentAsString.contains("\"id\":0,\"content\":\"Content\"")
     }
 
-    def "should not get comment"() {
+    def "should not get comment if not exists"() {
         given:
         service.getCommentById(1) >> {comment -> throw new CommentNotFoundException("Not found")}
 
@@ -45,6 +45,16 @@ class CommentControllerTest extends Specification {
         response.status == NOT_FOUND.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
         response.contentAsString == '{"responseCode":404,"statusMessage":"Not found"}'
+    }
+
+    def "should not get comment if id is not correct"() {
+        when:
+        def response = mockMvc.perform(get(API_BASE_URL + "/comment/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response
+
+        then:
+        response.status == INTERNAL_SERVER_ERROR.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString.contains('{"responseCode":500,"statusMessage":"Failed to convert value of type \'java.lang.String\' to required type \'long\';')
     }
 
     def "should add a new comment"() {

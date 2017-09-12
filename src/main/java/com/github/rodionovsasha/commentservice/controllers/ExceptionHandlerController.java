@@ -30,13 +30,10 @@ public class ExceptionHandlerController {
         return handleException(HttpStatus.BAD_REQUEST, errors.toString());
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    @ResponseBody
-    public ResponseEntity<MessageResponse> emptyResultHandler() {
-        return handleException(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.getReasonPhrase());
-    }
-
-    @ExceptionHandler({UserNotFoundException.class, TopicNotFoundException.class, CommentNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class,
+            TopicNotFoundException.class,
+            CommentNotFoundException.class,
+            EmptyResultDataAccessException.class})
     @ResponseBody
     public ResponseEntity<MessageResponse> notFoundHandler(Exception e) {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());

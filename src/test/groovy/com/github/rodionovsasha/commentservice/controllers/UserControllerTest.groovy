@@ -2,7 +2,7 @@ package com.github.rodionovsasha.commentservice.controllers
 
 import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
-import com.github.rodionovsasha.commentservice.services.UserService
+import com.github.rodionovsasha.commentservice.services.impl.UserServiceImpl
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 class UserControllerTest extends Specification {
-    def service = Mock(UserService)
+    def service = Mock(UserServiceImpl)
     def controller = new UserController(service)
     def user = new User()
     def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
@@ -49,7 +49,7 @@ class UserControllerTest extends Specification {
         response.contentAsString == '{"id":1,"name":"Homer","age":39,"enabled":true}'
     }
 
-    def "should not get user"() {
+    def "should not get user if not exists"() {
         given:
         service.getUserById(1) >> {user -> throw new UserNotFoundException("Not found")}
 
@@ -60,6 +60,16 @@ class UserControllerTest extends Specification {
         response.status == NOT_FOUND.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
         response.contentAsString == '{"responseCode":404,"statusMessage":"Not found"}'
+    }
+
+    def "should not get user if id is not correct"() {
+        when:
+        def response = mockMvc.perform(get(API_BASE_URL + "/user/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response
+
+        then:
+        response.status == INTERNAL_SERVER_ERROR.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString.contains('{"responseCode":500,"statusMessage":"Failed to convert value of type \'java.lang.String\' to required type \'long\';')
     }
 
     def "should add a new user"() {
