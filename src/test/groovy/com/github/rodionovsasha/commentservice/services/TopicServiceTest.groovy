@@ -1,5 +1,6 @@
 package com.github.rodionovsasha.commentservice.services
 
+import com.github.rodionovsasha.commentservice.entities.Comment
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.repositories.TopicRepository
@@ -10,9 +11,11 @@ class TopicServiceTest extends Specification {
     def repository = Mock(TopicRepository)
     def service = new TopicServiceImpl(repository)
     def topic = new Topic()
+    def comment = new Comment()
 
     def setup() {
         topic.name = "Topic name"
+        topic.comments = [comment]
     }
 
     def "should add a new topic"() {
@@ -22,6 +25,7 @@ class TopicServiceTest extends Specification {
         then:
         1 * repository.saveAndFlush(topic) >> topic
         result.name == "Topic name"
+        result.comments == [comment]
     }
 
     def "should update current topic"() {
@@ -34,6 +38,7 @@ class TopicServiceTest extends Specification {
         then:
         1 * repository.saveAndFlush(topic) >> topic
         result.name == "Topic name"
+        result.comments == [comment]
     }
 
     def "should not update topic"() {
@@ -63,6 +68,7 @@ class TopicServiceTest extends Specification {
         then:
         1 * repository.findOne(0) >> topic
         result.name == "Topic name"
+        result.comments == [comment]
     }
 
     def "should not get topic"() {
