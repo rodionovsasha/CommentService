@@ -59,6 +59,22 @@ class CommentControllerTest extends Specification {
         response.contentType == APPLICATION_JSON_UTF8_VALUE
     }
 
+    def "should not add a new comment when content is empty"() {
+        given:
+        comment.content = ""
+
+        when:
+        def newComment = '{"id":0,"content":""}'
+        def response = mockMvc.perform(post(API_BASE_URL + "/comment").contentType(APPLICATION_JSON_VALUE).content(newComment)).andReturn().response
+
+        then:
+        0 * service.addComment(_) >> comment
+
+        response.status == BAD_REQUEST.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString == '{"responseCode":400,"statusMessage":"content: may not be empty."}'
+    }
+
     def "should update current comment"() {
         when:
         def updateComment = '{"id":1,"content":"Content"}'

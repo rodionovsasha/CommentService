@@ -59,6 +59,22 @@ class TopicControllerTest extends Specification {
         response.contentType == APPLICATION_JSON_UTF8_VALUE
     }
 
+    def "should not add a new topic when name is empty"() {
+        given:
+        topic.name = ""
+
+        when:
+        def newTopic = '{"id":1,"name":""}'
+        def response = mockMvc.perform(post(API_BASE_URL + "/topic").contentType(APPLICATION_JSON_VALUE).content(newTopic)).andReturn().response
+
+        then:
+        0 * service.addTopic(_) >> topic
+
+        response.status == BAD_REQUEST.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString == '{"responseCode":400,"statusMessage":"name: may not be empty."}'
+    }
+
     def "should update current topic"() {
         when:
         def updateTopic = '{"id":1,"name":"Topic name"}'

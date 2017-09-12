@@ -74,6 +74,22 @@ class UserControllerTest extends Specification {
         response.contentType == APPLICATION_JSON_UTF8_VALUE
     }
 
+    def "should not add a new user when name is empty"() {
+        given:
+        user.name = ""
+
+        when:
+        def newUser = '{"id":1,"name":"","age":39,"enabled":true}'
+        def response = mockMvc.perform(post(API_BASE_URL + "/user").contentType(APPLICATION_JSON_VALUE).content(newUser)).andReturn().response
+
+        then:
+        0 * service.addUser(_) >> user
+
+        response.status == BAD_REQUEST.value()
+        response.contentType == APPLICATION_JSON_UTF8_VALUE
+        response.contentAsString == '{"responseCode":400,"statusMessage":"name: may not be empty."}'
+    }
+
     def "should update current user"() {
         when:
         def updateUser = '{"id":1,"name":"Homer","age":39,"enabled":true}'
