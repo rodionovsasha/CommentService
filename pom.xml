@@ -53,7 +53,6 @@
         <spock.version>1.1-groovy-2.4</spock.version>
         <groovy.version>2.4.12</groovy.version>
         <cglib-nodep.version>3.2.5</cglib-nodep.version>
-        <joda-time.version>2.9.9</joda-time.version>
 
         <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
@@ -85,11 +84,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
