@@ -1,14 +1,21 @@
 package com.github.rodionovsasha.commentservice.services;
 
 import com.github.rodionovsasha.commentservice.entities.User;
+import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException;
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 
-import java.util.List;
-
 public interface UserService {
-    User addUser(User user);
-    User updateUser(User user) throws UserNotFoundException;
-    void deleteUser(long id);
-    User getUserById(long id) throws UserNotFoundException;
-    List<User> findAllUsers();
+    User create(String name, int age);
+
+    User getById(long id) throws UserNotFoundException;
+
+    User getActive(long userId) throws InactiveUserException, UserNotFoundException;
+
+    void updateName(long id, String name) throws UserNotFoundException;
+
+    void updateAge(long id, int age) throws UserNotFoundException;
+
+    void deactivate(long id) throws UserNotFoundException;
+
+    void delete(long id) throws UserNotFoundException;
 }

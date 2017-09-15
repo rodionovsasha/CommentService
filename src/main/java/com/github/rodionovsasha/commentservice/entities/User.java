@@ -31,4 +31,9 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new LinkedList<>();
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 }

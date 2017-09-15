@@ -21,18 +21,23 @@ public class Topic implements Serializable {
     private long id;
 
     @NotBlank @Getter @Setter
-    private String name;
+    private String title;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 
     @JoinColumn @ManyToOne @JsonIgnore
     @Getter @Setter
-    private User user;
+    private User starter;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter @Setter
     private List<Comment> comments = new LinkedList<>();
+
+    public Topic(String title, User starter) {
+        this.title = title;
+        this.starter = starter;
+    }
 
     public Date getDate() {
         return (Date) date.clone();

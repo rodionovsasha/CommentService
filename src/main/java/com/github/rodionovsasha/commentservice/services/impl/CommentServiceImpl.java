@@ -10,20 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-@Service
+@Service @Transactional
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository repository;
 
     @Override
-    @Transactional
-    public Comment addComment(final Comment comment) {
+    public Comment add(final Comment comment) {
         return repository.saveAndFlush(comment);
     }
 
     @Override
-    @Transactional
-    public Comment updateComment(final Comment comment) throws CommentNotFoundException {
-        val currentComment = getCommentById(comment.getId());
+    public Comment update(final Comment comment) throws CommentNotFoundException {
+        val currentComment = getById(comment.getId());
         currentComment.setContent(comment.getContent());
         currentComment.setUser(comment.getUser());
         currentComment.setTopic(comment.getTopic());
@@ -31,17 +29,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
-    public void deleteComment(final long id) {
+    public void delete(final long id) {
         repository.delete(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Comment getCommentById(final long id) throws CommentNotFoundException {
+    public Comment getById(final long id) throws CommentNotFoundException {
         val comment = repository.findOne(id);
         if (comment == null) {
-            throw new CommentNotFoundException("Comment with id '" + id + "' not found");
+            throw new CommentNotFoundException(String.format("Comment with id '%d' not found", id));
         }
         return comment;
     }

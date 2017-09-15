@@ -1,9 +1,7 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
 import com.github.rodionovsasha.commentservice.dto.MessageResponse;
-import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException;
-import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException;
-import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
+import com.github.rodionovsasha.commentservice.exceptions.*;
 import lombok.val;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -12,10 +10,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResponseEntity<MessageResponse> fieldErrorsHandler(MethodArgumentNotValidException e) {
         val bindingResult = e.getBindingResult();
@@ -34,9 +34,24 @@ public class ExceptionHandlerController {
             TopicNotFoundException.class,
             CommentNotFoundException.class,
             EmptyResultDataAccessException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ResponseEntity<MessageResponse> notFoundHandler(Exception e) {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(PermissionException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ResponseEntity<MessageResponse> permissionHandler(Exception e) {
+        return handleException(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(InactiveUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ResponseEntity<MessageResponse> inactiveHandler(Exception e) {
+        return handleException(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
