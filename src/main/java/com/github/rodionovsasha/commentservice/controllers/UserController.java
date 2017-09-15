@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -17,33 +16,26 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(API_BASE_URL)
+@RequestMapping(API_BASE_URL + "/user")
 public class UserController {
-    private static final String USER_BASE_PATH = "/user";
     private final UserService service;
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<User> getAllUsers() {
-        return service.findAllUsers();
-    }
-
-
-    @GetMapping(value = USER_BASE_PATH + "/{id}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public User getUser(@PathVariable final long id) throws UserNotFoundException {
         return service.getUserById(id);
     }
 
-    @PostMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(service.addUser(user), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = USER_BASE_PATH, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@Valid @RequestBody User user) throws UserNotFoundException {
         return ResponseEntity.ok(service.updateUser(user));
     }
 
-    @DeleteMapping(USER_BASE_PATH + "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable final long id) {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();

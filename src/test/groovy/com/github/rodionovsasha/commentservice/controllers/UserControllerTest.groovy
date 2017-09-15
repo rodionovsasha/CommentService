@@ -25,18 +25,6 @@ class UserControllerTest extends Specification {
         user.enabled
     }
 
-    def "should get all users"() {
-        when:
-        def response = mockMvc.perform(get(API_BASE_URL).contentType(APPLICATION_JSON_VALUE)).andReturn().response
-
-        then:
-        1 * service.findAllUsers() >> [user]
-
-        response.status == OK.value()
-        response.contentType == APPLICATION_JSON_UTF8_VALUE
-        response.contentAsString == '[{"id":1,"name":"Homer","age":39,"enabled":true}]'
-    }
-
     def "should get user"() {
         when:
         def response = mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE)).andReturn().response
