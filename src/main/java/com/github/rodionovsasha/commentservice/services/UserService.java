@@ -9,7 +9,7 @@ public interface UserService {
 
     User getById(long id) throws UserNotFoundException;
 
-    User getActive(long userId) throws InactiveUserException, UserNotFoundException;
+    User getActiveUser(long userId) throws InactiveUserException, UserNotFoundException;
 
     void updateName(long id, String name) throws UserNotFoundException, InactiveUserException;
 

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getActive(long userId) throws InactiveUserException, UserNotFoundException {
+    public User getActiveUser(long userId) throws InactiveUserException, UserNotFoundException {
         val user = getById(userId);
         if (!user.isEnabled()) {
             throw new InactiveUserException(String.format("User with userId '%d' is not active", userId));
@@ -42,14 +42,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateName(long id, String name) throws UserNotFoundException, InactiveUserException {
-        val user = getActive(id);
+        val user = getActiveUser(id);
         user.setName(name);
         repository.saveAndFlush(user);
     }
 
     @Override
     public void updateAge(long id, int age) throws UserNotFoundException, InactiveUserException {
-        val user = getActive(id);
+        val user = getActiveUser(id);
         user.setAge(age);
         repository.saveAndFlush(user);
     }
