@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS topic (
   id int PRIMARY KEY AUTO_INCREMENT,
   user_id int,
-  name varchar(255),
+  title varchar(255),
   date timestamp default CURRENT_TIMESTAMP(),
   foreign key (user_id) references user(id)
 );
