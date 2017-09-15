@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public User getById(long id) throws UserNotFoundException {
         val user = repository.findOne(id);
         if (user == null) {
-            throw new UserNotFoundException(String.format("The user with id '%d' was not found", id));
+            throw new UserNotFoundException(String.format("The user with id '%d' could not be found", id));
         }
         return user;
     }
