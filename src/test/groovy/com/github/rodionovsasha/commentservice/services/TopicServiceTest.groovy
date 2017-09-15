@@ -1,14 +1,9 @@
 package com.github.rodionovsasha.commentservice.services
 
-import com.github.rodionovsasha.commentservice.entities.Comment
-import com.github.rodionovsasha.commentservice.entities.Topic
-import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
-import com.github.rodionovsasha.commentservice.repositories.TopicRepository
-import com.github.rodionovsasha.commentservice.services.impl.TopicServiceImpl
 import spock.lang.Specification
 
 class TopicServiceTest extends Specification {
-    def repository = Mock(TopicRepository)
+/*    def repository = Mock(TopicRepository)
     def service = new TopicServiceImpl(repository)
     def topic = new Topic()
     def comment = new Comment()
@@ -81,5 +76,5 @@ class TopicServiceTest extends Specification {
         then:
         def e = thrown(TopicNotFoundException)
         e.message == "Topic with id '0' not found"
-    }
+    }*/
 }

@@ -1,17 +1,11 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
-import com.github.rodionovsasha.commentservice.entities.User;
-import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
@@ -20,9 +14,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UserController {
     private final UserService service;
 
-    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+/*    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public User getUser(@PathVariable final long id) throws UserNotFoundException {
-        return service.getUserById(id);
+        return service.getById(id);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -39,5 +33,5 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable final long id) {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }

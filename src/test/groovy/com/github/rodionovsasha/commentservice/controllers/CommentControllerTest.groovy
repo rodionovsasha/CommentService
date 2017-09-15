@@ -27,7 +27,7 @@ class CommentControllerTest extends Specification {
         def response = mockMvc.perform(get(API_BASE_URL + "/comment/1").contentType(APPLICATION_JSON_VALUE)).andReturn().response
 
         then:
-        1 * service.getCommentById(1) >> comment
+        1 * service.getById(1) >> comment
 
         response.status == OK.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
@@ -36,7 +36,7 @@ class CommentControllerTest extends Specification {
 
     def "should not get comment if not exists"() {
         given:
-        service.getCommentById(1) >> {comment -> throw new CommentNotFoundException("Not found")}
+        service.getById(1) >> { comment -> throw new CommentNotFoundException("Not found")}
 
         when:
         def response = mockMvc.perform(get(API_BASE_URL + "/comment/1").contentType(APPLICATION_JSON_VALUE)).andReturn().response
@@ -63,7 +63,7 @@ class CommentControllerTest extends Specification {
         def response = mockMvc.perform(post(API_BASE_URL + "/comment").contentType(APPLICATION_JSON_VALUE).content(newComment)).andReturn().response
 
         then:
-        1 * service.addComment(_) >> comment
+        1 * service.add(_) >> comment
 
         response.status == CREATED.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
@@ -78,7 +78,7 @@ class CommentControllerTest extends Specification {
         def response = mockMvc.perform(post(API_BASE_URL + "/comment").contentType(APPLICATION_JSON_VALUE).content(newComment)).andReturn().response
 
         then:
-        0 * service.addComment(_) >> comment
+        0 * service.add(_) >> comment
 
         response.status == BAD_REQUEST.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
@@ -91,7 +91,7 @@ class CommentControllerTest extends Specification {
         def response = mockMvc.perform(put(API_BASE_URL + "/comment").contentType(APPLICATION_JSON_VALUE).content(updateComment)).andReturn().response
 
         then:
-        1 * service.updateComment(_) >> comment
+        1 * service.update(_) >> comment
 
         response.status == OK.value()
         response.contentType == APPLICATION_JSON_UTF8_VALUE
@@ -99,7 +99,7 @@ class CommentControllerTest extends Specification {
 
     def "should not update comment"() {
         given:
-        service.updateComment(_) >> {comment -> throw new CommentNotFoundException("Not found")}
+        service.update(_) >> { comment -> throw new CommentNotFoundException("Not found")}
 
         when:
         def updateComment = '{"id":1,"content":"Content"}'
@@ -116,7 +116,7 @@ class CommentControllerTest extends Specification {
         def response = mockMvc.perform(delete(API_BASE_URL + "/comment/1").contentType(APPLICATION_JSON_VALUE)).andReturn().response
 
         then:
-        1 * service.deleteComment(1)
+        1 * service.delete(1)
 
         response.status == NO_CONTENT.value()
     }
