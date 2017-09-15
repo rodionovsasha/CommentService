@@ -11,9 +11,9 @@ public interface UserService {
 
     User getActive(long userId) throws InactiveUserException, UserNotFoundException;
 
-    void updateName(long id, String name) throws UserNotFoundException;
+    void updateName(long id, String name) throws UserNotFoundException, InactiveUserException;
 
-    void updateAge(long id, int age) throws UserNotFoundException;
+    void updateAge(long id, int age) throws UserNotFoundException, InactiveUserException;
 
     void deactivate(long id) throws UserNotFoundException;
 

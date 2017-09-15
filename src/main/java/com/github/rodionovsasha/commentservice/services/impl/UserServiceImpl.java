@@ -41,24 +41,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateName(long id, String name) throws UserNotFoundException {
-        val currentUser = getById(id);
-        currentUser.setName(name);
-        repository.saveAndFlush(currentUser);
+    public void updateName(long id, String name) throws UserNotFoundException, InactiveUserException {
+        val user = getActive(id);
+        user.setName(name);
+        repository.saveAndFlush(user);
     }
 
     @Override
-    public void updateAge(long id, int age) throws UserNotFoundException {
-        val currentUser = getById(id);
-        currentUser.setAge(age);
-        repository.saveAndFlush(currentUser);
+    public void updateAge(long id, int age) throws UserNotFoundException, InactiveUserException {
+        val user = getActive(id);
+        user.setAge(age);
+        repository.saveAndFlush(user);
     }
 
     @Override
     public void deactivate(long id) throws UserNotFoundException {
-        val currentUser = getById(id);
-        currentUser.setEnabled(false);
-        repository.saveAndFlush(currentUser);
+        val user = getById(id);
+        user.setEnabled(false);
+        repository.saveAndFlush(user);
     }
 
     @Override
