@@ -144,7 +144,7 @@
                 </executions>
             </plugin>
 
-            <!--<plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
@@ -192,15 +192,15 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>${findbugs-maven-plugin.version}</version>
                 <configuration>
-                    &lt;!&ndash; Enables analysis which takes more memory but finds more bugs.
-                    If you run out of memory, changes the value of the effort element to 'low'.&ndash;&gt;
+                    <!-- Enables analysis which takes more memory but finds more bugs.
+                    If you run out of memory, changes the value of the effort element to 'low'.-->
                     <effort>Max</effort>
-                    &lt;!&ndash; Reports all bugs (other values are medium and max) &ndash;&gt;
+                    <!-- Reports all bugs (other values are medium and max) -->
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
                 </configuration>
                 <executions>
-                    &lt;!&ndash; Ensures that FindBugs inspects source code when project is compiled.&ndash;&gt;
+                    <!-- Ensures that FindBugs inspects source code when project is compiled.-->
                     <execution>
                         <id>analyze-compile</id>
                         <phase>compile</phase>
@@ -228,7 +228,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 </project>
