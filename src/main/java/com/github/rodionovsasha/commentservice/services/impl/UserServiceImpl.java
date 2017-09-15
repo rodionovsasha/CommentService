@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public User getById(long id) throws UserNotFoundException {
         val user = repository.findOne(id);
         if (user == null) {
-            throw new UserNotFoundException(String.format("User with id '%d' not found", id));
+            throw new UserNotFoundException(String.format("The user with id '%d' was not found", id));
         }
         return user;
     }
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public User getActiveUser(long userId) throws InactiveUserException, UserNotFoundException {
         val user = getById(userId);
         if (!user.isEnabled()) {
-            throw new InactiveUserException(String.format("User with userId '%d' is not active", userId));
+            throw new InactiveUserException(String.format("The user with id '%d' is not active", userId));
         }
         return user;
     }
