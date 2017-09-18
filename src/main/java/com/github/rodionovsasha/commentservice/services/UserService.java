@@ -17,5 +17,5 @@ public interface UserService {
 
     void deactivate(long id) throws UserNotFoundException;
 
-    void delete(long id) throws UserNotFoundException;
+    void delete(long id);
 }
