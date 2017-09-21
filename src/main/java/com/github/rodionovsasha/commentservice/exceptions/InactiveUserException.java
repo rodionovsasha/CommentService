@@ -1,7 +1,11 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public class InactiveUserException extends ServiceException {
-    public InactiveUserException(String message) {
+public final class InactiveUserException extends ServiceException {
+    private InactiveUserException(String message) {
         super(message);
+    }
+
+    public static void withId(long id) {
+        throw new InactiveUserException(String.format("The user with id '%d' is not active", id));
     }
 }

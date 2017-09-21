@@ -10,6 +10,8 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Consumer;
+
 @AllArgsConstructor
 @Service @Transactional
 public class UserServiceImpl implements UserService {
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public User getById(long id) {
         val user = repository.findOne(id);
         if (user == null) {
-            throw new UserNotFoundException(String.format("The user with id '%d' could not be found", id));
+            UserNotFoundException.withId(id);
         }
         return user;
     }
@@ -35,34 +37,34 @@ public class UserServiceImpl implements UserService {
     public User getActiveUser(long userId) {
         val user = getById(userId);
         if (!user.isEnabled()) {
-            throw new InactiveUserException(String.format("The user with id '%d' is not active", userId));
+            InactiveUserException.withId(userId);
         }
         return user;
     }
 
     @Override
     public void updateName(long id, String name) {
-        val user = getActiveUser(id);
-        user.setName(name);
-        repository.save(user);
+        change(id, user -> user.setName(name));
     }
 
     @Override
     public void updateAge(long id, int age) {
-        val user = getActiveUser(id);
-        user.setAge(age);
-        repository.save(user);
+        change(id, user -> user.setAge(age));
     }
 
     @Override
     public void deactivate(long id) {
-        val user = getById(id);
-        user.setEnabled(false);
-        repository.save(user);
+        change(id, user -> user.setEnabled(false));
     }
 
     @Override
     public void delete(long id) {
         repository.delete(id);
+    }
+
+    private void change(long id, Consumer<User> consumer) {
+        val user = getActiveUser(id);
+        consumer.accept(user);
+        repository.save(user);
     }
 }
