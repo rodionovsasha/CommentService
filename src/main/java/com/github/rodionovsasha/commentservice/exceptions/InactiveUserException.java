@@ -5,7 +5,7 @@ public final class InactiveUserException extends ServiceException {
         super(message);
     }
 
-    public static void withId(long id) {
-        throw new InactiveUserException(String.format("The user with id '%d' is not active", id));
+    public static InactiveUserException withId(long id) {
+        return new InactiveUserException(String.format("The user with id '%d' is not active", id));
     }
 }
