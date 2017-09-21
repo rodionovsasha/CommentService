@@ -1,7 +1,7 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
 class ServiceException extends RuntimeException {
-    ServiceException(final String message) {
+    ServiceException(String message) {
         super(message);
     }
 }
