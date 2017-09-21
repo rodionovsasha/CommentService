@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 @TestPropertySource(locations = "classpath:test.properties")
 @SpringBootTest
 @Transactional
-@Sql({"/schema.sql", "/data.sql"})
+@Sql({ "/schema.sql", "/data.sql" })
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -105,7 +105,7 @@ public class UserServiceTest {
         userService.deactivate(2);
     }
 
-    @Test (expected = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     public void shouldDeleteUserTest() throws Exception {
         userService.delete(1);
 
