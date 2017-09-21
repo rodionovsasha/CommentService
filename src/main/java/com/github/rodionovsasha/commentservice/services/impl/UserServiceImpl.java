@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(String name, int age) {
-        return repository.saveAndFlush(new User(name, age));
+        return repository.save(new User(name, age));
     }
 
     @Override
@@ -44,21 +44,21 @@ public class UserServiceImpl implements UserService {
     public void updateName(long id, String name) {
         val user = getActiveUser(id);
         user.setName(name);
-        repository.saveAndFlush(user);
+        repository.save(user);
     }
 
     @Override
     public void updateAge(long id, int age) {
         val user = getActiveUser(id);
         user.setAge(age);
-        repository.saveAndFlush(user);
+        repository.save(user);
     }
 
     @Override
     public void deactivate(long id) {
         val user = getById(id);
         user.setEnabled(false);
-        repository.saveAndFlush(user);
+        repository.save(user);
     }
 
     @Override
