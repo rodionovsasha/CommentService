@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getById(long id) throws UserNotFoundException {
+    public User getById(long id) {
         val user = repository.findOne(id);
         if (user == null) {
             throw new UserNotFoundException(String.format("The user with id '%d' could not be found", id));
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getActiveUser(long userId) throws InactiveUserException, UserNotFoundException {
+    public User getActiveUser(long userId) {
         val user = getById(userId);
         if (!user.isEnabled()) {
             throw new InactiveUserException(String.format("The user with id '%d' is not active", userId));
@@ -41,21 +41,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateName(long id, String name) throws UserNotFoundException, InactiveUserException {
+    public void updateName(long id, String name) {
         val user = getActiveUser(id);
         user.setName(name);
         repository.saveAndFlush(user);
     }
 
     @Override
-    public void updateAge(long id, int age) throws UserNotFoundException, InactiveUserException {
+    public void updateAge(long id, int age) {
         val user = getActiveUser(id);
         user.setAge(age);
         repository.saveAndFlush(user);
     }
 
     @Override
-    public void deactivate(long id) throws UserNotFoundException {
+    public void deactivate(long id) {
         val user = getById(id);
         user.setEnabled(false);
         repository.saveAndFlush(user);
