@@ -1,0 +1,10 @@
+homer:
+  id: 1
+  name: Homer
+  age: 39
+
+bart:
+  id: 2
+  name: Bart
+  age: 10
+  enabled: false
