@@ -58,6 +58,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void activate(long id) {
+        val user = getById(id);
+        user.setEnabled(true);
+        repository.save(user);
+    }
+
+    @Override
     public void delete(long id) {
         repository.delete(id);
     }

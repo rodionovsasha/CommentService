@@ -11,16 +11,21 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 @Entity
 public class User implements Serializable {
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue
     private long id;
-    @NotBlank
+
+    @Setter @NotBlank
     private String name;
+
+    @Setter
     private int age;
+
+    @Setter
     private boolean enabled = true;
 
     public User(String name, int age) {
