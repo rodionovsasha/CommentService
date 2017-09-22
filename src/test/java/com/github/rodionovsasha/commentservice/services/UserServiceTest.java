@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,6 @@ import static org.junit.Assert.assertFalse;
 @TestPropertySource(locations = "classpath:test.properties")
 @SpringBootTest
 @Transactional
-@Sql({ "/schema.sql", "/data.sql" })
 public class UserServiceTest {
     @Autowired
     private UserService userService;
