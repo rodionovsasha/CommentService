@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public User getById(long id) {
         val user = repository.findOne(id);
         if (user == null) {
-            throw UserNotFoundException.withId(id);
+            throw UserNotFoundException.forId(id);
         }
         return user;
     }
@@ -37,24 +37,24 @@ public class UserServiceImpl implements UserService {
     public User getActiveUser(long userId) {
         val user = getById(userId);
         if (!user.isEnabled()) {
-            throw InactiveUserException.withId(userId);
+            throw InactiveUserException.forId(userId);
         }
         return user;
     }
 
     @Override
     public void updateName(long id, String name) {
-        change(id, user -> user.setName(name));
+        update(id, user -> user.setName(name));
     }
 
     @Override
     public void updateAge(long id, int age) {
-        change(id, user -> user.setAge(age));
+        update(id, user -> user.setAge(age));
     }
 
     @Override
     public void deactivate(long id) {
-        change(id, user -> user.setEnabled(false));
+        update(id, user -> user.setEnabled(false));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         repository.delete(id);
     }
 
-    private void change(long id, Consumer<User> consumer) {
+    private void update(long id, Consumer<User> consumer) {
         val user = getActiveUser(id);
         consumer.accept(user);
         repository.save(user);

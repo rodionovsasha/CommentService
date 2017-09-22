@@ -5,7 +5,7 @@ public final class UserNotFoundException extends ServiceException {
         super(message);
     }
 
-    public static UserNotFoundException withId(long id) {
+    public static UserNotFoundException forId(long id) {
         return new UserNotFoundException(String.format("The user with id '%d' could not be found", id));
     }
 }
