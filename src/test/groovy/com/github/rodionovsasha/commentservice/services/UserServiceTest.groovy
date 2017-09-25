@@ -47,11 +47,19 @@ class UserServiceTest extends BaseTest {
         when:
         userService.updateName(1, "Maggie")
         and:
-        def user =  userRepository.getOne(1L)
+        def user = userRepository.getOne(1L)
 
         then:
         user.name == "Maggie"
+    }
+
+    def "updateName does not change anything except name"() {
+        when:
+        userService.updateName(1, "Maggie")
         and:
+        def user = userRepository.getOne(1L)
+
+        then:
         user.age == 39
         user.enabled
     }
@@ -76,7 +84,15 @@ class UserServiceTest extends BaseTest {
 
         then:
         user.age == 35
+    }
+
+    def "updateAge does not change anything except age"() {
+        when:
+        userService.updateAge(1, 35)
         and:
+        def user = userRepository.getOne(1L)
+
+        then:
         user.name == "Homer"
         user.enabled
     }
@@ -90,7 +106,10 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "activate does user inactive"() {
+    def "deactivate does user inactive"() {
+        given:
+        userRepository.getOne(1L).enabled
+
         when:
         userService.deactivate(1)
         and:
@@ -98,7 +117,15 @@ class UserServiceTest extends BaseTest {
 
         then:
         !user.enabled
+    }
+
+    def "deactivate does not change anything except state"() {
+        when:
+        userService.deactivate(1)
         and:
+        def user = userRepository.getOne(1L)
+
+        then:
         user.name == "Homer"
         user.age == 39
     }
@@ -113,6 +140,9 @@ class UserServiceTest extends BaseTest {
     }
 
     def "activate does user active"() {
+        given:
+        !userRepository.getOne(2L).enabled
+
         when:
         userService.activate(2)
         and:
@@ -120,7 +150,15 @@ class UserServiceTest extends BaseTest {
 
         then:
         user.enabled
+    }
+
+    def "activate does not change anything except state"() {
+        when:
+        userService.activate(2)
         and:
+        def user = userRepository.getOne(2L)
+
+        then:
         user.name == "Bart"
         user.age == 10
     }
@@ -140,7 +178,6 @@ class UserServiceTest extends BaseTest {
 
         then:
         user.name == "Marge"
-        and:
         user.age == 37
         user.enabled
     }
