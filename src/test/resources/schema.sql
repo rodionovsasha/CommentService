@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS user (
   id int PRIMARY KEY AUTO_INCREMENT,
   name varchar(255),
   age int,
-  enabled boolean default true
+  active boolean default true
 );
 
 CREATE TABLE IF NOT EXISTS topic (
