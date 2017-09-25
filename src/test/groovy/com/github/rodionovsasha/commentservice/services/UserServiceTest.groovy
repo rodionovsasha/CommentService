@@ -71,7 +71,6 @@ class UserServiceTest extends BaseTest {
 
         then:
         userRepository.getOne(id).age == 35
-
     }
 
     def "updateAge throws when user is not active"() {
