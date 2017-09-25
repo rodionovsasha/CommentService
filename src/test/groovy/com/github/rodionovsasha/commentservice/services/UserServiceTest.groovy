@@ -17,7 +17,6 @@ class UserServiceTest extends BaseTest {
         def user = userService.getActiveUser(1)
 
         then:
-        user.id == 1
         user.name == "Homer"
         user.age == 39
         user.enabled
@@ -32,16 +31,27 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "updateName does update user's name"() {
+    def "getActiveUser throws when user not found"() {
         when:
-        userService.updateName(1, "Maggie")
+        userService.getActiveUser(999)
 
         then:
+        def e = thrown(UserNotFoundException)
+        e.message == "The user with id '999' could not be found"
+    }
+
+    def "updateName does update user's name"() {
+        given:
+        userRepository.getOne(1L).name == "Homer"
+
+        when:
+        userService.updateName(1, "Maggie")
+        and:
         def user =  userRepository.getOne(1L)
 
-        and:
-        user.id == 1
+        then:
         user.name == "Maggie"
+        and:
         user.age == 39
         user.enabled
     }
@@ -56,16 +66,18 @@ class UserServiceTest extends BaseTest {
     }
 
     def "updateAge does update user's age"() {
+        given:
+        userRepository.getOne(1L).age == 39
+
         when:
         userService.updateAge(1, 35)
-
-        then:
+        and:
         def user =  userRepository.getOne(1L)
 
-        and:
-        user.id == 1
-        user.name == "Homer"
+        then:
         user.age == 35
+        and:
+        user.name == "Homer"
         user.enabled
     }
 
@@ -81,15 +93,14 @@ class UserServiceTest extends BaseTest {
     def "activate does user inactive"() {
         when:
         userService.deactivate(1)
-
-        then:
+        and:
         def user =  userRepository.getOne(1L)
 
+        then:
+        !user.enabled
         and:
-        user.id == 1
         user.name == "Homer"
         user.age == 39
-        !user.enabled
     }
 
     def "deactivate throws when user is not active"() {
@@ -104,15 +115,14 @@ class UserServiceTest extends BaseTest {
     def "activate does user active"() {
         when:
         userService.activate(2)
-
-        then:
+        and:
         def user =  userRepository.getOne(2L)
 
+        then:
+        user.enabled
         and:
-        user.id == 2
         user.name == "Bart"
         user.age == 10
-        user.enabled
     }
 
     def "activate throws when user is not found"() {
@@ -129,8 +139,8 @@ class UserServiceTest extends BaseTest {
         def user = userService.create("Marge", 37)
 
         then:
-        user.id == 3
         user.name == "Marge"
+        and:
         user.age == 37
         user.enabled
     }
