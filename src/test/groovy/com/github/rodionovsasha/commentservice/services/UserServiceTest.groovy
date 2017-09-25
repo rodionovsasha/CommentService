@@ -106,7 +106,7 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "deactivate does user inactive"() {
+    def "deactivate makes user inactive"() {
         given:
         userRepository.getOne(1L).enabled
 
