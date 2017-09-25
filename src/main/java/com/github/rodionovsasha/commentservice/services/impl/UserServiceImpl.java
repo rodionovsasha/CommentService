@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User getActiveUser(long userId) {
         val user = getById(userId);
-        if (!user.isEnabled()) {
+        if (!user.isActive()) {
             throw InactiveUserException.forId(userId);
         }
         return user;
@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deactivate(long id) {
-        update(id, user -> user.setEnabled(false));
+        update(id, user -> user.setActive(false));
     }
 
     @Override
     public void activate(long id) {
         val user = getById(id);
-        user.setEnabled(true);
+        user.setActive(true);
         repository.save(user);
     }
 

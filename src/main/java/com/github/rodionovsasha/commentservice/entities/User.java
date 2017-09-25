@@ -26,7 +26,7 @@ public class User implements Serializable {
     private int age;
 
     @Setter
-    private boolean enabled = true;
+    private boolean active = true;
 
     public User(String name, int age) {
         this.name = name;
