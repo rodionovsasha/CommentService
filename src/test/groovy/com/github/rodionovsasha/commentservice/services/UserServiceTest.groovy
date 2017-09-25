@@ -49,8 +49,7 @@ class UserServiceTest extends BaseTest {
         userService.updateName(id, "Maggie")
 
         then:
-        def user = userRepository.getOne(id)
-        user.name == "Maggie"
+        userRepository.getOne(id).name == "Maggie"
     }
 
     def "updateName throws when user is not active"() {
@@ -71,8 +70,8 @@ class UserServiceTest extends BaseTest {
         userService.updateAge(id, 35)
 
         then:
-        def user =  userRepository.getOne(id)
-        user.age == 35
+        userRepository.getOne(id).age == 35
+
     }
 
     def "updateAge throws when user is not active"() {
@@ -93,8 +92,7 @@ class UserServiceTest extends BaseTest {
         userService.deactivate(id)
 
         then:
-        def user =  userRepository.getOne(id)
-        !user.active
+        !userRepository.getOne(id).active
     }
 
     def "deactivate throws when user is not active"() {
@@ -115,8 +113,7 @@ class UserServiceTest extends BaseTest {
         userService.activate(id)
 
         then:
-        def user = userRepository.getOne(id)
-        user.active
+        userRepository.getOne(id).active
     }
 
     def "activate throws when user is not found"() {
@@ -133,6 +130,7 @@ class UserServiceTest extends BaseTest {
         def user = userService.create("Marge", 37)
 
         then:
+        user.id instanceof Long
         user.name == "Marge"
         user.age == 37
         user.active
