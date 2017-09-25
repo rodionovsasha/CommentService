@@ -42,13 +42,14 @@ class UserServiceTest extends BaseTest {
 
     def "updateName does update user's name"() {
         given:
-        userRepository.getOne(1L).name == "Homer"
+        def id = 1L
+        userRepository.getOne(id).name == "Homer"
 
         when:
-        userService.updateName(1, "Maggie")
+        userService.updateName(id, "Maggie")
 
         then:
-        def user = userRepository.getOne(1L)
+        def user = userRepository.getOne(id)
         user.name == "Maggie"
     }
 
@@ -63,13 +64,14 @@ class UserServiceTest extends BaseTest {
 
     def "updateAge does update user's age"() {
         given:
-        userRepository.getOne(1L).age == 39
+        def id = 1L
+        userRepository.getOne(id).age == 39
 
         when:
-        userService.updateAge(1, 35)
+        userService.updateAge(id, 35)
 
         then:
-        def user =  userRepository.getOne(1L)
+        def user =  userRepository.getOne(id)
         user.age == 35
     }
 
@@ -84,13 +86,14 @@ class UserServiceTest extends BaseTest {
 
     def "deactivate makes user inactive"() {
         given:
-        userRepository.getOne(1L).active
+        def id = 1L
+        userRepository.getOne(id).active
 
         when:
-        userService.deactivate(1)
+        userService.deactivate(id)
 
         then:
-        def user =  userRepository.getOne(1L)
+        def user =  userRepository.getOne(id)
         !user.active
     }
 
@@ -105,13 +108,14 @@ class UserServiceTest extends BaseTest {
 
     def "activate does user active"() {
         given:
-        !userRepository.getOne(2L).active
+        def id = 2L
+        !userRepository.getOne(id).active
 
         when:
-        userService.activate(2)
+        userService.activate(id)
 
         then:
-        def user = userRepository.getOne(2L)
+        def user = userRepository.getOne(id)
         user.active
     }
 
