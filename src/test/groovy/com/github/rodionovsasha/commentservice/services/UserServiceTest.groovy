@@ -53,17 +53,6 @@ class UserServiceTest extends BaseTest {
         user.name == "Maggie"
     }
 
-    def "updateName does not change anything except name"() {
-        when:
-        userService.updateName(1, "Maggie")
-        and:
-        def user = userRepository.getOne(1L)
-
-        then:
-        user.age == 39
-        user.enabled
-    }
-
     def "updateName throws when user is not active"() {
         when:
         userService.updateName(2, "Maggie")
@@ -84,17 +73,6 @@ class UserServiceTest extends BaseTest {
 
         then:
         user.age == 35
-    }
-
-    def "updateAge does not change anything except age"() {
-        when:
-        userService.updateAge(1, 35)
-        and:
-        def user = userRepository.getOne(1L)
-
-        then:
-        user.name == "Homer"
-        user.enabled
     }
 
     def "updateAge throws when user is not active"() {
@@ -119,17 +97,6 @@ class UserServiceTest extends BaseTest {
         !user.enabled
     }
 
-    def "deactivate does not change anything except state"() {
-        when:
-        userService.deactivate(1)
-        and:
-        def user = userRepository.getOne(1L)
-
-        then:
-        user.name == "Homer"
-        user.age == 39
-    }
-
     def "deactivate throws when user is not active"() {
         when:
         userService.deactivate(2)
@@ -150,17 +117,6 @@ class UserServiceTest extends BaseTest {
 
         then:
         user.enabled
-    }
-
-    def "activate does not change anything except state"() {
-        when:
-        userService.activate(2)
-        and:
-        def user = userRepository.getOne(2L)
-
-        then:
-        user.name == "Bart"
-        user.age == 10
     }
 
     def "activate throws when user is not found"() {
