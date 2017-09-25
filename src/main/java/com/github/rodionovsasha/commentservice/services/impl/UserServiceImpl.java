@@ -24,16 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getById(long id) {
-        val user = repository.findOne(id);
-        if (user == null) {
-            throw UserNotFoundException.forId(id);
-        }
-        return user;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public User getActiveUser(long userId) {
         val user = getById(userId);
         if (!user.isEnabled()) {
@@ -64,14 +54,17 @@ public class UserServiceImpl implements UserService {
         repository.save(user);
     }
 
-    @Override
-    public void delete(long id) {
-        repository.delete(id);
-    }
-
     private void update(long id, Consumer<User> consumer) {
         val user = getActiveUser(id);
         consumer.accept(user);
         repository.save(user);
+    }
+
+    private User getById(long id) {
+        val user = repository.findOne(id);
+        if (user == null) {
+            throw UserNotFoundException.forId(id);
+        }
+        return user;
     }
 }

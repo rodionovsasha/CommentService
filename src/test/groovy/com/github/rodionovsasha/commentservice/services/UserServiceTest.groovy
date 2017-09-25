@@ -3,34 +3,16 @@ package com.github.rodionovsasha.commentservice.services
 import com.github.rodionovsasha.commentservice.BaseTest
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
+import com.github.rodionovsasha.commentservice.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.EmptyResultDataAccessException
 
 class UserServiceTest extends BaseTest {
     @Autowired
     UserService userService
+    @Autowired
+    UserRepository userRepository
 
-    def "should get user by id"() {
-        when:
-        def user = userService.getById(1)
-
-        then:
-        user.id == 1
-        user.name == "Homer"
-        user.age == 39
-        user.enabled
-    }
-
-    def "should not get user by id"() {
-        when:
-        userService.getById(999)
-
-        then:
-        def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
-    }
-
-    def "should get active user by id"() {
+    def "getActiveUser returns active user by id"() {
         when:
         def user = userService.getActiveUser(1)
 
@@ -41,7 +23,7 @@ class UserServiceTest extends BaseTest {
         user.enabled
     }
 
-    def "should not get active user by id"() {
+    def "getActiveUser throws when user is inactive"() {
         when:
         userService.getActiveUser(2)
 
@@ -50,12 +32,12 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "should update user name"() {
+    def "updateName does update user's name"() {
         when:
         userService.updateName(1, "Maggie")
 
         then:
-        def user =  userService.getById(1)
+        def user =  userRepository.getOne(1L)
 
         and:
         user.id == 1
@@ -64,7 +46,7 @@ class UserServiceTest extends BaseTest {
         user.enabled
     }
 
-    def "should not update user name"() {
+    def "updateName throws when user is not active"() {
         when:
         userService.updateName(2, "Maggie")
 
@@ -73,12 +55,12 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "should update user age"() {
+    def "updateAge does update user's age"() {
         when:
         userService.updateAge(1, 35)
 
         then:
-        def user =  userService.getById(1)
+        def user =  userRepository.getOne(1L)
 
         and:
         user.id == 1
@@ -87,7 +69,7 @@ class UserServiceTest extends BaseTest {
         user.enabled
     }
 
-    def "should not update user age"() {
+    def "updateAge throws when user is not active"() {
         when:
         userService.updateAge(2, 35)
 
@@ -96,12 +78,12 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "should deactivate user"() {
+    def "activate does user inactive"() {
         when:
         userService.deactivate(1)
 
         then:
-        def user =  userService.getById(1)
+        def user =  userRepository.getOne(1L)
 
         and:
         user.id == 1
@@ -110,7 +92,7 @@ class UserServiceTest extends BaseTest {
         !user.enabled
     }
 
-    def "should not deactivate user"() {
+    def "deactivate throws when user is not active"() {
         when:
         userService.deactivate(2)
 
@@ -119,12 +101,12 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '2' is not active"
     }
 
-    def "should activate user"() {
+    def "activate does user active"() {
         when:
         userService.activate(2)
 
         then:
-        def user =  userService.getById(2)
+        def user =  userRepository.getOne(2L)
 
         and:
         user.id == 2
@@ -133,7 +115,7 @@ class UserServiceTest extends BaseTest {
         user.enabled
     }
 
-    def "should not activate user"() {
+    def "activate throws when user is not found"() {
         when:
         userService.activate(999)
 
@@ -142,25 +124,7 @@ class UserServiceTest extends BaseTest {
         e.message == "The user with id '999' could not be found"
     }
 
-    def "should delete user"() {
-        when:
-        userService.delete(1)
-        userService.getById(1)
-
-        then:
-        def e = thrown(UserNotFoundException)
-        e.message == "The user with id '1' could not be found"
-    }
-
-    def "should not delete user"() {
-        when:
-        userService.delete(999)
-
-        then:
-        thrown(EmptyResultDataAccessException)
-    }
-
-    def "should create new user"() {
+    def "create creates a new user"() {
         when:
         def user = userService.create("Marge", 37)
 
