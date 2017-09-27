@@ -27,7 +27,7 @@ class UserServiceTest extends BaseTest {
         def user = userService.getActiveUser(1)
 
         then:
-        user.topics.size() == 1
+        user.topics.size() == 2
     }
 
     def "getActiveUser throws when user is inactive"() {

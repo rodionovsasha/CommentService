@@ -3,7 +3,12 @@ stupid_flanders:
   title: Stupid Flanders
   owner_id: homer
 
-ay_caramba:
+why_you_little:
   id: 2
+  title: Why you little...!
+  owner_id: homer
+
+ay_caramba:
+  id: 3
   title: Ay Caramba!
   owner_id: bart
