@@ -66,10 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getById(long id) {
-        val user = repository.findOne(id);
-        if (user == null) {
-            throw UserNotFoundException.forId(id);
-        }
-        return user;
+        return repository.findOne(id).orElseThrow(() -> UserNotFoundException.forId(id));
     }
 }

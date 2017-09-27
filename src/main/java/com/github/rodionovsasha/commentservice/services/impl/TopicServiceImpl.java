@@ -51,10 +51,6 @@ public class TopicServiceImpl implements TopicService {
     @Override
     @Transactional(readOnly = true)
     public Topic getById(long id) {
-        val topic = repository.findOne(id);
-        if (topic == null) {
-            throw TopicNotFoundException.forId(id);
-        }
-        return topic;
+        return repository.findOne(id).orElseThrow(() -> TopicNotFoundException.forId(id));
     }
 }
