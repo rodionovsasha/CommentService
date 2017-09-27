@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS topic (
   id int PRIMARY KEY AUTO_INCREMENT,
   owner_id int,
   title varchar(255),
+  archived boolean default false,
   date timestamp default CURRENT_TIMESTAMP(),
   foreign key (owner_id) references user(id)
 );

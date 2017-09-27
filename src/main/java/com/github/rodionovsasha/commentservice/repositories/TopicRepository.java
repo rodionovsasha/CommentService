@@ -12,5 +12,5 @@ import java.util.List;
 public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<Topic> findByOwnerId(long ownerId, Sort sort);
 
-    List<Topic> findByTitleContaining(String titleFragment, PageRequest pageRequest);
+    List<Topic> findByTitleContainingOrderByDateDesc(String titleFragment, PageRequest pageRequest);
 }

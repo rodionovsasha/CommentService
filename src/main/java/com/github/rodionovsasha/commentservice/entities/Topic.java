@@ -22,6 +22,9 @@ public class Topic implements Serializable {
     @Setter @NotBlank
     private String title;
 
+    @Setter
+    private boolean archived = false;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 

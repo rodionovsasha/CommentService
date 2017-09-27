@@ -41,11 +41,8 @@ class UserServiceTest extends BaseTest {
     }
 
     def "checkUserActive checks user by id"() {
-        when:
+        expect:
         userService.checkUserActive(1)
-
-        then:
-        notThrown(InactiveUserException)
     }
 
     def "checkUserActive throws when user is inactive"() {

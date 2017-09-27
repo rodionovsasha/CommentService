@@ -33,7 +33,8 @@ public class TopicServiceImpl implements TopicService {
         if (topic.getOwner().getId() != userId) {
             throw TopicAccessException.forId(userId);
         }
-        repository.delete(topicId);
+        topic.setArchived(true);
+        repository.save(topic);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Topic> search(String titleFragment, int limit) {
-        return repository.findByTitleContaining(titleFragment, new PageRequest(0, limit));
+        return repository.findByTitleContainingOrderByDateDesc(titleFragment, new PageRequest(0, limit));
     }
 
     @Override
