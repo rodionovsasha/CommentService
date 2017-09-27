@@ -1,10 +1,9 @@
-topic1:
+stupid_flanders:
   id: 1
-  title: Homer's topic
+  title: Stupid Flanders
   owner_id: homer
 
-topic2:
+ay_caramba:
   id: 2
-  title: Bart's topic
+  title: Ay Caramba!
   owner_id: bart
-
