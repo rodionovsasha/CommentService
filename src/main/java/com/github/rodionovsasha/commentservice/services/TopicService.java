@@ -9,7 +9,7 @@ import java.util.List;
 public interface TopicService {
     Topic start(String title, long userId);
 
-    void delete(long topicId, long userId);
+    void archive(long topicId, long userId);
 
     List<Topic> listForUser(long userId, Sort sort);
 

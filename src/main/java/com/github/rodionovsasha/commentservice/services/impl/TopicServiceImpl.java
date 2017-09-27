@@ -1,7 +1,7 @@
 package com.github.rodionovsasha.commentservice.services.impl;
 
 import com.github.rodionovsasha.commentservice.entities.Topic;
-import com.github.rodionovsasha.commentservice.exceptions.PermissionException;
+import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException;
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException;
 import com.github.rodionovsasha.commentservice.repositories.TopicRepository;
 import com.github.rodionovsasha.commentservice.services.TopicService;
@@ -27,18 +27,18 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void delete(long topicId, long userId) {
-        userService.getActiveUser(userId);
+    public void archive(long topicId, long userId) {
+        userService.checkUserActive(userId);
         val topic = getById(topicId);
         if (topic.getOwner().getId() != userId) {
-            throw PermissionException.forId(userId);
+            throw TopicAccessException.forId(userId);
         }
         repository.delete(topicId);
     }
 
     @Override
     public List<Topic> listForUser(long userId, Sort sort) {
-        userService.getActiveUser(userId);
+        userService.checkUserActive(userId);
         return repository.findByOwnerId(userId, sort);
     }
 

@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Topic> topics = new LinkedList<>();
+    private List<Topic> topics = new ArrayList<>();
 
     public User(String name, int age) {
         this.name = name;

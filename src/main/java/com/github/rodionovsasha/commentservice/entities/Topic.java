@@ -25,7 +25,8 @@ public class Topic implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 
-    @JoinColumn @ManyToOne @JsonIgnore
+    @JsonIgnore
+    @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     private User owner;
 

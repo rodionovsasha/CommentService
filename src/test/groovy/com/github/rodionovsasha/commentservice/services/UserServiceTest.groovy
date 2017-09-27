@@ -20,9 +20,6 @@ class UserServiceTest extends BaseTest {
         user.name == "Homer"
         user.age == 39
         user.active
-        user.topics.size() == 1
-        user.topics.get(0).id == 1
-        user.topics.get(0).title == "Homer's topic"
     }
 
     def "getActiveUser throws when user is inactive"() {
@@ -37,6 +34,31 @@ class UserServiceTest extends BaseTest {
     def "getActiveUser throws when user not found"() {
         when:
         userService.getActiveUser(999)
+
+        then:
+        def e = thrown(UserNotFoundException)
+        e.message == "The user with id '999' could not be found"
+    }
+
+    def "checkUserActive checks user by id"() {
+        when:
+        userService.checkUserActive(1)
+
+        then:
+        notThrown(InactiveUserException)
+    }
+
+    def "checkUserActive throws when user is inactive"() {
+        when:
+        userService.checkUserActive(2)
+
+        then:
+        thrown(InactiveUserException)
+    }
+
+    def "checkUserActive throws when user not found"() {
+        when:
+        userService.checkUserActive(999)
 
         then:
         def e = thrown(UserNotFoundException)
@@ -136,6 +158,5 @@ class UserServiceTest extends BaseTest {
         user.name == "Marge"
         user.age == 37
         user.active
-        user.topics.size() == 0
     }
 }

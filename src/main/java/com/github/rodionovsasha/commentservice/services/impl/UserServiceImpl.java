@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void checkUserActive(long userId) {
+        getActiveUser(userId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public User getActiveUser(long userId) {
         val user = getById(userId);
