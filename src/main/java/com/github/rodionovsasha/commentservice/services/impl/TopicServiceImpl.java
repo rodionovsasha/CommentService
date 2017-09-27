@@ -38,14 +38,16 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Topic> listForUser(long userId, Sort sort) {
         userService.checkUserActive(userId);
         return repository.findByOwnerId(userId, sort);
     }
 
     @Override
-    public List<Topic> search(String titleFragment, int limit) {
-        return repository.findByTitleContainingOrderByDateDesc(titleFragment, new PageRequest(0, limit));
+    @Transactional(readOnly = true)
+    public List<Topic> search(String titleFragment, int size) {
+        return repository.findByTitleContainingOrderByDateDesc(titleFragment, new PageRequest(0, size));
     }
 
     @Override

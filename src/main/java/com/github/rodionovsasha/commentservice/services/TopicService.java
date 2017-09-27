@@ -13,7 +13,7 @@ public interface TopicService {
 
     List<Topic> listForUser(long userId, Sort sort);
 
-    List<Topic> search(String titleFragment, int limit);
+    List<Topic> search(String titleFragment, int size);
 
     Topic getById(long id);
 }

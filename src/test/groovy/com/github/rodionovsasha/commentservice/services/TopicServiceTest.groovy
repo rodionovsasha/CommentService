@@ -3,6 +3,7 @@ package com.github.rodionovsasha.commentservice.services
 import com.github.rodionovsasha.commentservice.BaseTest
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
+import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.repositories.TopicRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -144,5 +145,37 @@ class TopicServiceTest extends BaseTest {
         then:
         def e = thrown(UserNotFoundException)
         e.message == "The user with id '999' could not be found"
+    }
+
+    def "search returns topics with a fragment in title"() {
+        when:
+        def topics = topicService.search("e", 10)
+
+        then:
+        topics.size() == 2
+        topics.get(0).id == 2
+        topics.get(1).id == 1
+        topics.get(0).date > topics.get(1).date
+    }
+
+    def "getById returns topic"() {
+        when:
+        def topic = topicService.getById(1)
+
+        then:
+        topic.id == 1
+        topic.date instanceof Date
+        topic.title == "Stupid Flanders"
+        !topic.archived
+        topic.owner.id == 1
+    }
+
+    def "getById throws when topic not found"() {
+        when:
+        topicService.getById(999)
+
+        then:
+        def e = thrown(TopicNotFoundException)
+        e.message == "The topic with id '999' could not be found"
     }
 }

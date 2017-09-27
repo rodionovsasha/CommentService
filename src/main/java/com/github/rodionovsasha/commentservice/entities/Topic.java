@@ -19,7 +19,7 @@ public class Topic implements Serializable {
     @Id @GeneratedValue
     private long id;
 
-    @Setter @NotBlank
+    @NotBlank
     private String title;
 
     @Setter
@@ -30,7 +30,6 @@ public class Topic implements Serializable {
 
     @JsonIgnore
     @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
-    @Setter
     private User owner;
 
     public Topic(String title, User owner) {
