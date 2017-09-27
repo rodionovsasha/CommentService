@@ -165,7 +165,7 @@ class UserServiceTest extends BaseTest {
         user.active
     }
 
-    def "creating user does not create a new topic"() {
+    def "creating a new user does not create a new topic"() {
         when:
         def user = userService.create("Marge", 37)
 
