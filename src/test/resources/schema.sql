@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS topic (
   id int PRIMARY KEY AUTO_INCREMENT,
-  user_id int,
+  owner_id int,
   title varchar(255),
   date timestamp default CURRENT_TIMESTAMP(),
-  foreign key (user_id) references user(id)
+  foreign key (owner_id) references user(id)
 );
 
 CREATE TABLE IF NOT EXISTS comment (

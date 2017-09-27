@@ -20,6 +20,9 @@ class UserServiceTest extends BaseTest {
         user.name == "Homer"
         user.age == 39
         user.active
+        user.topics.size() == 1
+        user.topics.get(0).id == 1
+        user.topics.get(0).title == "Homer's topic"
     }
 
     def "getActiveUser throws when user is inactive"() {
@@ -133,5 +136,6 @@ class UserServiceTest extends BaseTest {
         user.name == "Marge"
         user.age == 37
         user.active
+        user.topics.size() == 0
     }
 }

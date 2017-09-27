@@ -1,0 +1,10 @@
+topic1:
+  id: 1
+  title: Homer's topic
+  owner_id: homer
+
+topic2:
+  id: 2
+  title: Bart's topic
+  owner_id: bart
+
