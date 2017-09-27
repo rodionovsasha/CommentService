@@ -22,6 +22,14 @@ class UserServiceTest extends BaseTest {
         user.active
     }
 
+    def "getActiveUser returns topics for active user by id"() {
+        when:
+        def user = userService.getActiveUser(1)
+
+        then:
+        user.topics.size() == 1
+    }
+
     def "getActiveUser throws when user is inactive"() {
         when:
         userService.getActiveUser(2)
@@ -155,5 +163,13 @@ class UserServiceTest extends BaseTest {
         user.name == "Marge"
         user.age == 37
         user.active
+    }
+
+    def "creating user does not create a new topic"() {
+        when:
+        def user = userService.create("Marge", 37)
+
+        then:
+        user.topics.size() == 0
     }
 }
