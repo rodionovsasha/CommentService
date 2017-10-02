@@ -188,6 +188,14 @@ class TopicServiceTest extends BaseTest {
 
     def "search returns nothing"() {
         when:
+        def topics = topicService.search("Springfield", 10)
+
+        then:
+        topics.isEmpty()
+    }
+
+    def "search returns limited result"() {
+        when:
         def topics = topicService.search("e", 2)
 
         then:

@@ -174,6 +174,6 @@ class UserServiceTest extends BaseTest {
         def user = userService.create("Marge", 37)
 
         then:
-        user.topics.size() == 0
+        user.topics.isEmpty()
     }
 }
