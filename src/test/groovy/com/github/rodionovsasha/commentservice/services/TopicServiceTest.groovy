@@ -32,7 +32,6 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "start creates a new topic with owner"() {
-
         when:
         def topic = topicService.start("D'oh!", HOMER_ID)
 
