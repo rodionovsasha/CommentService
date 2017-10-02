@@ -5,15 +5,12 @@ import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
-import com.github.rodionovsasha.commentservice.repositories.TopicRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
 
 class TopicServiceTest extends BaseTest {
     @Autowired
     TopicService topicService
-    @Autowired
-    TopicRepository topicRepository
     final HOMER_ID = 1
     final TOPIC_ID = 1
     final NOT_EXISTING_USER_ID = 999
@@ -208,5 +205,10 @@ class TopicServiceTest extends BaseTest {
 
         then:
         thrown(TopicNotFoundException)
+    }
+
+    def "creating a new topic does not create a new comment"() {
+        expect:
+        topicService.start("test", HOMER_ID).comments.isEmpty()
     }
 }

@@ -5,9 +5,12 @@ columns:
 
   apply:
     tables_with_date:
-      to: topic
+      to: topic, comment
       concerns: add_creation_date
 
 refs:
     topic:
       owner_id: user
+    comment:
+      user_id: user
+      topic_id: topic

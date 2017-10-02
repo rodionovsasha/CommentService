@@ -166,10 +166,12 @@ class UserServiceTest extends BaseTest {
     }
 
     def "creating a new user does not create a new topic"() {
-        when:
-        def user = userService.create("Marge", 37)
+        expect:
+        userService.create("Marge", 37).topics.isEmpty()
+    }
 
-        then:
-        user.topics.isEmpty()
+    def "creating a new user does not create a new comment"() {
+        expect:
+        userService.create("Marge", 37).comments.isEmpty()
     }
 }
