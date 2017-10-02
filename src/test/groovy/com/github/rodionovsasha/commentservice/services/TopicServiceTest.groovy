@@ -14,27 +14,30 @@ class TopicServiceTest extends BaseTest {
     TopicService topicService
     @Autowired
     TopicRepository topicRepository
+    final HOMER_ID = 1
+    final TOPIC_ID = 1
+    final NOT_EXISTING_USER_ID = 999
 
     def "start creates a new topic"() {
         when:
-        def topic = topicService.start("D'oh!", 1)
+        def topic = topicService.start("D'oh!", HOMER_ID)
 
         then:
-        topic.id instanceof Long
-        topic.title == "D'oh!"
-        !topic.archived
-        topic.date instanceof Date
+        with(topic) {
+            id instanceof Long
+            title == "D'oh!"
+            !archived
+            date instanceof Date
+        }
     }
 
     def "start creates a new topic with owner"() {
+
         when:
-        def topic = topicService.start("D'oh!", 1)
+        def topic = topicService.start("D'oh!", HOMER_ID)
 
         then:
-        topic.owner.id instanceof Long
-        topic.owner.active
-        topic.owner.age == 39
-        topic.owner.name == "Homer"
+        topic.owner.id == HOMER_ID
     }
 
     def "start throws when user is inactive"() {
@@ -42,91 +45,112 @@ class TopicServiceTest extends BaseTest {
         topicService.start("D'oh!", 2)
 
         then:
-        def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        thrown(InactiveUserException)
     }
 
     def "start throws when user not found"() {
         when:
-        topicService.start("D'oh!", 999)
+        topicService.start("D'oh!", NOT_EXISTING_USER_ID)
 
         then:
-        def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        thrown(UserNotFoundException)
     }
 
     def "archive makes a topic archived"() {
         given:
-        def topicId = 1
-        !topicService.getById(topicId).archived
+        !topicService.getById(TOPIC_ID).archived
 
         when:
-        topicService.archive(topicId, 1)
+        topicService.archive(TOPIC_ID, HOMER_ID)
 
         then:
-        topicService.getById(topicId).archived
+        topicService.getById(TOPIC_ID).archived
     }
 
     def "archive throws when user is inactive"() {
         given:
-        def topicId = 1
-        !topicService.getById(topicId).archived
+        !topicService.getById(TOPIC_ID).archived
 
         when:
-        topicService.archive(topicId, 2)
+        topicService.archive(TOPIC_ID, 2)
 
         then:
-        !topicService.getById(topicId).archived
-        def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        !topicService.getById(TOPIC_ID).archived
+
+        and:
+        thrown(InactiveUserException)
     }
 
     def "archive throws when user not found"() {
         given:
-        def topicId = 1
-        !topicService.getById(topicId).archived
+        !topicService.getById(TOPIC_ID).archived
 
         when:
-        topicService.archive(topicId, 999)
+        topicService.archive(TOPIC_ID, NOT_EXISTING_USER_ID)
 
         then:
-        !topicService.getById(topicId).archived
-        def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        !topicService.getById(TOPIC_ID).archived
+
+        and:
+        thrown(UserNotFoundException)
     }
 
     def "archive throws when user is not topic owner"() {
         given:
-        def topicId = 3
-        !topicService.getById(topicId).archived
+        def TOPIC_ID = 3
+        !topicService.getById(TOPIC_ID).archived
 
         when:
-        topicService.archive(topicId, 1)
+        topicService.archive(TOPIC_ID, HOMER_ID)
 
         then:
-        !topicService.getById(topicId).archived
+        !topicService.getById(TOPIC_ID).archived
+
+        and:
         def e = thrown(TopicAccessException)
         e.message == "Non-topic owner with id '1' is trying to archive the topic"
     }
 
-    def "listForUser returns all topics for user ASC sorted"() {
+    def "archive does not change already archived topic"() {
+        given:
+        def TOPIC_ID = 7
+        topicService.getById(TOPIC_ID).archived
+
         when:
-        def topics = topicService.listForUser(1, new Sort(Sort.Direction.ASC, "id"))
+        topicService.archive(TOPIC_ID, 1)
 
         then:
-        topics.size() == 2
-        topics.get(0).id == 1
-        topics.get(1).id == 2
+        topicService.getById(TOPIC_ID).archived
+    }
+
+    def "listForUser returns all topics for user ASC sorted"() {
+        when:
+        def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id"))
+
+        then:
+        with(topics) {
+            size() == 5
+            id == [1, 2, 5, 6, 7]
+        }
     }
 
     def "listForUser returns all topics for user DESC sorted"() {
         when:
-        def topics = topicService.listForUser(1, new Sort(Sort.Direction.DESC, "id"))
+        def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id"))
 
         then:
-        topics.size() == 2
-        topics.get(0).id == 2
-        topics.get(1).id == 1
+        with(topics) {
+            size() == 5
+            id == [7, 6, 5, 2, 1]
+        }
+    }
+
+    def "listForUser returns an empty list when user does not have own topics"() {
+        when:
+        def topics = topicService.listForUser(3, new Sort(Sort.Direction.ASC, "id"))
+
+        then:
+        topics.size() == 0
     }
 
     def "listForUser throws when user is inactive"() {
@@ -134,48 +158,55 @@ class TopicServiceTest extends BaseTest {
         topicService.listForUser(2, null)
 
         then:
-        def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        thrown(InactiveUserException)
     }
 
     def "listForUser throws when user not found"() {
         when:
-        topicService.listForUser(999, null)
+        topicService.listForUser(NOT_EXISTING_USER_ID, null)
 
         then:
-        def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        thrown(UserNotFoundException)
     }
 
     def "search returns topics with a fragment in title"() {
         when:
-        def topics = topicService.search("e", 10)
+        def topics = topicService.search("Flanders", 10)
 
         then:
-        topics.size() == 2
-        topics.get(0).id == 2
-        topics.get(1).id == 1
-        topics.get(0).date > topics.get(1).date
+        with(topics) {
+            size() == 2
+            id == [6, 1]
+            get(0).date > get(1).date
+        }
     }
 
     def "getById returns topic"() {
         when:
-        def topic = topicService.getById(1)
+        def topic = topicService.getById(TOPIC_ID)
 
         then:
-        topic.id == 1
-        topic.date instanceof Date
-        topic.title == "Stupid Flanders"
-        !topic.archived
-        topic.owner.id == 1
+        with(topic) {
+            date instanceof Date
+            title == "Stupid Flanders"
+            !archived
+            owner.id == HOMER_ID
+        }
+    }
+
+    def "getById returns archived topic"() {
+        when:
+        def topic = topicService.getById(7)
+
+        then:
+        topic.archived
     }
 
     def "getById throws when topic not found"() {
         when:
-        topicService.getById(999)
+        topicService.getById(NOT_EXISTING_USER_ID)
 
         then:
-        def e = thrown(TopicNotFoundException)
-        e.message == "The topic with id '999' could not be found"
+        thrown(TopicNotFoundException)
     }
 }
