@@ -190,7 +190,7 @@ class TopicServiceTest extends BaseTest {
             date instanceof Date
             title == "Stupid Flanders"
             !archived
-            owner.id == HOMER_ID
+            topic.owner.id == HOMER_ID
         }
     }
 
