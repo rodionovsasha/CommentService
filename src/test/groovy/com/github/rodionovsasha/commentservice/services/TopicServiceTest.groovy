@@ -32,11 +32,8 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "start creates a new topic with owner"() {
-        when:
-        def topic = topicService.start("D'oh!", HOMER_ID)
-
-        then:
-        topic.owner.id == HOMER_ID
+        expect:
+        topicService.start("D'oh!", HOMER_ID).owner.id == HOMER_ID
     }
 
     def "start throws when user is inactive"() {
@@ -123,27 +120,18 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "listForUser returns all topics for user ASC sorted"() {
-        when:
-        def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id"))
-
-        then:
-        topics.id == [1, 2, 5, 6, 7]
+        expect:
+        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id")).id == [1, 2, 5, 6, 7]
     }
 
     def "listForUser returns all topics for user DESC sorted"() {
-        when:
-        def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id"))
-
-        then:
-        topics.id == [7, 6, 5, 2, 1]
+        expect:
+        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id")).id == [7, 6, 5, 2, 1]
     }
 
     def "listForUser returns an empty list when user does not have own topics"() {
-        when:
-        def topics = topicService.listForUser(3, new Sort(Sort.Direction.ASC, "id"))
-
-        then:
-        topics.isEmpty()
+        expect:
+        topicService.listForUser(3, new Sort(Sort.Direction.ASC, "id")).isEmpty()
     }
 
     def "listForUser throws when user is inactive"() {
@@ -163,19 +151,13 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "search returns topics with a fragment in title"() {
-        when:
-        def topics = topicService.search("Flanders", 10)
-
-        then:
-        topics.id == [6, 1]
+        expect:
+        topicService.search("Flanders", 10).id == [6, 1]
     }
 
     def "search returns topics with a fragment in title case insensitive"() {
-        when:
-        def topics = topicService.search("FLANDERS", 10)
-
-        then:
-        topics.id == [6, 1]
+        expect:
+        topicService.search("FLANDERS", 10).id == [6, 1]
     }
 
     def "search returns topics with a fragment in title with sorting"() {
@@ -187,14 +169,14 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "search returns nothing"() {
-        when:
-        def topics = topicService.search("Springfield", 10)
-
-        then:
-        topics.isEmpty()
+        expect:
+        topicService.search("Springfield", 10).isEmpty()
     }
 
     def "search returns limited result"() {
+        given:
+        topicService.search("e", 10).size() == 6
+
         when:
         def topics = topicService.search("e", 2)
 
@@ -216,11 +198,8 @@ class TopicServiceTest extends BaseTest {
     }
 
     def "getById returns archived topic"() {
-        when:
-        def topic = topicService.getById(7)
-
-        then:
-        topic.archived
+        expect:
+        topicService.getById(7).archived
     }
 
     def "getById throws when topic not found"() {
