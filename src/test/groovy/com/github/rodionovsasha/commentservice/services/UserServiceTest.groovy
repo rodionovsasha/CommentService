@@ -11,10 +11,12 @@ class UserServiceTest extends BaseTest {
     UserService userService
     @Autowired
     UserRepository userRepository
+    final HOMER_ID = 1
+    final NOT_EXISTING_USER_ID = 999
 
     def "getActiveUser returns active user by id"() {
         when:
-        def user = userService.getActiveUser(1)
+        def user = userService.getActiveUser(HOMER_ID)
 
         then:
         with(user) {
@@ -25,11 +27,8 @@ class UserServiceTest extends BaseTest {
     }
 
     def "getActiveUser returns topics for active user by id"() {
-        when:
-        def user = userService.getActiveUser(1)
-
-        then:
-        user.topics.size() == 5
+        expect:
+        userService.getActiveUser(HOMER_ID).topics.size() == 5
     }
 
     def "getActiveUser throws when user is inactive"() {
@@ -43,11 +42,11 @@ class UserServiceTest extends BaseTest {
 
     def "getActiveUser throws when user not found"() {
         when:
-        userService.getActiveUser(999)
+        userService.getActiveUser(NOT_EXISTING_USER_ID)
 
         then:
         def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
     }
 
     def "checkUserActive checks user by id"() {
@@ -65,11 +64,11 @@ class UserServiceTest extends BaseTest {
 
     def "checkUserActive throws when user not found"() {
         when:
-        userService.checkUserActive(999)
+        userService.checkUserActive(NOT_EXISTING_USER_ID)
 
         then:
         def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
     }
 
     def "updateName does update user's name"() {
@@ -149,11 +148,11 @@ class UserServiceTest extends BaseTest {
 
     def "activate throws when user is not found"() {
         when:
-        userService.activate(999)
+        userService.activate(NOT_EXISTING_USER_ID)
 
         then:
         def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
     }
 
     def "create creates a new user"() {
