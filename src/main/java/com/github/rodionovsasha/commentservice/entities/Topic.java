@@ -8,33 +8,36 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @NoArgsConstructor
 @Getter
 @Entity
-public class User implements Serializable {
+public class Topic implements Serializable {
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue
     private long id;
 
-    @Setter @NotBlank
-    private String name;
+    @NotBlank
+    private String title;
 
     @Setter
-    private int age;
+    private boolean archived = false;
 
-    @Setter
-    private boolean active = true;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date = new Date();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Topic> topics = new ArrayList<>();
+    @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
 
-    public User(String name, int age) {
-        this.name = name;
-        this.age = age;
+    public Topic(String title, User owner) {
+        this.title = title;
+        this.owner = owner;
+    }
+
+    public Date getDate() {
+        return (Date)date.clone();
     }
 }

@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void checkUserActive(long userId) {
+        getActiveUser(userId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public User getActiveUser(long userId) {
         val user = getById(userId);
@@ -61,10 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getById(long id) {
-        val user = repository.findOne(id);
-        if (user == null) {
-            throw UserNotFoundException.forId(id);
-        }
-        return user;
+        return repository.findOne(id).orElseThrow(() -> UserNotFoundException.forId(id));
     }
 }

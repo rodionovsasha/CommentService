@@ -8,3 +8,8 @@ bart:
   name: Bart
   age: 10
   active: false
+
+maggie:
+  id: 3
+  name: Maggie
+  age: 2

@@ -5,6 +5,8 @@ import com.github.rodionovsasha.commentservice.entities.User;
 public interface UserService {
     User create(String name, int age);
 
+    void checkUserActive(long userId);
+
     User getActiveUser(long userId);
 
     void updateName(long id, String name);

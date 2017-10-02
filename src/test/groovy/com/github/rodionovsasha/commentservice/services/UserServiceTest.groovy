@@ -11,15 +11,24 @@ class UserServiceTest extends BaseTest {
     UserService userService
     @Autowired
     UserRepository userRepository
+    final HOMER_ID = 1L
+    final NOT_EXISTING_USER_ID = 999
 
     def "getActiveUser returns active user by id"() {
         when:
-        def user = userService.getActiveUser(1)
+        def user = userService.getActiveUser(HOMER_ID)
 
         then:
-        user.name == "Homer"
-        user.age == 39
-        user.active
+        with(user) {
+            name == "Homer"
+            age == 39
+            active
+        }
+    }
+
+    def "getActiveUser returns topics for active user by id"() {
+        expect:
+        userService.getActiveUser(HOMER_ID).topics.size() == 5
     }
 
     def "getActiveUser throws when user is inactive"() {
@@ -33,23 +42,44 @@ class UserServiceTest extends BaseTest {
 
     def "getActiveUser throws when user not found"() {
         when:
-        userService.getActiveUser(999)
+        userService.getActiveUser(NOT_EXISTING_USER_ID)
 
         then:
         def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
+    }
+
+    def "checkUserActive checks user by id"() {
+        expect:
+        userService.checkUserActive(HOMER_ID)
+    }
+
+    def "checkUserActive throws when user is inactive"() {
+        when:
+        userService.checkUserActive(2)
+
+        then:
+        thrown(InactiveUserException)
+    }
+
+    def "checkUserActive throws when user not found"() {
+        when:
+        userService.checkUserActive(NOT_EXISTING_USER_ID)
+
+        then:
+        def e = thrown(UserNotFoundException)
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
     }
 
     def "updateName does update user's name"() {
         given:
-        def id = 1L
-        userRepository.getOne(id).name == "Homer"
+        userRepository.getOne(HOMER_ID).name == "Homer"
 
         when:
-        userService.updateName(id, "Maggie")
+        userService.updateName(HOMER_ID, "Maggie")
 
         then:
-        userRepository.getOne(id).name == "Maggie"
+        userRepository.getOne(HOMER_ID).name == "Maggie"
     }
 
     def "updateName throws when user is not active"() {
@@ -63,14 +93,13 @@ class UserServiceTest extends BaseTest {
 
     def "updateAge does update user's age"() {
         given:
-        def id = 1L
-        userRepository.getOne(id).age == 39
+        userRepository.getOne(HOMER_ID).age == 39
 
         when:
-        userService.updateAge(id, 35)
+        userService.updateAge(HOMER_ID, 35)
 
         then:
-        userRepository.getOne(id).age == 35
+        userRepository.getOne(HOMER_ID).age == 35
     }
 
     def "updateAge throws when user is not active"() {
@@ -84,14 +113,13 @@ class UserServiceTest extends BaseTest {
 
     def "deactivate makes user inactive"() {
         given:
-        def id = 1L
-        userRepository.getOne(id).active
+        userRepository.getOne(HOMER_ID).active
 
         when:
-        userService.deactivate(id)
+        userService.deactivate(HOMER_ID)
 
         then:
-        !userRepository.getOne(id).active
+        !userRepository.getOne(HOMER_ID).active
     }
 
     def "deactivate throws when user is not active"() {
@@ -117,11 +145,11 @@ class UserServiceTest extends BaseTest {
 
     def "activate throws when user is not found"() {
         when:
-        userService.activate(999)
+        userService.activate(NOT_EXISTING_USER_ID)
 
         then:
         def e = thrown(UserNotFoundException)
-        e.message == "The user with id '999' could not be found"
+        e.message == "The user with id '" + NOT_EXISTING_USER_ID + "' could not be found"
     }
 
     def "create creates a new user"() {
@@ -129,9 +157,19 @@ class UserServiceTest extends BaseTest {
         def user = userService.create("Marge", 37)
 
         then:
-        user.id instanceof Long
-        user.name == "Marge"
-        user.age == 37
-        user.active
+        with(user) {
+            id instanceof Long
+            name == "Marge"
+            age == 37
+            active
+        }
+    }
+
+    def "creating a new user does not create a new topic"() {
+        when:
+        def user = userService.create("Marge", 37)
+
+        then:
+        user.topics.isEmpty()
     }
 }
