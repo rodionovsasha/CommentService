@@ -127,10 +127,7 @@ class TopicServiceTest extends BaseTest {
         def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id"))
 
         then:
-        with(topics) {
-            size() == 5
-            id == [1, 2, 5, 6, 7]
-        }
+        topics.id == [1, 2, 5, 6, 7]
     }
 
     def "listForUser returns all topics for user DESC sorted"() {
@@ -138,10 +135,7 @@ class TopicServiceTest extends BaseTest {
         def topics = topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id"))
 
         then:
-        with(topics) {
-            size() == 5
-            id == [7, 6, 5, 2, 1]
-        }
+        topics.id == [7, 6, 5, 2, 1]
     }
 
     def "listForUser returns an empty list when user does not have own topics"() {
@@ -149,7 +143,7 @@ class TopicServiceTest extends BaseTest {
         def topics = topicService.listForUser(3, new Sort(Sort.Direction.ASC, "id"))
 
         then:
-        topics.size() == 0
+        topics.isEmpty()
     }
 
     def "listForUser throws when user is inactive"() {
@@ -173,11 +167,31 @@ class TopicServiceTest extends BaseTest {
         def topics = topicService.search("Flanders", 10)
 
         then:
-        with(topics) {
-            size() == 2
-            id == [6, 1]
-            get(0).date > get(1).date
-        }
+        topics.id == [6, 1]
+    }
+
+    def "search returns topics with a fragment in title case insensitive"() {
+        when:
+        def topics = topicService.search("FLANDERS", 10)
+
+        then:
+        topics.id == [6, 1]
+    }
+
+    def "search returns topics with a fragment in title with sorting"() {
+        when:
+        def topics = topicService.search("Flanders", 10)
+
+        then:
+        topics.get(0).date > topics.get(1).date
+    }
+
+    def "search returns nothing"() {
+        when:
+        def topics = topicService.search("e", 2)
+
+        then:
+        topics.size() == 2
     }
 
     def "getById returns topic"() {

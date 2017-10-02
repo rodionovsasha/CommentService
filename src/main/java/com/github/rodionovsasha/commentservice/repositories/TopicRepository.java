@@ -11,5 +11,5 @@ import java.util.List;
 public interface TopicRepository extends BaseRepository<Topic> {
     List<Topic> findByOwnerId(long ownerId, Sort sort);
 
-    List<Topic> findByTitleContainingOrderByDateDesc(String titleFragment, Pageable pageable);
+    List<Topic> findByTitleContainingIgnoreCaseOrderByDateDesc(String titleFragment, Pageable pageable);
 }

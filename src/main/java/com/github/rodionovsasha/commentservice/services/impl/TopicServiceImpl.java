@@ -47,7 +47,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     @Transactional(readOnly = true)
     public List<Topic> search(String titleFragment, int size) {
-        return repository.findByTitleContainingOrderByDateDesc(titleFragment, new PageRequest(0, size));
+        return repository.findByTitleContainingIgnoreCaseOrderByDateDesc(titleFragment, new PageRequest(0, size));
     }
 
     @Override
