@@ -8,9 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -33,9 +31,6 @@ public class Topic implements Serializable {
     @JsonIgnore
     @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
-
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
 
     public Topic(String title, User owner) {
         this.title = title;

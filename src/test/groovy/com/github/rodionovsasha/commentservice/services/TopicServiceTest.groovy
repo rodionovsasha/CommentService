@@ -206,9 +206,4 @@ class TopicServiceTest extends BaseTest {
         then:
         thrown(TopicNotFoundException)
     }
-
-    def "creating a new topic does not create a new comment"() {
-        expect:
-        topicService.start("test", HOMER_ID).comments.isEmpty()
-    }
 }

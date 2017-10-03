@@ -1,6 +1,7 @@
 package com.github.rodionovsasha.commentservice.services
 
 import com.github.rodionovsasha.commentservice.BaseTest
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
@@ -11,7 +12,7 @@ class CommentServiceTest extends BaseTest {
     CommentService commentService
     final HOMER_ID = 1
     final TOPIC_ID = 1
-    final COMMENT_CONTENT = "comment"
+    final COMMENT_CONTENT = "I will never return money borrowed from stupid Flanders"
     final NOT_EXISTING_USER_ID = 999
     final NOT_EXISTING_TOPIC_ID = 99
 
@@ -43,6 +44,14 @@ class CommentServiceTest extends BaseTest {
 
         then:
         thrown(InactiveUserException)
+    }
+
+    def "add throws when topic is archived"() {
+        when:
+        commentService.add(COMMENT_CONTENT, 7, HOMER_ID)
+
+        then:
+        thrown(ArchivedTopicException)
     }
 
     def "add throws when user not found"() {

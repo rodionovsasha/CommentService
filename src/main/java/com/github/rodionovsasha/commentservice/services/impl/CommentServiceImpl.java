@@ -6,6 +6,7 @@ import com.github.rodionovsasha.commentservice.services.CommentService;
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment add(String content, long topicId, long userId) {
-        return repository.save(new Comment(content, userService.getActiveUser(userId), topicService.getById(topicId)));
+        val user = userService.getActiveUser(userId);
+        val topic = topicService.getActiveTopic(topicId);
+        return repository.save(new Comment(content, user, topic));
     }
 }
