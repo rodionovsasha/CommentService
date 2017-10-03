@@ -43,20 +43,20 @@ class CommentServiceTest extends BaseTest {
         thrown(InactiveUserException)
     }
 
-    def "add throws when topic is archived"() {
-        when:
-        commentService.add(COMMENT_CONTENT, 7, HOMER_ID)
-
-        then:
-        thrown(ArchivedTopicException)
-    }
-
     def "add throws when user not found"() {
         when:
         commentService.add(COMMENT_CONTENT, TOPIC_ID, NOT_EXISTING_USER_ID)
 
         then:
         thrown(UserNotFoundException)
+    }
+
+    def "add throws when topic is archived"() {
+        when:
+        commentService.add(COMMENT_CONTENT, 7, HOMER_ID)
+
+        then:
+        thrown(ArchivedTopicException)
     }
 
     def "add throws when topic not found"() {
