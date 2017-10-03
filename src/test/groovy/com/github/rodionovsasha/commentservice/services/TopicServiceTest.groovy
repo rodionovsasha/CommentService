@@ -11,9 +11,6 @@ import org.springframework.data.domain.Sort
 class TopicServiceTest extends BaseTest {
     @Autowired
     TopicService topicService
-    final HOMER_ID = 1
-    final TOPIC_ID = 1
-    final NOT_EXISTING_USER_ID = 999
 
     def "start creates a new topic"() {
         when:
@@ -35,7 +32,7 @@ class TopicServiceTest extends BaseTest {
 
     def "start throws when user is inactive"() {
         when:
-        topicService.start("D'oh!", 2)
+        topicService.start("D'oh!", BART_ID)
 
         then:
         thrown(InactiveUserException)
@@ -65,7 +62,7 @@ class TopicServiceTest extends BaseTest {
         !topicService.getById(TOPIC_ID).archived
 
         when:
-        topicService.archive(TOPIC_ID, 2)
+        topicService.archive(TOPIC_ID, BART_ID)
 
         then:
         !topicService.getById(TOPIC_ID).archived
@@ -133,7 +130,7 @@ class TopicServiceTest extends BaseTest {
 
     def "listForUser throws when user is inactive"() {
         when:
-        topicService.listForUser(2, null)
+        topicService.listForUser(BART_ID, null)
 
         then:
         thrown(InactiveUserException)

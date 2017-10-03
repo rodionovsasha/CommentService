@@ -11,4 +11,9 @@ import spock.lang.Specification
 @SpringBootTest
 @Transactional
 class BaseTest extends Specification {
+    final HOMER_ID = 1L
+    final BART_ID = 2L
+    final NOT_EXISTING_USER_ID = 999
+    final TOPIC_ID = 1
+    final NOT_EXISTING_TOPIC_ID = 99
 }

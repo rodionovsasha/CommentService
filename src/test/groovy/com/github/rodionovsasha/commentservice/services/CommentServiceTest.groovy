@@ -8,13 +8,10 @@ import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 
 class CommentServiceTest extends BaseTest {
+    final COMMENT_CONTENT = "I will never return money borrowed from stupid Flanders"
+
     @Autowired
     CommentService commentService
-    final HOMER_ID = 1
-    final TOPIC_ID = 1
-    final COMMENT_CONTENT = "I will never return money borrowed from stupid Flanders"
-    final NOT_EXISTING_USER_ID = 999
-    final NOT_EXISTING_TOPIC_ID = 99
 
     def "add adds a new comment"() {
         when:
@@ -40,7 +37,7 @@ class CommentServiceTest extends BaseTest {
 
     def "add throws when user is inactive"() {
         when:
-        commentService.add(COMMENT_CONTENT, TOPIC_ID, 2)
+        commentService.add(COMMENT_CONTENT, TOPIC_ID, BART_ID)
 
         then:
         thrown(InactiveUserException)
