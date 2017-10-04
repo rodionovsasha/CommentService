@@ -1,6 +1,7 @@
 package com.github.rodionovsasha.commentservice.services
 
 import com.github.rodionovsasha.commentservice.BaseTest
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
@@ -189,6 +190,19 @@ class TopicServiceTest extends BaseTest {
             !archived
             topic.owner.id == HOMER_ID
         }
+    }
+
+    def "getActiveTopic returns not archived topic"() {
+        expect:
+        !topicService.getActiveTopic(TOPIC_ID).archived
+    }
+
+    def "getActiveTopic throws when topic is archived"() {
+        when:
+        topicService.getActiveTopic(7)
+
+        then:
+        thrown(ArchivedTopicException)
     }
 
     def "getById returns archived topic"() {
