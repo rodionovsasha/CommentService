@@ -1,9 +1,11 @@
 comment1:
-  content: El Barto rules!
-  user_id: bart
-  topic_id: why_you_little
-
-comment2:
+  id: 1
   content: Why you little...!
   user_id: homer
   topic_id: ay_caramba
+
+comment2:
+  id: 2
+  content: El Barto rules!
+  user_id: bart
+  topic_id: why_you_little

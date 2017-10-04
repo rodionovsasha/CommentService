@@ -104,14 +104,13 @@ class TopicServiceTest extends BaseTest {
 
     def "archive does not change already archived topic"() {
         given:
-        def TOPIC_ID = 7
-        topicService.getById(TOPIC_ID).archived
+        topicService.getById(ARCHIVED_TOPIC_ID).archived
 
         when:
-        topicService.archive(TOPIC_ID, 1)
+        topicService.archive(ARCHIVED_TOPIC_ID, HOMER_ID)
 
         then:
-        topicService.getById(TOPIC_ID).archived
+        topicService.getById(ARCHIVED_TOPIC_ID).archived
     }
 
     def "listForUser returns all topics for user ASC sorted"() {
@@ -199,22 +198,24 @@ class TopicServiceTest extends BaseTest {
 
     def "getActiveTopic throws when topic is archived"() {
         when:
-        topicService.getActiveTopic(7)
+        topicService.getActiveTopic(ARCHIVED_TOPIC_ID)
 
         then:
-        thrown(ArchivedTopicException)
+        def e = thrown(ArchivedTopicException)
+        e.message == "The topic with id '" + ARCHIVED_TOPIC_ID + "' is archived"
     }
 
     def "getById returns archived topic"() {
         expect:
-        topicService.getById(7).archived
+        topicService.getById(ARCHIVED_TOPIC_ID).archived
     }
 
     def "getById throws when topic not found"() {
         when:
-        topicService.getById(NOT_EXISTING_USER_ID)
+        topicService.getById(NOT_EXISTING_TOPIC_ID)
 
         then:
-        thrown(TopicNotFoundException)
+        def e = thrown(TopicNotFoundException)
+        e.message == "The topic with id '" + NOT_EXISTING_TOPIC_ID + "' could not be found"
     }
 }

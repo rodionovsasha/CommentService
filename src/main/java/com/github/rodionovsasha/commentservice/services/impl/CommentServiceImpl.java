@@ -1,6 +1,8 @@
 package com.github.rodionovsasha.commentservice.services.impl;
 
 import com.github.rodionovsasha.commentservice.entities.Comment;
+import com.github.rodionovsasha.commentservice.exceptions.CommentAccessException;
+import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException;
 import com.github.rodionovsasha.commentservice.repositories.CommentRepository;
 import com.github.rodionovsasha.commentservice.services.CommentService;
 import com.github.rodionovsasha.commentservice.services.TopicService;
@@ -22,5 +24,20 @@ public class CommentServiceImpl implements CommentService {
         val user = userService.getActiveUser(userId);
         val topic = topicService.getActiveTopic(topicId);
         return repository.save(new Comment(content, user, topic));
+    }
+
+    @Override
+    public void update(long commentId, long userId, String content) {
+        userService.checkUserActive(userId);
+        val comment = getById(commentId);
+        if (comment.getUser().getId() != userId) {
+            throw CommentAccessException.forId(userId);
+        }
+        comment.setContent(content);
+        repository.save(comment);
+    }
+
+    private Comment getById(long id) {
+        return repository.findOne(id).orElseThrow(() -> CommentNotFoundException.forId(id));
     }
 }
