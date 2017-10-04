@@ -11,8 +11,6 @@ class UserServiceTest extends BaseTest {
     UserService userService
     @Autowired
     UserRepository userRepository
-    final HOMER_ID = 1L
-    final NOT_EXISTING_USER_ID = 999
 
     def "getActiveUser returns active user by id"() {
         when:
@@ -33,11 +31,11 @@ class UserServiceTest extends BaseTest {
 
     def "getActiveUser throws when user is inactive"() {
         when:
-        userService.getActiveUser(2)
+        userService.getActiveUser(BART_ID)
 
         then:
         def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        e.message == "The user with id '" + BART_ID + "' is not active"
     }
 
     def "getActiveUser throws when user not found"() {
@@ -56,7 +54,7 @@ class UserServiceTest extends BaseTest {
 
     def "checkUserActive throws when user is inactive"() {
         when:
-        userService.checkUserActive(2)
+        userService.checkUserActive(BART_ID)
 
         then:
         thrown(InactiveUserException)
@@ -84,11 +82,11 @@ class UserServiceTest extends BaseTest {
 
     def "updateName throws when user is not active"() {
         when:
-        userService.updateName(2, "Maggie")
+        userService.updateName(BART_ID, "Maggie")
 
         then:
         def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        e.message == "The user with id '" + BART_ID + "' is not active"
     }
 
     def "updateAge does update user's age"() {
@@ -104,11 +102,11 @@ class UserServiceTest extends BaseTest {
 
     def "updateAge throws when user is not active"() {
         when:
-        userService.updateAge(2, 35)
+        userService.updateAge(BART_ID, 35)
 
         then:
         def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        e.message == "The user with id '" + BART_ID + "' is not active"
     }
 
     def "deactivate makes user inactive"() {
@@ -124,23 +122,22 @@ class UserServiceTest extends BaseTest {
 
     def "deactivate throws when user is not active"() {
         when:
-        userService.deactivate(2)
+        userService.deactivate(BART_ID)
 
         then:
         def e = thrown(InactiveUserException)
-        e.message == "The user with id '2' is not active"
+        e.message == "The user with id '" + BART_ID + "' is not active"
     }
 
     def "activate does user active"() {
         given:
-        def id = 2L
-        !userRepository.getOne(id).active
+        !userRepository.getOne(BART_ID).active
 
         when:
-        userService.activate(id)
+        userService.activate(BART_ID)
 
         then:
-        userRepository.getOne(id).active
+        userRepository.getOne(BART_ID).active
     }
 
     def "activate throws when user is not found"() {
@@ -163,13 +160,5 @@ class UserServiceTest extends BaseTest {
             age == 37
             active
         }
-    }
-
-    def "creating a new user does not create a new topic"() {
-        when:
-        def user = userService.create("Marge", 37)
-
-        then:
-        user.topics.isEmpty()
     }
 }

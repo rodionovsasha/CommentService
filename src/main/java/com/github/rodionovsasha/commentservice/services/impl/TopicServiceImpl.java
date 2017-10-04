@@ -1,6 +1,7 @@
 package com.github.rodionovsasha.commentservice.services.impl;
 
 import com.github.rodionovsasha.commentservice.entities.Topic;
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException;
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException;
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException;
 import com.github.rodionovsasha.commentservice.repositories.TopicRepository;
@@ -54,5 +55,15 @@ public class TopicServiceImpl implements TopicService {
     @Transactional(readOnly = true)
     public Topic getById(long id) {
         return repository.findOne(id).orElseThrow(() -> TopicNotFoundException.forId(id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Topic getActiveTopic(long id) {
+        val topic = getById(id);
+        if (topic.isArchived()) {
+            throw ArchivedTopicException.forId(id);
+        }
+        return topic;
     }
 }

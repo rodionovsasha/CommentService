@@ -16,4 +16,6 @@ public interface TopicService {
     List<Topic> search(String titleFragment, int size);
 
     Topic getById(long id);
+
+    Topic getActiveTopic(long id);
 }
