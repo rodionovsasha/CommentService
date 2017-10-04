@@ -74,13 +74,17 @@ class CommentServiceTest extends BaseTest {
 
     def "update updates a comment"() {
         given:
-        repository.getOne(COMMENT_ID).content == "Why you little...!"
+        def oldContent = repository.getOne(COMMENT_ID).content
 
         when:
         commentService.update(COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
 
         then:
-        repository.getOne(COMMENT_ID).content == COMMENT_CONTENT
+        def content = repository.getOne(COMMENT_ID).content
+        content == COMMENT_CONTENT
+
+        and:
+        content != oldContent
     }
 
     def "update throws when user is not active"() {
