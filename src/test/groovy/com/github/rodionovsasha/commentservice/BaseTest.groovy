@@ -16,4 +16,7 @@ class BaseTest extends Specification {
     final NOT_EXISTING_USER_ID = 999
     final TOPIC_ID = 1
     final NOT_EXISTING_TOPIC_ID = 99
+    final ARCHIVED_TOPIC_ID = 7
+    final COMMENT_ID = 1L
+    final NOT_EXISTING_COMMENT_ID = 9999
 }

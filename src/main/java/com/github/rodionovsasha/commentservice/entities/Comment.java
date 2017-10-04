@@ -3,6 +3,7 @@ package com.github.rodionovsasha.commentservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Comment implements Serializable {
     @Id @GeneratedValue
     private long id;
 
-    @NotBlank
+    @NotBlank @Setter
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
