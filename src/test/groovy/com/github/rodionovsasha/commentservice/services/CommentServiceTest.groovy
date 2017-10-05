@@ -190,5 +190,4 @@ class CommentServiceTest extends BaseTest {
         then:
         repository.getOne(ARCHIVED_COMMENT_ID).archived
     }
-
 }
