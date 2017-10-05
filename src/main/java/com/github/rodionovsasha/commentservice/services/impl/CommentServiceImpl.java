@@ -12,6 +12,8 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Consumer;
+
 @AllArgsConstructor
 @Service @Transactional
 public class CommentServiceImpl implements CommentService {
@@ -27,17 +29,26 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(long commentId, long userId, String content) {
+    public void updateContent(long commentId, long userId, String content) {
+        update(commentId, userId, comment -> comment.setContent(content));
+    }
+
+    @Override
+    public void archive(long commentId, long userId) {
+        update(commentId, userId, comment -> comment.setArchived(true));
+    }
+
+    private Comment getById(long id) {
+        return repository.findOne(id).orElseThrow(() -> CommentNotFoundException.forId(id));
+    }
+
+    private void update(long commentId, long userId, Consumer<Comment> consumer) {
         userService.checkUserActive(userId);
         val comment = getById(commentId);
         if (comment.getUser().getId() != userId) {
             throw CommentAccessException.forId(userId);
         }
-        comment.setContent(content);
+        consumer.accept(comment);
         repository.save(comment);
-    }
-
-    private Comment getById(long id) {
-        return repository.findOne(id).orElseThrow(() -> CommentNotFoundException.forId(id));
     }
 }

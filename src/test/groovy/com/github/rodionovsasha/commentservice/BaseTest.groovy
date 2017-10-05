@@ -19,4 +19,5 @@ class BaseTest extends Specification {
     final ARCHIVED_TOPIC_ID = 7
     final COMMENT_ID = 1L
     final NOT_EXISTING_COMMENT_ID = 9999
+    final ARCHIVED_COMMENT_ID = 3L
 }

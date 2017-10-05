@@ -22,6 +22,9 @@ public class Comment implements Serializable {
     @NotBlank @Setter
     private String content;
 
+    @Setter
+    private boolean archived = false;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 

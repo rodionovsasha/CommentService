@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS comment (
   user_id int,
   topic_id int,
   content text,
+  archived boolean default false,
   date timestamp default CURRENT_TIMESTAMP(),
   foreign key (user_id) references user(id),
   foreign key (topic_id) references topic(id)
