@@ -219,7 +219,7 @@ class TopicServiceTest extends BaseTest {
         e.message == "The topic with id '" + NOT_EXISTING_TOPIC_ID + "' could not be found"
     }
 
-    def "checkTopicExists not throws for active topic"() {
+    def "checkTopicExists does not throw for active topic"() {
         expect:
         topicService.checkTopicExists(TOPIC_ID)
     }
