@@ -190,4 +190,14 @@ class CommentServiceTest extends BaseTest {
         then:
         repository.getOne(ARCHIVED_COMMENT_ID).archived
     }
+
+    def "findByTopic returns not archived comments for topic ASC sorted"() {
+        expect:
+        commentService.findByTopic(TOPIC_ID).id == [4, 5, 6, 8]
+    }
+
+    def "findByTopic returns empty list when topic not found"() {
+        expect:
+        commentService.findByTopic(NOT_EXISTING_TOPIC_ID) == []
+    }
 }
