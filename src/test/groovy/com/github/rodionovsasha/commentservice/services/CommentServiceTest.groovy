@@ -214,7 +214,7 @@ class CommentServiceTest extends BaseTest {
         archivedComment.archived
 
         expect:
-        !commentService.findByTopic(2).id .contains(archivedComment.id)
+        !commentService.findByTopic(2).id.contains(archivedComment.id)
     }
 
     def "findByTopic throws when topic not found"() {
