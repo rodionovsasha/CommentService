@@ -196,7 +196,7 @@ class CommentServiceTest extends BaseTest {
         commentService.findByTopic(TOPIC_ID).id == [4, 5, 6, 8]
     }
 
-    def "findByTopic returns comments for topic  ASC sorted"() {
+    def "findByTopic returns comments for topic ASC sorted"() {
         when:
         def comments = commentService.findByTopic(TOPIC_ID)
 
