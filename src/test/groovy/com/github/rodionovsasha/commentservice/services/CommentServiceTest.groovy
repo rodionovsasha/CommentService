@@ -67,12 +67,12 @@ class CommentServiceTest extends BaseTest {
         thrown(TopicNotFoundException)
     }
 
-    def "updateContent updates a comment"() {
+    def "update updates a comment"() {
         given:
         def oldContent = repository.getOne(COMMENT_ID).content
 
         when:
-        commentService.updateContent(COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
+        commentService.update(COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
 
         then:
         def content = repository.getOne(COMMENT_ID).content
@@ -82,34 +82,34 @@ class CommentServiceTest extends BaseTest {
         content != oldContent
     }
 
-    def "updateContent throws when user is not active"() {
+    def "update throws when user is not active"() {
         when:
-        commentService.updateContent(2L, BART_ID, COMMENT_CONTENT)
+        commentService.update(2L, BART_ID, COMMENT_CONTENT)
 
         then:
         thrown(InactiveUserException)
     }
 
-    def "updateContent throws when user not found"() {
+    def "update throws when user not found"() {
         when:
-        commentService.updateContent(2L, NOT_EXISTING_USER_ID, COMMENT_CONTENT)
+        commentService.update(2L, NOT_EXISTING_USER_ID, COMMENT_CONTENT)
 
         then:
         thrown(UserNotFoundException)
     }
 
-    def "updateContent throws when comment not found"() {
+    def "update throws when comment not found"() {
         when:
-        commentService.updateContent(NOT_EXISTING_COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
+        commentService.update(NOT_EXISTING_COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
 
         then:
         def e = thrown(CommentNotFoundException)
         e.message == "The comment with id '" + NOT_EXISTING_COMMENT_ID + "' could not be found"
     }
 
-    def "updateContent throws when user updates not own comment"() {
+    def "update throws when user updates not own comment"() {
         when:
-        commentService.updateContent(2L, HOMER_ID, COMMENT_CONTENT)
+        commentService.update(2L, HOMER_ID, COMMENT_CONTENT)
 
         then:
         def e = thrown(CommentAccessException)

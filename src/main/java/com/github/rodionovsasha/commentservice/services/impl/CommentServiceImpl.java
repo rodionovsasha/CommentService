@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void updateContent(long commentId, long userId, String content) {
+    public void update(long commentId, long userId, String content) {
         update(commentId, userId, comment -> comment.setContent(content));
     }
 
