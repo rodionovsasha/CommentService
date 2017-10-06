@@ -9,3 +9,10 @@ comment2:
   content: El Barto rules!
   user_id: bart
   topic_id: why_you_little
+
+archived_comment:
+  id: 3
+  content: Whatever, I'll be at Moe's.
+  archived: true
+  user_id: homer
+  topic_id: why_you_little

@@ -99,7 +99,7 @@ class TopicServiceTest extends BaseTest {
 
         and:
         def e = thrown(TopicAccessException)
-        e.message == "Non-topic owner with id '1' is trying to archive the topic"
+        e.message == "Non-topic owner with id '" + HOMER_ID + "' is trying to archive the topic"
     }
 
     def "archive does not change already archived topic"() {

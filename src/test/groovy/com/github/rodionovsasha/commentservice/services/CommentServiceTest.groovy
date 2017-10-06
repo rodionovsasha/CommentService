@@ -1,12 +1,7 @@
 package com.github.rodionovsasha.commentservice.services
 
 import com.github.rodionovsasha.commentservice.BaseTest
-import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
-import com.github.rodionovsasha.commentservice.exceptions.CommentAccessException
-import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException
-import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
-import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
-import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
+import com.github.rodionovsasha.commentservice.exceptions.*
 import com.github.rodionovsasha.commentservice.repositories.CommentRepository
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -119,5 +114,80 @@ class CommentServiceTest extends BaseTest {
         then:
         def e = thrown(CommentAccessException)
         e.message == "Non-comment owner with id '" + HOMER_ID + "' is trying to update the comment"
+    }
+
+    def "archive makes a comment archived"() {
+        given:
+        !repository.getOne(COMMENT_ID).archived
+
+        when:
+        commentService.archive(COMMENT_ID, HOMER_ID)
+
+        then:
+        repository.getOne(COMMENT_ID).archived
+    }
+
+    def "archive throws when user is inactive"() {
+        given:
+        !repository.getOne(COMMENT_ID).archived
+
+        when:
+        commentService.archive(COMMENT_ID, BART_ID)
+
+        then:
+        !repository.getOne(COMMENT_ID).archived
+
+        and:
+        thrown(InactiveUserException)
+    }
+
+    def "archive throws when user not found"() {
+        given:
+        !repository.getOne(COMMENT_ID).archived
+
+        when:
+        commentService.archive(COMMENT_ID, NOT_EXISTING_USER_ID)
+
+        then:
+        !repository.getOne(COMMENT_ID).archived
+
+        and:
+        thrown(UserNotFoundException)
+    }
+
+    def "archive throws when comment not found"() {
+        when:
+        commentService.archive(NOT_EXISTING_COMMENT_ID, HOMER_ID)
+
+        then:
+        def e = thrown(CommentNotFoundException)
+        e.message == "The comment with id '" + NOT_EXISTING_COMMENT_ID + "' could not be found"
+    }
+
+    def "archive throws when user updates not own comment"() {
+        given:
+        def COMMENT_ID = 2L
+        !repository.getOne(COMMENT_ID).archived
+
+        when:
+        commentService.archive(COMMENT_ID, HOMER_ID)
+
+        then:
+        !repository.getOne(COMMENT_ID).archived
+
+        and:
+        def e = thrown(CommentAccessException)
+        e.message == "Non-comment owner with id '" + HOMER_ID + "' is trying to update the comment"
+    }
+
+    def "archive does not change already archived comment"() {
+        given:
+        repository.getOne(ARCHIVED_COMMENT_ID).archived
+
+        when:
+        commentService.archive(ARCHIVED_COMMENT_ID, HOMER_ID)
+
+        then:
+        repository.getOne(ARCHIVED_COMMENT_ID).archived
     }
 }
