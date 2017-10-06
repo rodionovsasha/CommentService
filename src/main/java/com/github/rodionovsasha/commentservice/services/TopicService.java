@@ -19,5 +19,5 @@ public interface TopicService {
 
     Topic getActiveTopic(long id);
 
-    void topicExists(long id);
+    void checkTopicExists(long id);
 }

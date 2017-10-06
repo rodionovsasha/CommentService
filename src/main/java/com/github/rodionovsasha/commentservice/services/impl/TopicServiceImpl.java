@@ -68,7 +68,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void topicExists(long id) {
+    public void checkTopicExists(long id) {
         getById(id);
     }
 }

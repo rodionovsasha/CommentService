@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findByTopic(long topicId) {
-        topicService.topicExists(topicId);
+        topicService.checkTopicExists(topicId);
         return repository.findByTopicIdAndArchivedFalseOrderByDateAsc(topicId);
     }
 
