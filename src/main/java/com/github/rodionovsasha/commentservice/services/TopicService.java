@@ -18,4 +18,6 @@ public interface TopicService {
     Topic getById(long id);
 
     Topic getActiveTopic(long id);
+
+    void topicExists(long id);
 }

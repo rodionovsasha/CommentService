@@ -196,8 +196,11 @@ class CommentServiceTest extends BaseTest {
         commentService.findByTopic(TOPIC_ID).id == [4, 5, 6, 8]
     }
 
-    def "findByTopic returns empty list when topic not found"() {
-        expect:
-        commentService.findByTopic(NOT_EXISTING_TOPIC_ID) == []
+    def "findByTopic throws when topic not found"() {
+        when:
+        commentService.findByTopic(NOT_EXISTING_TOPIC_ID)
+
+        then:
+        thrown(TopicNotFoundException)
     }
 }
