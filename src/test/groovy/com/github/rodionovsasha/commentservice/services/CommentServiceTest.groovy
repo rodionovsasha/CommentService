@@ -190,4 +190,38 @@ class CommentServiceTest extends BaseTest {
         then:
         repository.getOne(ARCHIVED_COMMENT_ID).archived
     }
+
+    def "findByTopic returns comments for topic"() {
+        expect:
+        commentService.findByTopic(TOPIC_ID).id == [4, 5, 6, 8]
+    }
+
+    def "findByTopic returns comments for topic ASC sorted"() {
+        when:
+        def comments = commentService.findByTopic(TOPIC_ID)
+
+        then:
+        with(comments) {
+            get(0).date < get(1).date
+            get(1).date < get(2).date
+            get(2).date < get(3).date
+        }
+    }
+
+    def "findByTopic does not return archived comments for topic"() {
+        given:
+        def archivedComment = repository.getOne(ARCHIVED_COMMENT_ID)
+        archivedComment.archived
+
+        expect:
+        !commentService.findByTopic(2).id.contains(archivedComment.id)
+    }
+
+    def "findByTopic throws when topic not found"() {
+        when:
+        commentService.findByTopic(NOT_EXISTING_TOPIC_ID)
+
+        then:
+        thrown(TopicNotFoundException)
+    }
 }

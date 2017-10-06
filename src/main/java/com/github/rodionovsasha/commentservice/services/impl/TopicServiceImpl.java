@@ -66,4 +66,9 @@ public class TopicServiceImpl implements TopicService {
         }
         return topic;
     }
+
+    @Override
+    public void checkTopicExists(long id) {
+        getById(id);
+    }
 }

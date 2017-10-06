@@ -12,6 +12,7 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -36,6 +37,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void archive(long commentId, long userId) {
         update(commentId, userId, comment -> comment.setArchived(true));
+    }
+
+    @Override
+    public List<Comment> findByTopic(long topicId) {
+        topicService.checkTopicExists(topicId);
+        return repository.findByTopicIdAndArchivedFalseOrderByDateAsc(topicId);
     }
 
     private Comment getById(long id) {
