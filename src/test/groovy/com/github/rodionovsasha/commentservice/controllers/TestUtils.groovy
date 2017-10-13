@@ -1,9 +1,14 @@
 package com.github.rodionovsasha.commentservice.controllers
 
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 class TestUtils {
     static Object getJsonFromString(String content) {
-        return new JsonSlurper().parseText(content)
+        new JsonSlurper().parseText(content)
+    }
+
+    static String getJsonStringFromObject(Map content) {
+        JsonOutput.toJson(content)
     }
 }
