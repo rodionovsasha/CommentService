@@ -9,23 +9,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
     @ExceptionHandler(UserNotFoundException.class)
-    @ResponseBody
+    @ResponseBody @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<MessageResponse> notFoundHandler(Exception e) {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(InactiveUserException.class)
-    @ResponseBody
+    @ResponseBody @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<MessageResponse> inactiveHandler(Exception e) {
         return handleException(HttpStatus.FORBIDDEN, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseBody
+    @ResponseBody @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<MessageResponse> defaultHandler(Exception e) {
         return handleException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }

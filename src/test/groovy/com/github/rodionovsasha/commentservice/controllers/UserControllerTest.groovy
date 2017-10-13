@@ -1,18 +1,18 @@
 package com.github.rodionovsasha.commentservice.controllers
 
-import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
-import org.springframework.http.HttpStatus
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import com.github.rodionovsasha.commentservice.entities.User
+import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.services.UserService
+import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
+import static com.github.rodionovsasha.commentservice.controllers.TestUtils.getJsonFromString
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
 class UserControllerTest extends Specification {
     final HOMER_ID = 1
@@ -20,16 +20,9 @@ class UserControllerTest extends Specification {
 
     def service = Mock(UserService)
     def controller = new UserController(service)
-    def user = new User()
+    def user = new User(id: HOMER_ID, name: "Homer", age: 39, active: true)
 
     def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
-
-    def setup() {
-        user.id = HOMER_ID
-        user.name = "Homer"
-        user.age = 39
-        user.active
-    }
 
     def "should get active user"() {
         when:
@@ -40,9 +33,11 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.OK.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            contentAsString == '{"id":1,"name":"Homer","age":39,"active":true}'
+            getJsonFromString(contentAsString) == [id: 1, name: "Homer", age: 39, active: true]
         }
     }
+
+
 
     def "should not get active user if not exists"() {
         given:
@@ -55,7 +50,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.NOT_FOUND.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            contentAsString == '{"code":404,"message":"The user with id \'1\' could not be found"}'
+            getJsonFromString(contentAsString) == [code:404, message: "The user with id '1' could not be found"]
         }
     }
 
@@ -70,7 +65,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.FORBIDDEN.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            contentAsString == '{"code":403,"message":"The user with id \'1\' is not active"}'
+            getJsonFromString(contentAsString) == [code:403, message: "The user with id '1' is not active"]
         }
     }
 
@@ -82,7 +77,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.INTERNAL_SERVER_ERROR.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            contentAsString.contains('{"code":500,"message":"Failed to convert value of type \'java.lang.String\' to required type \'long\';')
+            getJsonFromString(contentAsString) == [code:500, message: "Failed to convert value of type 'java.lang.String' to required type 'long'; nested exception is java.lang.NumberFormatException: For input string: \"null\""]
         }
     }
 }
