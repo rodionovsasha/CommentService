@@ -4,13 +4,13 @@ import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.services.UserService
+import groovy.json.JsonOutput
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.getJsonFromString
-import static com.github.rodionovsasha.commentservice.controllers.TestUtils.getJsonStringFromObject
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -121,7 +121,7 @@ class UserControllerTest extends Specification {
     }
 
     private MockHttpServletResponse createUser(Map json) {
-        mockMvc.perform(post(API_BASE_URL + "/user").contentType(APPLICATION_JSON_VALUE).content(getJsonStringFromObject(json)))
+        mockMvc.perform(post(API_BASE_URL + "/user").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 }
