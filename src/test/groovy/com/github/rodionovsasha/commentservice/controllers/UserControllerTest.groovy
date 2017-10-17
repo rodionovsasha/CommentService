@@ -20,6 +20,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
 class UserControllerTest extends Specification {
     final HOMER_ID = 1
+    final NOT_EXISTING_USER_ID = 999
 
     def service = Mock(UserService)
     def controller = new UserController(service)
@@ -36,7 +37,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.OK.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [id: 1, name: "Homer", age: 39, active: true]
+            getJsonFromString(contentAsString) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
         }
     }
 
@@ -95,7 +96,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.CREATED.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [id: 1, name: "Homer", age: 39, active: true]
+            getJsonFromString(contentAsString) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
         }
     }
 
@@ -126,7 +127,7 @@ class UserControllerTest extends Specification {
 
     def "should not update user with empty name"() {
         when:
-        def response = updateName([id: 1, name: ""])
+        def response = updateName([id: HOMER_ID, name: ""])
 
         then:
         0 * service.updateName(HOMER_ID, "") >> user
@@ -136,6 +137,21 @@ class UserControllerTest extends Specification {
             def responseJson = getJsonFromString(contentAsString)
             responseJson.code == 500
             responseJson.message.contains("Field error in object 'user' on field 'name': rejected value [];")
+        }
+    }
+
+    def "should not update user not existing user"() {
+        given:
+        service.updateName(NOT_EXISTING_USER_ID, "Homer the Genius") >> { user -> throw UserNotFoundException.forId(NOT_EXISTING_USER_ID) }
+
+        when:
+        def response = updateName([id: NOT_EXISTING_USER_ID, name: "Homer the Genius"])
+
+        then:
+        with(response) {
+            status == HttpStatus.NOT_FOUND.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
         }
     }
 
