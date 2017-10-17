@@ -140,7 +140,7 @@ class UserControllerTest extends Specification {
         }
     }
 
-    def "should not update user not existing user"() {
+    def "should not update user name when user not exist"() {
         given:
         service.updateName(NOT_EXISTING_USER_ID, "Homer the Genius") >> { user -> throw UserNotFoundException.forId(NOT_EXISTING_USER_ID) }
 
