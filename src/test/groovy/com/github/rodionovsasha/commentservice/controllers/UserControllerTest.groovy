@@ -14,6 +14,7 @@ import static com.github.rodionovsasha.commentservice.controllers.TestUtils.getJ
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
@@ -50,7 +51,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.NOT_FOUND.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code:404, message: "The user with id '1' could not be found"]
+            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '1' could not be found"]
         }
     }
 
@@ -65,7 +66,7 @@ class UserControllerTest extends Specification {
         with(response) {
             status == HttpStatus.FORBIDDEN.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code:403, message: "The user with id '1' is not active"]
+            getJsonFromString(contentAsString) == [code: 403, message: "The user with id '1' is not active"]
         }
     }
 
@@ -115,6 +116,29 @@ class UserControllerTest extends Specification {
         }
     }
 
+    def "should update user name"() {
+        when:
+        updateName([id: 1, name: "Homer the Genius"])
+
+        then:
+        1 * service.updateName(HOMER_ID, "Homer the Genius") >> user
+    }
+
+    def "should not update user with empty name"() {
+        when:
+        def response = updateName([id: 1, name: ""])
+
+        then:
+        0 * service.updateName(HOMER_ID, "") >> user
+        with(response) {
+            status == HttpStatus.INTERNAL_SERVER_ERROR.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            def responseJson = getJsonFromString(contentAsString)
+            responseJson.code == 500
+            responseJson.message.contains("Field error in object 'user' on field 'name': rejected value [];")
+        }
+    }
+
     private MockHttpServletResponse getUserHomer() {
         mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -122,6 +146,11 @@ class UserControllerTest extends Specification {
 
     private MockHttpServletResponse createUser(Map json) {
         mockMvc.perform(post(API_BASE_URL + "/user").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse updateName(Map json) {
+        mockMvc.perform(put(API_BASE_URL + "/user/name").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 }

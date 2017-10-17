@@ -26,4 +26,9 @@ public class UserController {
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(service.create(user.getName(), user.getAge()), HttpStatus.CREATED);
     }
+
+    @PutMapping("/name")
+    public void updateName(@Valid @RequestBody User user) {
+        service.updateName(user.getId(), user.getName());
+    }
 }
