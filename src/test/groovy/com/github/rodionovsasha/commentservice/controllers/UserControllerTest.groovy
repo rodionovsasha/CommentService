@@ -122,7 +122,7 @@ class UserControllerTest extends Specification {
         updateName([id: 1, name: "Homer the Genius"])
 
         then:
-        1 * service.updateName(HOMER_ID, "Homer the Genius") >> user
+        1 * service.updateName(HOMER_ID, "Homer the Genius")
     }
 
     def "should not update user with empty name"() {
@@ -130,7 +130,7 @@ class UserControllerTest extends Specification {
         def response = updateName([id: HOMER_ID, name: ""])
 
         then:
-        0 * service.updateName(HOMER_ID, "") >> user
+        0 * service.updateName(HOMER_ID, "")
         with(response) {
             status == HttpStatus.INTERNAL_SERVER_ERROR.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
