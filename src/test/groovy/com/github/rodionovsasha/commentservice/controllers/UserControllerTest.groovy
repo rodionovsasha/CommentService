@@ -200,12 +200,15 @@ class UserControllerTest extends Specification {
     }
 
     private MockHttpServletResponse updateName(Map json) {
-        mockMvc.perform(put(API_BASE_URL + "/user/name").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
-                .andReturn().response
+        update("/user/name", json)
     }
 
     private MockHttpServletResponse updateAge(Map json) {
-        mockMvc.perform(put(API_BASE_URL + "/user/age").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        update("/user/age", json)
+    }
+
+    private MockHttpServletResponse update(String path, Map json) {
+        mockMvc.perform(put(API_BASE_URL + path).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 }
