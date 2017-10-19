@@ -119,10 +119,11 @@ class UserControllerTest extends Specification {
 
     def "should update user name"() {
         when:
-        updateName([id: 1, name: "Homer the Genius"])
+        def response = updateName([id: 1, name: "Homer the Genius"])
 
         then:
         1 * service.updateName(HOMER_ID, "Homer the Genius")
+        response.status == HttpStatus.OK.value()
     }
 
     def "should not update user with empty name"() {
@@ -155,6 +156,39 @@ class UserControllerTest extends Specification {
         }
     }
 
+    def "should update user age"() {
+        when:
+        def response = updateAge([id: 1, age: 39])
+
+        then:
+        1 * service.updateAge(HOMER_ID, 39)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "should update user with empty age"() {
+        when:
+        def response = updateAge([id: HOMER_ID, age: ""])
+
+        then:
+        1 * service.updateAge(HOMER_ID, _)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "should not update user age when user not exist"() {
+        given:
+        service.updateAge(NOT_EXISTING_USER_ID, 39) >> { user -> throw UserNotFoundException.forId(NOT_EXISTING_USER_ID) }
+
+        when:
+        def response = updateAge([id: NOT_EXISTING_USER_ID, age: 39])
+
+        then:
+        with(response) {
+            status == HttpStatus.NOT_FOUND.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
+        }
+    }
+
     private MockHttpServletResponse getUserHomer() {
         mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -166,7 +200,15 @@ class UserControllerTest extends Specification {
     }
 
     private MockHttpServletResponse updateName(Map json) {
-        mockMvc.perform(put(API_BASE_URL + "/user/name").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        update("/user/name", json)
+    }
+
+    private MockHttpServletResponse updateAge(Map json) {
+        update("/user/age", json)
+    }
+
+    private MockHttpServletResponse update(String path, Map json) {
+        mockMvc.perform(put(API_BASE_URL + path).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 }

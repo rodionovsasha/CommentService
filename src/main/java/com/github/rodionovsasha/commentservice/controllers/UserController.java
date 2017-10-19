@@ -31,4 +31,9 @@ public class UserController {
     public void updateName(@Valid @RequestBody User user) {
         service.updateName(user.getId(), user.getName());
     }
+
+    @PutMapping("/age")
+    public void updateAge(@RequestBody User user) {
+        service.updateAge(user.getId(), user.getAge());
+    }
 }
