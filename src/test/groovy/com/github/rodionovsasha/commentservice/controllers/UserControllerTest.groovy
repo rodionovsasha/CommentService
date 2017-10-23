@@ -213,6 +213,30 @@ class UserControllerTest extends Specification {
         }
     }
 
+    def "should activate user"() {
+        when:
+        def response = activate(HOMER_ID)
+
+        then:
+        1 * service.activate(HOMER_ID)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "should not activate user when user not exist"() {
+        given:
+        service.activate(NOT_EXISTING_USER_ID) >> { user -> throw UserNotFoundException.forId(NOT_EXISTING_USER_ID) }
+
+        when:
+        def response = activate(NOT_EXISTING_USER_ID)
+
+        then:
+        with(response) {
+            status == HttpStatus.NOT_FOUND.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
+        }
+    }
+
     private MockHttpServletResponse getUserHomer() {
         mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -238,6 +262,11 @@ class UserControllerTest extends Specification {
 
     private MockHttpServletResponse deactivate(long id) {
         mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse activate(long id) {
+        mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/activate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }

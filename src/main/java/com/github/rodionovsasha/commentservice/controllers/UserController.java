@@ -41,4 +41,9 @@ public class UserController {
     public void deactivate(@PathVariable long id) {
         service.deactivate(id);
     }
+
+    @GetMapping("/{id}/activate")
+    public void activate(@PathVariable long id) {
+        service.activate(id);
+    }
 }
