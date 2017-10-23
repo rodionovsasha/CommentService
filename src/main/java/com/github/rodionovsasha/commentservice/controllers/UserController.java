@@ -36,4 +36,9 @@ public class UserController {
     public void updateAge(@RequestBody User user) {
         service.updateAge(user.getId(), user.getAge());
     }
+
+    @GetMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable long id) {
+        service.deactivate(id);
+    }
 }
