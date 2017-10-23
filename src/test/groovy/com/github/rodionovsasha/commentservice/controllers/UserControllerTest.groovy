@@ -190,8 +190,6 @@ class UserControllerTest extends Specification {
     }
 
     def "should deactivate user"() {
-        given:
-
         when:
         def response = deactivate(HOMER_ID)
 
