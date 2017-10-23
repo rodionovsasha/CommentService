@@ -189,6 +189,30 @@ class UserControllerTest extends Specification {
         }
     }
 
+    def "should deactivate user"() {
+        when:
+        def response = deactivate(HOMER_ID)
+
+        then:
+        1 * service.deactivate(HOMER_ID)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "should not deactivate user when user not exist"() {
+        given:
+        service.deactivate(NOT_EXISTING_USER_ID) >> { user -> throw UserNotFoundException.forId(NOT_EXISTING_USER_ID) }
+
+        when:
+        def response = deactivate(NOT_EXISTING_USER_ID)
+
+        then:
+        with(response) {
+            status == HttpStatus.NOT_FOUND.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
+        }
+    }
+
     private MockHttpServletResponse getUserHomer() {
         mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -209,6 +233,11 @@ class UserControllerTest extends Specification {
 
     private MockHttpServletResponse update(String path, Map json) {
         mockMvc.perform(put(API_BASE_URL + path).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse deactivate(long id) {
+        mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
