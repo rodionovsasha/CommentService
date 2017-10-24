@@ -17,6 +17,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
 class TopicControllerTest extends Specification {
     final TOPIC_ID = 1
+    final NOT_EXISTING_TOPIC_ID = 99
 
     def service = Mock(TopicService)
     def controller = new TopicController(service)
@@ -44,16 +45,16 @@ class TopicControllerTest extends Specification {
 
     def "should not get topic when not exists"() {
         given:
-        service.getById(TOPIC_ID) >> {throw TopicNotFoundException.forId(TOPIC_ID)}
+        service.getById(NOT_EXISTING_TOPIC_ID) >> {throw TopicNotFoundException.forId(NOT_EXISTING_TOPIC_ID)}
 
         when:
-        def response = getById(TOPIC_ID)
+        def response = getById(NOT_EXISTING_TOPIC_ID)
 
         then:
         with(response) {
             status == HttpStatus.NOT_FOUND.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code:404, message: "The topic with id '1' could not be found"]
+            getJsonFromString(contentAsString) == [code:404, message: "The topic with id '99' could not be found"]
         }
     }
 
