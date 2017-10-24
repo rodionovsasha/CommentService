@@ -2,6 +2,7 @@ package com.github.rodionovsasha.commentservice.controllers;
 
 import com.github.rodionovsasha.commentservice.dto.MessageResponse;
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException;
+import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException;
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({UserNotFoundException.class, TopicNotFoundException.class})
     @ResponseBody @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<MessageResponse> notFoundHandler(Exception e) {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());
