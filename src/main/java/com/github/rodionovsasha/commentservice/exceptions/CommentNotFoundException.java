@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public final class CommentNotFoundException extends ServiceException {
+public final class CommentNotFoundException extends NotFoundException {
     private CommentNotFoundException(String message) {
         super(message);
     }

@@ -26,4 +26,24 @@ public class UserController {
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(service.create(user.getName(), user.getAge()), HttpStatus.CREATED);
     }
+
+    @PutMapping("/name")
+    public void updateName(@Valid @RequestBody User user) {
+        service.updateName(user.getId(), user.getName());
+    }
+
+    @PutMapping("/age")
+    public void updateAge(@RequestBody User user) {
+        service.updateAge(user.getId(), user.getAge());
+    }
+
+    @GetMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable long id) {
+        service.deactivate(id);
+    }
+
+    @GetMapping("/{id}/activate")
+    public void activate(@PathVariable long id) {
+        service.activate(id);
+    }
 }

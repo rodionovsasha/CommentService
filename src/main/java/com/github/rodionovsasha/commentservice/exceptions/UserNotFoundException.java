@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public final class UserNotFoundException extends ServiceException {
+public final class UserNotFoundException extends NotFoundException {
     private UserNotFoundException(String message) {
         super(message);
     }
