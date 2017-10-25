@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public final class TopicNotFoundException extends ServiceException {
+public final class TopicNotFoundException extends NotFoundException {
     private TopicNotFoundException(String message) {
         super(message);
     }
