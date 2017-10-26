@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public final class CommentAccessException extends ServiceException {
+public final class CommentAccessException extends AccessException {
     private CommentAccessException(String message) {
         super(message);
     }

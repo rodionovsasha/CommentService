@@ -3,6 +3,7 @@ package com.github.rodionovsasha.commentservice.controllers
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
+import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.services.TopicService
@@ -126,6 +127,45 @@ class TopicControllerTest extends Specification {
         }
     }
 
+    def "#archive archives topic"() {
+        when:
+        def response = archive(TOPIC_ID, USER_ID)
+
+        then:
+        1 * service.archive(TOPIC_ID, USER_ID)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "#archive throws when user is not active"() {
+        given:
+        service.archive(TOPIC_ID, USER_ID) >> { throw InactiveUserException.forId(USER_ID) }
+
+        when:
+        def response = archive(TOPIC_ID, USER_ID)
+
+        then:
+        with(response) {
+            status == HttpStatus.FORBIDDEN.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 403, message: "The user with id '1' is not active"]
+        }
+    }
+
+    def "#archive throws when user is not owner"() {
+        given:
+        service.archive(TOPIC_ID, USER_ID) >> { throw TopicAccessException.forId(USER_ID) }
+
+        when:
+        def response = archive(TOPIC_ID, USER_ID)
+
+        then:
+        with(response) {
+            status == HttpStatus.FORBIDDEN.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 403, message: "Non-topic owner with id '1' is trying to archive the topic"]
+        }
+    }
+
     private MockHttpServletResponse getById(long id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -133,6 +173,11 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse startTopic(Map json, long id) {
         mockMvc.perform(post(API_BASE_URL + "/topic/user/" + id).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse archive(long topicId, long userId) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/archive/" + topicId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }

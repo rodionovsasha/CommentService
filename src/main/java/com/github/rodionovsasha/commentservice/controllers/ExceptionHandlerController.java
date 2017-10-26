@@ -1,7 +1,7 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
 import com.github.rodionovsasha.commentservice.dto.MessageResponse;
-import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException;
+import com.github.rodionovsasha.commentservice.exceptions.AccessException;
 import com.github.rodionovsasha.commentservice.exceptions.NotFoundException;
 import lombok.val;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class ExceptionHandlerController {
         return handleException(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler(InactiveUserException.class)
+    @ExceptionHandler(AccessException.class)
     @ResponseBody @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<MessageResponse> inactiveHandler(Exception e) {
         return handleException(HttpStatus.FORBIDDEN, e.getMessage());
