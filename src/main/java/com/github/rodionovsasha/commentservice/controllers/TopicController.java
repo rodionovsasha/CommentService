@@ -26,4 +26,9 @@ public class TopicController {
     public ResponseEntity<Topic> start(@Valid @RequestBody Topic topic, @PathVariable long id) {
         return new ResponseEntity<>(service.start(topic.getTitle(), id), HttpStatus.CREATED);
     }
+
+    @GetMapping("/archive/{topicId}/user/{userId}")
+    public void archive(@PathVariable long topicId, @PathVariable long userId) {
+        service.archive(topicId, userId);
+    }
 }

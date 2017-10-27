@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.exceptions;
 
-public final class InactiveUserException extends ServiceException {
+public final class InactiveUserException extends AccessException {
     private InactiveUserException(String message) {
         super(message);
     }
