@@ -2,6 +2,7 @@ package com.github.rodionovsasha.commentservice.controllers
 
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
@@ -52,7 +53,7 @@ class TopicControllerTest extends Specification {
 
     def "#getById does not return topic when not exists"() {
         given:
-        service.getById(NOT_EXISTING_TOPIC_ID) >> {throw TopicNotFoundException.forId(NOT_EXISTING_TOPIC_ID)}
+        service.getById(NOT_EXISTING_TOPIC_ID) >> { throw TopicNotFoundException.forId(NOT_EXISTING_TOPIC_ID) }
 
         when:
         def response = getById(NOT_EXISTING_TOPIC_ID)
@@ -61,7 +62,7 @@ class TopicControllerTest extends Specification {
         with(response) {
             status == HttpStatus.NOT_FOUND.value()
             contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code:404, message: "The topic with id '99' could not be found"]
+            getJsonFromString(contentAsString) == [code: 404, message: "The topic with id '99' could not be found"]
         }
     }
 
@@ -84,7 +85,7 @@ class TopicControllerTest extends Specification {
 
     def "#start does not create a new topic when user not exists"() {
         given:
-        service.start(TOPIC_TITLE, USER_ID) >> {throw UserNotFoundException.forId(USER_ID)}
+        service.start(TOPIC_TITLE, USER_ID) >> { throw UserNotFoundException.forId(USER_ID) }
 
         when:
         def response = startTopic([title: TOPIC_TITLE], USER_ID)
@@ -99,7 +100,7 @@ class TopicControllerTest extends Specification {
 
     def "#start does not create a new topic when user is not active"() {
         given:
-        service.start(TOPIC_TITLE, USER_ID) >> {throw InactiveUserException.forId(USER_ID)}
+        service.start(TOPIC_TITLE, USER_ID) >> { throw InactiveUserException.forId(USER_ID) }
 
         when:
         def response = startTopic([title: TOPIC_TITLE], USER_ID)
@@ -166,8 +167,41 @@ class TopicControllerTest extends Specification {
         }
     }
 
+    def "#getActiveTopic returns active topic by id"() {
+        when:
+        def response = getActiveTopic(TOPIC_ID)
+
+        then:
+        1 * service.getActiveTopic(TOPIC_ID) >> topic
+        with(response) {
+            status == HttpStatus.OK.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            !getJsonFromString(contentAsString).archived
+        }
+    }
+
+    def "#getActiveTopic does not return topic when topic is archived"() {
+        given:
+        service.getActiveTopic(TOPIC_ID) >> { throw ArchivedTopicException.forId(TOPIC_ID) }
+
+        when:
+        def response = getActiveTopic(TOPIC_ID)
+
+        then:
+        with(response) {
+            status == HttpStatus.INTERNAL_SERVER_ERROR.value()
+            contentType == APPLICATION_JSON_UTF8_VALUE
+            getJsonFromString(contentAsString) == [code: 500, message: "The topic with id '1' is archived"]
+        }
+    }
+
     private MockHttpServletResponse getById(long id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse getActiveTopic(long id) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/active/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
