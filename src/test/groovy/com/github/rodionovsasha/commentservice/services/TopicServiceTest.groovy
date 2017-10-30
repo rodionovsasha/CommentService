@@ -6,6 +6,7 @@ import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
+import com.github.vkorobkov.jfixtures.IntId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
 
@@ -88,7 +89,7 @@ class TopicServiceTest extends BaseTest {
 
     def "archive throws when user is not topic owner"() {
         given:
-        def TOPIC_ID = 3
+        def TOPIC_ID = IntId.one("ay_caramba")
         !topicService.getById(TOPIC_ID).archived
 
         when:
@@ -115,17 +116,27 @@ class TopicServiceTest extends BaseTest {
 
     def "listForUser returns all topics for user ASC sorted"() {
         expect:
-        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id")).id == [1, 2, 5, 6, 7]
+        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id")).id ==
+                [IntId.one("stupid_flanders"),
+                 IntId.one("better_them"),
+                 IntId.one("shut_up_flanders"),
+                 IntId.one("woo_hoo"),
+                 IntId.one("why_you_little")]
     }
 
     def "listForUser returns all topics for user DESC sorted"() {
         expect:
-        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id")).id == [7, 6, 5, 2, 1]
+        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id")).id ==
+                [IntId.one("why_you_little"),
+                 IntId.one("woo_hoo"),
+                 IntId.one("shut_up_flanders"),
+                 IntId.one("better_them"),
+                 IntId.one("stupid_flanders")]
     }
 
     def "listForUser returns an empty list when user does not have own topics"() {
         expect:
-        topicService.listForUser(3, new Sort(Sort.Direction.ASC, "id")).isEmpty()
+        topicService.listForUser(IntId.one("maggie"), new Sort(Sort.Direction.ASC, "id")).isEmpty()
     }
 
     def "listForUser throws when user is inactive"() {
@@ -146,12 +157,12 @@ class TopicServiceTest extends BaseTest {
 
     def "search returns topics with a fragment in title"() {
         expect:
-        topicService.search("Flanders", 10).id == [6, 1]
+        topicService.search("Flanders", 10).id == [IntId.one("shut_up_flanders"), IntId.one("stupid_flanders")]
     }
 
     def "search returns topics with a fragment in title case insensitive"() {
         expect:
-        topicService.search("FLANDERS", 10).id == [6, 1]
+        topicService.search("FLANDERS", 10).id == [IntId.one("shut_up_flanders"), IntId.one("stupid_flanders")]
     }
 
     def "search returns topics with a fragment in title with sorting"() {

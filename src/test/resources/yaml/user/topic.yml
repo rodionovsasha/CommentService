@@ -1,36 +1,29 @@
 stupid_flanders:
-  id: 1
   title: Stupid Flanders
   owner_id: homer
 
 why_you_little:
-  id: 2
   title: Why you little...!
   owner_id: homer
 
 ay_caramba:
-  id: 3
   title: Ay Caramba!
   owner_id: bart
 
 did_not_do_it:
-  id: 4
   title: I didn't do it!
   owner_id: bart
   archived: true
 
 better_them:
-  id: 5
   title: Better them than me.
   owner_id: homer
 
 shut_up_flanders:
-  id: 6
   title: Shut up Flanders!
   owner_id: homer
 
 woo_hoo:
-  id: 7
   title: Woo hoo!
   owner_id: homer
   archived: true

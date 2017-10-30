@@ -3,6 +3,7 @@ package com.github.rodionovsasha.commentservice.services
 import com.github.rodionovsasha.commentservice.BaseTest
 import com.github.rodionovsasha.commentservice.exceptions.*
 import com.github.rodionovsasha.commentservice.repositories.CommentRepository
+import com.github.vkorobkov.jfixtures.IntId
 import org.springframework.beans.factory.annotation.Autowired
 
 class CommentServiceTest extends BaseTest {
@@ -84,7 +85,7 @@ class CommentServiceTest extends BaseTest {
 
     def "update throws when user is not active"() {
         when:
-        commentService.update(2L, BART_ID, COMMENT_CONTENT)
+        commentService.update(IntId.one("comment2"), BART_ID, COMMENT_CONTENT)
 
         then:
         thrown(InactiveUserException)
@@ -92,7 +93,7 @@ class CommentServiceTest extends BaseTest {
 
     def "update throws when user not found"() {
         when:
-        commentService.update(2L, NOT_EXISTING_USER_ID, COMMENT_CONTENT)
+        commentService.update(IntId.one("comment2"), NOT_EXISTING_USER_ID, COMMENT_CONTENT)
 
         then:
         thrown(UserNotFoundException)
@@ -109,7 +110,7 @@ class CommentServiceTest extends BaseTest {
 
     def "update throws when user updates not own comment"() {
         when:
-        commentService.update(2L, HOMER_ID, COMMENT_CONTENT)
+        commentService.update(IntId.one("comment2"), HOMER_ID, COMMENT_CONTENT)
 
         then:
         def e = thrown(CommentAccessException)
@@ -166,7 +167,7 @@ class CommentServiceTest extends BaseTest {
 
     def "archive throws when user updates not own comment"() {
         given:
-        def COMMENT_ID = 2L
+        def COMMENT_ID = IntId.one("comment2").longValue()
         !repository.getOne(COMMENT_ID).archived
 
         when:
@@ -193,7 +194,11 @@ class CommentServiceTest extends BaseTest {
 
     def "findByTopic returns comments for topic"() {
         expect:
-        commentService.findByTopic(TOPIC_ID).id == [4, 5, 6, 8]
+        commentService.findByTopic(TOPIC_ID).id ==
+                [IntId.one("stupid_flanders_comment1"),
+                 IntId.one("stupid_flanders_comment2"),
+                 IntId.one("stupid_flanders_comment3"),
+                 IntId.one("stupid_flanders_comment5")]
     }
 
     def "findByTopic returns comments for topic ASC sorted"() {
@@ -214,7 +219,7 @@ class CommentServiceTest extends BaseTest {
         archivedComment.archived
 
         expect:
-        !commentService.findByTopic(2).id.contains(archivedComment.id)
+        !commentService.findByTopic(IntId.one("why_you_little")).id.contains(archivedComment.id)
     }
 
     def "findByTopic throws when topic not found"() {

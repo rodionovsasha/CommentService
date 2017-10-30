@@ -1,45 +1,38 @@
 comment1:
-  id: 1
   content: Why you little...!
   user_id: homer
   topic_id: ay_caramba
 
 comment2:
-  id: 2
   content: El Barto rules!
   user_id: bart
   topic_id: why_you_little
 
 archived_comment:
-  id: 3
   content: Whatever, I'll be at Moe's.
   archived: true
   user_id: homer
   topic_id: why_you_little
 
 stupid_flanders_comment1:
-  id: 4
   content: What's the point of going out? We're just gonna wind up back here anyway.
   date: sql:CURRENT_TIMESTAMP()
   user_id: homer
   topic_id: stupid_flanders
 
 stupid_flanders_comment2:
-  id: 5
   content: I’ve learned that life is one crushing defeat after another until you just wish Flanders was dead.
   date: sql:CURRENT_TIMESTAMP() + 1
   user_id: homer
   topic_id: stupid_flanders
 
 stupid_flanders_comment3:
-  id: 6
   content: I believe that children are our future. Unless we stop them now.
   date: sql:CURRENT_TIMESTAMP() + 2
   user_id: homer
   topic_id: stupid_flanders
 
 stupid_flanders_comment4:
-  id: 7
   content: I’ve gone back in time to when dinosaurs weren’t just confined to zoos.
   date: sql:CURRENT_TIMESTAMP() + 3
   archived: true
@@ -47,7 +40,6 @@ stupid_flanders_comment4:
   topic_id: stupid_flanders
 
 stupid_flanders_comment5:
-  id: 8
   content: Eat My Shorts!
   date: sql:CURRENT_TIMESTAMP() + 4
   user_id: bart
