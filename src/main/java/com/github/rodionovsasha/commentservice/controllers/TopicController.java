@@ -23,7 +23,7 @@ public class TopicController {
     }
 
     @GetMapping("/active/{id}")
-    public Topic getActiveTopic(@PathVariable long id) {
+    public Topic getActiveTopic(@PathVariable int id) {
         return service.getActiveTopic(id);
     }
 
