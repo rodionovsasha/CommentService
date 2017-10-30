@@ -81,7 +81,7 @@ class UserControllerTest extends Specification {
             contentType == APPLICATION_JSON_UTF8_VALUE
             def responseJson = getJsonFromString(contentAsString)
             responseJson.code == 500
-            responseJson.message.contains("Failed to convert value of type 'java.lang.String' to required type 'long'")
+            responseJson.message.contains("Failed to convert value of type 'java.lang.String' to required type 'int'")
         }
     }
 
@@ -260,12 +260,12 @@ class UserControllerTest extends Specification {
                 .andReturn().response
     }
 
-    private MockHttpServletResponse deactivate(long id) {
+    private MockHttpServletResponse deactivate(int id) {
         mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
-    private MockHttpServletResponse activate(long id) {
+    private MockHttpServletResponse activate(int id) {
         mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/activate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }

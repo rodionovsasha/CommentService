@@ -18,7 +18,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue
-    private long id;
+    private int id;
 
     @Setter @NotBlank
     private String name;

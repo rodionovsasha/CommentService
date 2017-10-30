@@ -18,7 +18,7 @@ public class TopicController {
     private final TopicService service;
 
     @GetMapping("/{id}")
-    public Topic getById(@PathVariable long id) {
+    public Topic getById(@PathVariable int id) {
         return service.getById(id);
     }
 
@@ -28,12 +28,12 @@ public class TopicController {
     }
 
     @PostMapping("/user/{id}")
-    public ResponseEntity<Topic> start(@Valid @RequestBody Topic topic, @PathVariable long id) {
+    public ResponseEntity<Topic> start(@Valid @RequestBody Topic topic, @PathVariable int id) {
         return new ResponseEntity<>(service.start(topic.getTitle(), id), HttpStatus.CREATED);
     }
 
     @GetMapping("/archive/{topicId}/user/{userId}")
-    public void archive(@PathVariable long topicId, @PathVariable long userId) {
+    public void archive(@PathVariable int topicId, @PathVariable int userId) {
         service.archive(topicId, userId);
     }
 }
