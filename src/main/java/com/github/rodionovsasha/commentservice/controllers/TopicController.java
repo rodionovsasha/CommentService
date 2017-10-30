@@ -22,6 +22,11 @@ public class TopicController {
         return service.getById(id);
     }
 
+    @GetMapping("/active/{id}")
+    public Topic getActiveTopic(@PathVariable long id) {
+        return service.getActiveTopic(id);
+    }
+
     @PostMapping("/user/{id}")
     public ResponseEntity<Topic> start(@Valid @RequestBody Topic topic, @PathVariable int id) {
         return new ResponseEntity<>(service.start(topic.getTitle(), id), HttpStatus.CREATED);
