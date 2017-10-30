@@ -167,7 +167,7 @@ class CommentServiceTest extends BaseTest {
 
     def "archive throws when user updates not own comment"() {
         given:
-        def COMMENT_ID = IntId.one("comment2").longValue()
+        def COMMENT_ID = IntId.one("comment2") as Long
         !repository.getOne(COMMENT_ID).archived
 
         when:
@@ -195,10 +195,7 @@ class CommentServiceTest extends BaseTest {
     def "findByTopic returns comments for topic"() {
         expect:
         commentService.findByTopic(TOPIC_ID).id ==
-                [IntId.one("stupid_flanders_comment1"),
-                 IntId.one("stupid_flanders_comment2"),
-                 IntId.one("stupid_flanders_comment3"),
-                 IntId.one("stupid_flanders_comment5")]
+                IntId.many("stupid_flanders_comment1", "stupid_flanders_comment2", "stupid_flanders_comment3", "stupid_flanders_comment5")
     }
 
     def "findByTopic returns comments for topic ASC sorted"() {
