@@ -23,13 +23,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkUserActive(long userId) {
+    public void checkUserActive(int userId) {
         getActiveUser(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User getActiveUser(long userId) {
+    public User getActiveUser(int userId) {
         val user = getById(userId);
         if (!user.isActive()) {
             throw InactiveUserException.forId(userId);
@@ -38,34 +38,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateName(long id, String name) {
+    public void updateName(int id, String name) {
         update(id, user -> user.setName(name));
     }
 
     @Override
-    public void updateAge(long id, int age) {
+    public void updateAge(int id, int age) {
         update(id, user -> user.setAge(age));
     }
 
     @Override
-    public void deactivate(long id) {
+    public void deactivate(int id) {
         update(id, user -> user.setActive(false));
     }
 
     @Override
-    public void activate(long id) {
+    public void activate(int id) {
         val user = getById(id);
         user.setActive(true);
         repository.save(user);
     }
 
-    private void update(long id, Consumer<User> consumer) {
+    private void update(int id, Consumer<User> consumer) {
         val user = getActiveUser(id);
         consumer.accept(user);
         repository.save(user);
     }
 
-    private User getById(long id) {
+    private User getById(int id) {
         return repository.findOne(id).orElseThrow(() -> UserNotFoundException.forId(id));
     }
 }

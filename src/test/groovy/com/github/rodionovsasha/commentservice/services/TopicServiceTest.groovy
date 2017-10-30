@@ -20,7 +20,7 @@ class TopicServiceTest extends BaseTest {
 
         then:
         with(topic) {
-            id instanceof Long
+            id instanceof Integer
             title == "D'oh!"
             !archived
             date instanceof Date

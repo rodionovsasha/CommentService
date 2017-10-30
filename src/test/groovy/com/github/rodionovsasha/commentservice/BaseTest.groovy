@@ -12,13 +12,13 @@ import spock.lang.Specification
 @SpringBootTest
 @Transactional
 class BaseTest extends Specification {
-    final HOMER_ID = IntId.one("homer") as Long
-    final BART_ID = IntId.one("bart") as Long
+    final HOMER_ID = IntId.one("homer")
+    final BART_ID = IntId.one("bart")
     final NOT_EXISTING_USER_ID = 999
-    final TOPIC_ID = IntId.one("stupid_flanders") as Long
+    final TOPIC_ID = IntId.one("stupid_flanders")
     final NOT_EXISTING_TOPIC_ID = 99
-    final ARCHIVED_TOPIC_ID = IntId.one("woo_hoo") as Long
-    final COMMENT_ID = IntId.one("comment1") as Long
+    final ARCHIVED_TOPIC_ID = IntId.one("woo_hoo")
+    final COMMENT_ID = IntId.one("comment1")
     final NOT_EXISTING_COMMENT_ID = 9999
-    final ARCHIVED_COMMENT_ID = IntId.one("archived_comment") as Long
+    final ARCHIVED_COMMENT_ID = IntId.one("archived_comment")
 }

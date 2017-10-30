@@ -6,6 +6,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface BaseRepository<T> extends JpaRepository<T, Long> {
-    Optional<T> findOne(long id);
+public interface BaseRepository<T> extends JpaRepository<T, Integer> {
+    Optional<T> findOne(int id);
 }

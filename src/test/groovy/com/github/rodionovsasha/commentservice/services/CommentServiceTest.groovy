@@ -20,7 +20,7 @@ class CommentServiceTest extends BaseTest {
 
         then:
         with(comment) {
-            id instanceof Long
+            id instanceof Integer
             content == COMMENT_CONTENT
             date instanceof Date
         }
@@ -167,7 +167,7 @@ class CommentServiceTest extends BaseTest {
 
     def "archive throws when user updates not own comment"() {
         given:
-        def COMMENT_ID = IntId.one("comment2") as Long
+        def COMMENT_ID = IntId.one("comment2")
         !repository.getOne(COMMENT_ID).archived
 
         when:
