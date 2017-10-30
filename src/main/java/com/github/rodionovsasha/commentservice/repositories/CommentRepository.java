@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends BaseRepository<Comment> {
-    List<Comment> findByTopicIdAndArchivedFalseOrderByDateAsc(long topicId);
+    List<Comment> findByTopicIdAndArchivedFalseOrderByDateAsc(int topicId);
 }

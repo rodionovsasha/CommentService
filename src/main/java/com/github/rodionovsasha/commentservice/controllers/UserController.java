@@ -18,7 +18,7 @@ public class UserController {
     private final UserService service;
 
     @GetMapping("/{id}")
-    public User getActiveUser(@PathVariable long id) {
+    public User getActiveUser(@PathVariable int id) {
         return service.getActiveUser(id);
     }
 
@@ -38,12 +38,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable long id) {
+    public void deactivate(@PathVariable int id) {
         service.deactivate(id);
     }
 
     @GetMapping("/{id}/activate")
-    public void activate(@PathVariable long id) {
+    public void activate(@PathVariable int id) {
         service.activate(id);
     }
 }

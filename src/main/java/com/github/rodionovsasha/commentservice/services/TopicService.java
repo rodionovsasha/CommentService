@@ -7,17 +7,17 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 public interface TopicService {
-    Topic start(String title, long userId);
+    Topic start(String title, int userId);
 
-    void archive(long topicId, long userId);
+    void archive(int topicId, int userId);
 
-    List<Topic> listForUser(long userId, Sort sort);
+    List<Topic> listForUser(int userId, Sort sort);
 
     List<Topic> search(String titleFragment, int size);
 
-    Topic getById(long id);
+    Topic getById(int id);
 
-    Topic getActiveTopic(long id);
+    Topic getActiveTopic(int id);
 
-    void checkTopicExists(long id);
+    void checkTopicExists(int id);
 }

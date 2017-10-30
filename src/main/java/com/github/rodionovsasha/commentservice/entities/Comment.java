@@ -17,7 +17,7 @@ public class Comment implements Serializable {
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue
-    private long id;
+    private int id;
 
     @NotBlank @Setter
     private String content;

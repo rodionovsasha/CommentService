@@ -166,17 +166,17 @@ class TopicControllerTest extends Specification {
         }
     }
 
-    private MockHttpServletResponse getById(long id) {
+    private MockHttpServletResponse getById(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
-    private MockHttpServletResponse startTopic(Map json, long id) {
+    private MockHttpServletResponse startTopic(Map json, int id) {
         mockMvc.perform(post(API_BASE_URL + "/topic/user/" + id).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
-    private MockHttpServletResponse archive(long topicId, long userId) {
+    private MockHttpServletResponse archive(int topicId, int userId) {
         mockMvc.perform(get(API_BASE_URL + "/topic/archive/" + topicId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
