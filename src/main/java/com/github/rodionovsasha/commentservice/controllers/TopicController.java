@@ -36,4 +36,9 @@ public class TopicController {
     public void archive(@PathVariable int topicId, @PathVariable int userId) {
         service.archive(topicId, userId);
     }
+
+    @GetMapping("/{id}/check")
+    public void checkTopicExists(@PathVariable int id) {
+        service.checkTopicExists(id);
+    }
 }

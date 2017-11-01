@@ -153,6 +153,26 @@ class TopicControllerTest extends Specification {
         extractJson(response, HttpStatus.INTERNAL_SERVER_ERROR) == [code: 500, message: "The topic with id '1' is archived"]
     }
 
+    def "#checkTopicExists not throws when topic exists"() {
+        when:
+        checkTopicExists(TOPIC_ID)
+
+        then:
+        1 * service.checkTopicExists(TOPIC_ID)
+        notThrown(TopicNotFoundException)
+    }
+
+    def "#checkTopicExists throws when topic does not exist"() {
+        given:
+        service.checkTopicExists(NOT_EXISTING_TOPIC_ID) >> { throw TopicNotFoundException.forId(NOT_EXISTING_TOPIC_ID) }
+
+        when:
+        def response = checkTopicExists(NOT_EXISTING_TOPIC_ID)
+
+        then:
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The topic with id '99' could not be found"]
+    }
+
     private MockHttpServletResponse getById(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -170,6 +190,11 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse archive(int topicId, int userId) {
         mockMvc.perform(get(API_BASE_URL + "/topic/archive/" + topicId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse checkTopicExists(int id) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/" + id + "/check").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
