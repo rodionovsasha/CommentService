@@ -45,4 +45,8 @@ http://localhost:8080/v1/api
 <pre>
 mvn spring-boot:run
 </pre>
+or using wrapper
+<pre>
+./mvnw spring-boot:run
+</pre>
 or simply run the application in your IDE using public static void main method.
