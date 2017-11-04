@@ -3,7 +3,6 @@ package com.github.rodionovsasha.commentservice.controllers
 import com.github.rodionovsasha.commentservice.entities.Comment
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
-import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.services.CommentService
 import org.springframework.http.HttpStatus
