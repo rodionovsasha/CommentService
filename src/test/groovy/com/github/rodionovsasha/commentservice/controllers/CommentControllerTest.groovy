@@ -17,10 +17,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
 class CommentControllerTest extends Specification {
-    final COMMENT_ID = 1
     final TOPIC_ID = 1
-    final USER_ID = 1
-    final NOT_EXISTING_COMMENT_ID = 99
 
     def service = Mock(CommentService)
     def controller = new CommentController(service)
