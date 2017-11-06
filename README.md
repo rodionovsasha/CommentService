@@ -16,7 +16,7 @@ The main goal of this demo project to show how we can use JFixtures for populati
         <scope>test</scope>
     </dependency>
  ```
- * put a yaml bases test data to `resources` folder
+ * put a yaml based test data to `resources` folder
  * convert the test data using JFixtures to a string or a file and execute generated SQL query:
 ```java
     import com.github.vkorobkov.jfixtures.JFixtures;
