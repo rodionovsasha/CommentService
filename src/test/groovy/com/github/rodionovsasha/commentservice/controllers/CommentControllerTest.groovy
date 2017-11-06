@@ -37,8 +37,8 @@ class CommentControllerTest extends Specification {
             it.size == 2
             id == [0, 0]
             content == ["Why you little...!", "Eat My Shorts!"]
-            [!archived, !archived]
-            [date instanceof Long, date instanceof Long]
+            archived.every { !it }
+            date.every { it instanceof Long }
         }
     }
 
