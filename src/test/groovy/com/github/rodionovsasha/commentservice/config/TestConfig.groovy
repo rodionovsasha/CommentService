@@ -6,10 +6,12 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.jdbc.core.JdbcTemplate
 
 @Configuration
 @EnableAutoConfiguration
+@EnableSpringDataWebSupport
 @ComponentScan
 class TestConfig implements CommandLineRunner {
     @Autowired

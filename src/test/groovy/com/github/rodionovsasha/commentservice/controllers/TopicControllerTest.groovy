@@ -26,6 +26,10 @@ class TopicControllerTest extends Specification {
     def controller = new TopicController(service)
     def user = Mock(User)
     def topic = new Topic("Stupid Flanders", user)
+    def topics = [new Topic("Stupid Flanders", user),
+                  new Topic("Ay Caramba!", user),
+                  new Topic("Shut up Flanders!", user),
+                  new Topic("Why you little...!", user)]
 
     def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
 
@@ -172,6 +176,21 @@ class TopicControllerTest extends Specification {
         extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The topic with id '99' could not be found"]
     }
 
+    def "#listForUser returns topics for user default sorted by title ASC"() {
+        when:
+        def response = extractJson(listForUser(USER_ID))
+
+        then:
+        1 * service.listForUser(USER_ID, _) >> topics
+        with(response) {
+            it.size == 4
+            id == [0, 0]
+            content == ["Why you little...!", "Eat My Shorts!"]
+            archived.every { !it }
+            date.every { it instanceof Long }
+        }
+    }
+
     private MockHttpServletResponse getById(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -194,6 +213,11 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse checkTopicExists(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id + "/check").contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse listForUser(int userId) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }

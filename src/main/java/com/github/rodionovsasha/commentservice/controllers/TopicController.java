@@ -1,13 +1,18 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
+import com.github.rodionovsasha.commentservice.entities.Comment;
 import com.github.rodionovsasha.commentservice.entities.Topic;
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
 
@@ -40,5 +45,10 @@ public class TopicController {
     @GetMapping("/{id}/check")
     public void checkTopicExists(@PathVariable int id) {
         service.checkTopicExists(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Topic> listForUser(@PathVariable int userId, @SortDefault("title") Sort sort) {
+        return service.listForUser(userId, sort);
     }
 }
