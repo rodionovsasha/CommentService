@@ -153,13 +153,12 @@ class TopicControllerTest extends Specification {
         extractJson(response, HttpStatus.INTERNAL_SERVER_ERROR) == [code: 500, message: "The topic with id '1' is archived"]
     }
 
-    def "#checkTopicExists not throws when topic exists"() {
+    def "#checkTopicExists returns success when topic exists"() {
         when:
         checkTopicExists(TOPIC_ID)
 
         then:
         1 * service.checkTopicExists(TOPIC_ID)
-        notThrown(TopicNotFoundException)
     }
 
     def "#checkTopicExists throws when topic does not exist"() {
