@@ -1,6 +1,5 @@
 package com.github.rodionovsasha.commentservice.controllers;
 
-import com.github.rodionovsasha.commentservice.entities.Comment;
 import com.github.rodionovsasha.commentservice.entities.Topic;
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
@@ -48,7 +46,8 @@ public class TopicController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Topic> listForUser(@PathVariable int userId, @SortDefault("title") Sort sort) {
+    public List<Topic> listForUser(@PathVariable int userId,
+                                   @SortDefault(sort = "date", direction = Sort.Direction.DESC) Sort sort) {
         return service.listForUser(userId, sort);
     }
 }

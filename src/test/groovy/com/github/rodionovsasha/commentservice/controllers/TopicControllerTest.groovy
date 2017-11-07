@@ -176,9 +176,24 @@ class TopicControllerTest extends Specification {
         extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The topic with id '99' could not be found"]
     }
 
-    def "#listForUser returns topics for user default sorted by title ASC"() {
+    def "#listForUser returns topics for user default sorted by date DESC"() {
         when:
         def response = extractJson(listForUser(USER_ID))
+
+        then:
+        1 * service.listForUser(USER_ID, _) >> topics
+        with(response) {
+            it.size == 4
+            id == [0, 0]
+            content == ["Why you little...!", "Eat My Shorts!"]
+            archived.every { !it }
+            date.every { it instanceof Long }
+        }
+    }
+
+    def "#listForUser returns topics for user sorted by title ASC"() {
+        when:
+        def response = extractJson(listForUserSorted(USER_ID, "title,asc"))
 
         then:
         1 * service.listForUser(USER_ID, _) >> topics
@@ -218,6 +233,11 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse listForUser(int userId) {
         mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse listForUserSorted(int userId, String sorting) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
