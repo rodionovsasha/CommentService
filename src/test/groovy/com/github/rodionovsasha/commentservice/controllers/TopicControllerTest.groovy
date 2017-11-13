@@ -6,6 +6,7 @@ import com.github.rodionovsasha.commentservice.exceptions.*
 import com.github.rodionovsasha.commentservice.services.TopicService
 import groovy.json.JsonOutput
 import org.springframework.data.domain.Sort
+import org.springframework.data.web.SortHandlerMethodArgumentResolver
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
@@ -32,7 +33,10 @@ class TopicControllerTest extends Specification {
                   new Topic("Shut up Flanders!", user),
                   new Topic("Why you little...!", user)]
 
-    def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
+    def mockMvc = standaloneSetup(controller)
+            .setControllerAdvice(new ExceptionHandlerController())
+            .setCustomArgumentResolvers(new SortHandlerMethodArgumentResolver())
+            .build()
 
     def "#getById returns topic by id"() {
         when:
@@ -185,10 +189,7 @@ class TopicControllerTest extends Specification {
         1 * service.listForUser(USER_ID, _ as Sort) >> topics
         with(response) {
             it.size == 4
-            /*id == [0, 0]
-            content == ["Why you little...!", "Eat My Shorts!"]
-            archived.every { !it }
-            date.every { it instanceof Long }*/
+            title == ["Stupid Flanders", "Ay Caramba!", "Shut up Flanders!", "Why you little...!"]
         }
     }
 
@@ -200,10 +201,7 @@ class TopicControllerTest extends Specification {
         1 * service.listForUser(USER_ID, _ as Sort) >> topics
         with(response) {
             it.size == 4
-            /*id == [0, 0]
-            content == ["Why you little...!", "Eat My Shorts!"]
-            archived.every { !it }
-            date.every { it instanceof Long }*/
+            title == ["Stupid Flanders", "Ay Caramba!", "Shut up Flanders!", "Why you little...!"]
         }
     }
 
@@ -238,7 +236,8 @@ class TopicControllerTest extends Specification {
     }
 
     private MockHttpServletResponse listForUserSorted(int userId, String sorting) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting)
+                .contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
