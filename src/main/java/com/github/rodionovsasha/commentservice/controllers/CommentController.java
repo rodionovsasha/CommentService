@@ -29,4 +29,11 @@ public class CommentController {
                                        @PathVariable int userId) {
         return new ResponseEntity<>(service.add(comment.getContent(), topicId, userId), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{commentId}/user/{userId}")
+    public void update(@Valid @RequestBody Comment comment,
+                       @PathVariable int commentId,
+                       @PathVariable int userId) {
+        service.update(commentId, userId, comment.getContent());
+    }
 }
