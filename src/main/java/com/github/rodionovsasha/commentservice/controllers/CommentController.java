@@ -36,4 +36,9 @@ public class CommentController {
                        @PathVariable int userId) {
         service.update(commentId, userId, comment.getContent());
     }
+
+    @GetMapping("/archive/{commentId}/user/{userId}")
+    public void archive(@PathVariable int commentId, @PathVariable int userId) {
+        service.archive(commentId, userId);
+    }
 }
