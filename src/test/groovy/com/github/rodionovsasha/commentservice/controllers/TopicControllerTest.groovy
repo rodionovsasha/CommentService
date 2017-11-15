@@ -199,6 +199,15 @@ class TopicControllerTest extends Specification {
         response.it.size == 4
     }
 
+    def "#search returns topics by title fragment"() {
+        when:
+        def response = extractJson(search("Flanders", 10))
+
+        then:
+        1 * service.search("Flanders", 10) >> topics
+        response.it.size == 4
+    }
+
     private MockHttpServletResponse getById(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -231,6 +240,14 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse listForUserSorted(int userId, String sorting) {
         mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting)
+                .contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse search(String  titleFragment, int size) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/search/")
+                .param("query", titleFragment)
+                .param("size", size as String)
                 .contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }

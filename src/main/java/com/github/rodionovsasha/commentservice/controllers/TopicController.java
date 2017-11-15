@@ -50,4 +50,9 @@ public class TopicController {
                                    @SortDefault(sort = "date", direction = Sort.Direction.DESC) Sort sort) {
         return service.listForUser(userId, sort);
     }
+
+    @GetMapping("/search")
+    public List<Topic> search(@RequestParam String query, @RequestParam int size) {
+        return service.search(query, size);
+    }
 }
