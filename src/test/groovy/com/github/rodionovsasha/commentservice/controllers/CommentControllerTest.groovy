@@ -5,6 +5,7 @@ import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
 import com.github.rodionovsasha.commentservice.exceptions.CommentAccessException
+import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
@@ -183,6 +184,17 @@ class CommentControllerTest extends Specification {
         then:
         1 * service.archive(COMMENT_ID, USER_ID)
         response.status == HttpStatus.OK.value()
+    }
+
+    def "#archive throws when comment does not exist"() {
+        given:
+        service.archive(COMMENT_ID, USER_ID) >> { throw CommentNotFoundException.forId(COMMENT_ID) }
+
+        when:
+        def response = archive(COMMENT_ID, USER_ID)
+
+        then:
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The comment with id '1' could not be found"]
     }
 
     def "#archive throws when user is not active"() {
