@@ -26,7 +26,7 @@ public class Comment implements Serializable {
     private boolean archived = false;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date = new Date();
+    private final Date date = new Date();
 
     @JsonIgnore
     @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
