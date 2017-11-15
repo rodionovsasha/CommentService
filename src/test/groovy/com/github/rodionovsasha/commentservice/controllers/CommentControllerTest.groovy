@@ -122,12 +122,12 @@ class CommentControllerTest extends Specification {
 
     def "#add does not create a new comment when content is empty"() {
         when:
-        def response = extractJson(addComment([content: ""], TOPIC_ID, USER_ID), HttpStatus.INTERNAL_SERVER_ERROR)
+        def response = extractJson(addComment([content: ""], TOPIC_ID, USER_ID), HttpStatus.BAD_REQUEST)
 
         then:
         0 * service.add("", TOPIC_ID, USER_ID)
         with(response) {
-            code == 500
+            code == 400
             message.contains("may not be empty")
         }
     }

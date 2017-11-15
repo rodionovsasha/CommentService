@@ -101,12 +101,12 @@ class TopicControllerTest extends Specification {
 
     def "#start does not create a new topic when title is empty"() {
         when:
-        def response = extractJson(startTopic([title: ""], USER_ID), HttpStatus.INTERNAL_SERVER_ERROR)
+        def response = extractJson(startTopic([title: ""], USER_ID), HttpStatus.BAD_REQUEST)
 
         then:
         0 * service.start("", USER_ID)
         with(response) {
-            code == 500
+            code == 400
             message.contains("may not be empty")
         }
     }

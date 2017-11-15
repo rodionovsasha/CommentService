@@ -84,11 +84,11 @@ class UserControllerTest extends Specification {
         service.create("", 39) >> user
 
         when:
-        def response = extractJson(createUser([name: "", age: 39]), HttpStatus.INTERNAL_SERVER_ERROR)
+        def response = extractJson(createUser([name: "", age: 39]), HttpStatus.BAD_REQUEST)
 
         then:
         with(response) {
-            code == 500
+            code == 400
             message.contains("Field error in object 'user' on field 'name': rejected value [];")
         }
     }
@@ -104,12 +104,12 @@ class UserControllerTest extends Specification {
 
     def "should not update user with empty name"() {
         when:
-        def response = extractJson(updateName([id: HOMER_ID, name: ""]), HttpStatus.INTERNAL_SERVER_ERROR)
+        def response = extractJson(updateName([id: HOMER_ID, name: ""]), HttpStatus.BAD_REQUEST)
 
         then:
         0 * service.updateName(HOMER_ID, "")
         with(response) {
-            code == 500
+            code == 400
             message.contains("Field error in object 'user' on field 'name': rejected value [];")
         }
     }
