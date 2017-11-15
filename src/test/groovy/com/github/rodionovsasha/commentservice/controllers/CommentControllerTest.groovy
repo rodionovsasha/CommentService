@@ -143,6 +143,17 @@ class CommentControllerTest extends Specification {
         response.status == HttpStatus.OK.value()
     }
 
+    def "should not update comment when comment does not exist"() {
+        given:
+        service.update(COMMENT_ID, USER_ID, "Homer the Genius") >> { throw CommentNotFoundException.forId(COMMENT_ID) }
+
+        when:
+        def response = update(COMMENT_ID, USER_ID, [content: "Homer the Genius"])
+
+        then:
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The comment with id '1' could not be found"]
+    }
+
     def "should not update comment when content is empty"() {
         when:
         def response = extractJson(update(COMMENT_ID, USER_ID, [content: ""]), HttpStatus.BAD_REQUEST)
