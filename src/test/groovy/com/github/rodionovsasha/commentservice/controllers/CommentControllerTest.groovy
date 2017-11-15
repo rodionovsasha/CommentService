@@ -4,6 +4,7 @@ import com.github.rodionovsasha.commentservice.entities.Comment
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
+import com.github.rodionovsasha.commentservice.exceptions.CommentAccessException
 import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
@@ -15,12 +16,12 @@ import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
 class CommentControllerTest extends Specification {
+    final COMMENT_ID = 1
     final TOPIC_ID = 1
     final USER_ID = 1
 
@@ -132,6 +133,49 @@ class CommentControllerTest extends Specification {
         }
     }
 
+    def "should update comment"() {
+        when:
+        def response = update(COMMENT_ID, USER_ID, [content: "Homer the Genius"])
+
+        then:
+        1 * service.update(COMMENT_ID, USER_ID, "Homer the Genius")
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "should not update comment when content is empty"() {
+        when:
+        def response = extractJson(update(COMMENT_ID, USER_ID, [content: ""]), HttpStatus.BAD_REQUEST)
+
+        then:
+        0 * service.update(COMMENT_ID, USER_ID, "")
+        with(response) {
+            code == 400
+            message.contains("may not be empty")
+        }
+    }
+
+    def "should not update comment when user is not active"() {
+        given:
+        service.update(COMMENT_ID, USER_ID, "Homer the Genius") >> { throw InactiveUserException.forId(USER_ID) }
+
+        when:
+        def response = update(COMMENT_ID, USER_ID, [content: "Homer the Genius"])
+
+        then:
+        extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "The user with id '1' is not active"]
+    }
+
+    def "should not update comment when user is not owner"() {
+        given:
+        service.update(COMMENT_ID, USER_ID, "Homer the Genius") >> { throw CommentAccessException.forId(USER_ID) }
+
+        when:
+        def response = update(COMMENT_ID, USER_ID, [content: "Homer the Genius"])
+
+        then:
+        extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "Non-comment owner with id '1' is trying to update the comment"]
+    }
+
     private MockHttpServletResponse findByTopic(int id) {
         mockMvc.perform(get(API_BASE_URL + "/comment/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -140,6 +184,11 @@ class CommentControllerTest extends Specification {
     private MockHttpServletResponse addComment(Map json, int topicId, int userId) {
         mockMvc.perform(post(API_BASE_URL + "/comment/topic/" + topicId + "/user/" + userId)
                 .contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse update(int commentId, int userId, Map json) {
+        mockMvc.perform(put(API_BASE_URL + "/comment/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 }
