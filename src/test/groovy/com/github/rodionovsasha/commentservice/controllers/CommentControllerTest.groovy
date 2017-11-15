@@ -176,6 +176,37 @@ class CommentControllerTest extends Specification {
         extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "Non-comment owner with id '1' is trying to update the comment"]
     }
 
+    def "#archive archives comment"() {
+        when:
+        def response = archive(COMMENT_ID, USER_ID)
+
+        then:
+        1 * service.archive(COMMENT_ID, USER_ID)
+        response.status == HttpStatus.OK.value()
+    }
+
+    def "#archive throws when user is not active"() {
+        given:
+        service.archive(COMMENT_ID, USER_ID) >> { throw InactiveUserException.forId(USER_ID) }
+
+        when:
+        def response = archive(COMMENT_ID, USER_ID)
+
+        then:
+        extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "The user with id '1' is not active"]
+    }
+
+    def "#archive throws when user is not owner"() {
+        given:
+        service.archive(COMMENT_ID, USER_ID) >> { throw CommentAccessException.forId(USER_ID) }
+
+        when:
+        def response = archive(COMMENT_ID, USER_ID)
+
+        then:
+        extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "Non-comment owner with id '1' is trying to update the comment"]
+    }
+
     private MockHttpServletResponse findByTopic(int id) {
         mockMvc.perform(get(API_BASE_URL + "/comment/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -189,6 +220,11 @@ class CommentControllerTest extends Specification {
 
     private MockHttpServletResponse update(int commentId, int userId, Map json) {
         mockMvc.perform(put(API_BASE_URL + "/comment/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse archive(int commentId, int userId) {
+        mockMvc.perform(get(API_BASE_URL + "/comment/archive/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
