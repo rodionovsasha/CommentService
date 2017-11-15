@@ -5,6 +5,8 @@ import com.github.rodionovsasha.commentservice.entities.User
 import com.github.rodionovsasha.commentservice.exceptions.*
 import com.github.rodionovsasha.commentservice.services.TopicService
 import groovy.json.JsonOutput
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.SortHandlerMethodArgumentResolver
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
@@ -26,8 +28,15 @@ class TopicControllerTest extends Specification {
     def controller = new TopicController(service)
     def user = Mock(User)
     def topic = new Topic("Stupid Flanders", user)
+    def topics = [new Topic("Stupid Flanders", user),
+                  new Topic("Ay Caramba!", user),
+                  new Topic("Shut up Flanders!", user),
+                  new Topic("Why you little...!", user)]
 
-    def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
+    def mockMvc = standaloneSetup(controller)
+            .setControllerAdvice(new ExceptionHandlerController())
+            .setCustomArgumentResolvers(new SortHandlerMethodArgumentResolver())
+            .build()
 
     def "#getById returns topic by id"() {
         when:
@@ -172,6 +181,24 @@ class TopicControllerTest extends Specification {
         extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The topic with id '99' could not be found"]
     }
 
+    def "#listForUser should work with default sorting by date DESC"() {
+        when:
+        def response = extractJson(listForUser(USER_ID))
+
+        then:
+        1 * service.listForUser(USER_ID, _ as Sort) >> topics
+        response.it.size == 4
+    }
+
+    def "#listForUser should work with sorting by title ASC"() {
+        when:
+        def response = extractJson(listForUserSorted(USER_ID, "title,asc"))
+
+        then:
+        1 * service.listForUser(USER_ID, _ as Sort) >> topics
+        response.it.size == 4
+    }
+
     private MockHttpServletResponse getById(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
@@ -194,6 +221,17 @@ class TopicControllerTest extends Specification {
 
     private MockHttpServletResponse checkTopicExists(int id) {
         mockMvc.perform(get(API_BASE_URL + "/topic/" + id + "/check").contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse listForUser(int userId) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+                .andReturn().response
+    }
+
+    private MockHttpServletResponse listForUserSorted(int userId, String sorting) {
+        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting)
+                .contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
