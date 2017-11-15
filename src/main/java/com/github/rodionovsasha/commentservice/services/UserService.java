@@ -5,15 +5,15 @@ import com.github.rodionovsasha.commentservice.entities.User;
 public interface UserService {
     User create(String name, int age);
 
-    void checkUserActive(long id);
+    void checkUserActive(int id);
 
-    User getActiveUser(long id);
+    User getActiveUser(int id);
 
-    void updateName(long id, String name);
+    void updateName(int id, String name);
 
-    void updateAge(long id, int age);
+    void updateAge(int id, int age);
 
-    void deactivate(long id);
+    void deactivate(int id);
 
-    void activate(long id);
+    void activate(int id);
 }

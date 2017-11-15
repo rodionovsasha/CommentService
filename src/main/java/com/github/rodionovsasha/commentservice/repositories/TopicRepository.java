@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TopicRepository extends BaseRepository<Topic> {
-    List<Topic> findByOwnerId(long ownerId, Sort sort);
+    List<Topic> findByOwnerId(int ownerId, Sort sort);
 
     List<Topic> findByTitleContainingIgnoreCaseOrderByDateDesc(String titleFragment, Pageable pageable);
 }

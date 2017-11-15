@@ -23,12 +23,12 @@ public class TopicServiceImpl implements TopicService {
     private final UserService userService;
 
     @Override
-    public Topic start(String title, long userId) {
+    public Topic start(String title, int userId) {
         return repository.save(new Topic(title, userService.getActiveUser(userId)));
     }
 
     @Override
-    public void archive(long topicId, long userId) {
+    public void archive(int topicId, int userId) {
         userService.checkUserActive(userId);
         val topic = getById(topicId);
         if (topic.getOwner().getId() != userId) {
@@ -40,7 +40,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Topic> listForUser(long userId, Sort sort) {
+    public List<Topic> listForUser(int userId, Sort sort) {
         userService.checkUserActive(userId);
         return repository.findByOwnerId(userId, sort);
     }
@@ -53,13 +53,13 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @Transactional(readOnly = true)
-    public Topic getById(long id) {
+    public Topic getById(int id) {
         return repository.findOne(id).orElseThrow(() -> TopicNotFoundException.forId(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Topic getActiveTopic(long id) {
+    public Topic getActiveTopic(int id) {
         val topic = getById(id);
         if (topic.isArchived()) {
             throw ArchivedTopicException.forId(id);
@@ -68,7 +68,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void checkTopicExists(long id) {
+    public void checkTopicExists(int id) {
         getById(id);
     }
 }

@@ -5,11 +5,11 @@ import com.github.rodionovsasha.commentservice.entities.Comment;
 import java.util.List;
 
 public interface CommentService {
-    Comment add(String content, long topicId, long userId);
+    Comment add(String content, int topicId, int userId);
 
-    void update(long commentId, long userId, String content);
+    void update(int commentId, int userId, String content);
 
-    void archive(long commentId, long userId);
+    void archive(int commentId, int userId);
 
-    List<Comment> findByTopic(long topicId);
+    List<Comment> findByTopic(int topicId);
 }

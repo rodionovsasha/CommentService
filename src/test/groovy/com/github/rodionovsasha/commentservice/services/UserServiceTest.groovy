@@ -155,7 +155,7 @@ class UserServiceTest extends BaseTest {
 
         then:
         with(user) {
-            id instanceof Long
+            id instanceof Integer
             name == "Marge"
             age == 37
             active

@@ -10,11 +10,8 @@ import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
-import static com.github.rodionovsasha.commentservice.controllers.TestUtils.getJsonFromString
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 
@@ -34,11 +31,7 @@ class UserControllerTest extends Specification {
 
         then:
         1 * service.getActiveUser(HOMER_ID) >> user
-        with(response) {
-            status == HttpStatus.OK.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
-        }
+        extractJson(response, HttpStatus.OK) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
     }
 
     def "should not get active user when not exists"() {
@@ -49,11 +42,7 @@ class UserControllerTest extends Specification {
         def response = getUserHomer()
 
         then:
-        with(response) {
-            status == HttpStatus.NOT_FOUND.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '1' could not be found"]
-        }
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The user with id '1' could not be found"]
     }
 
     def "should not get active user when deactivated"() {
@@ -64,24 +53,18 @@ class UserControllerTest extends Specification {
         def response = getUserHomer()
 
         then:
-        with(response) {
-            status == HttpStatus.FORBIDDEN.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 403, message: "The user with id '1' is not active"]
-        }
+        extractJson(response, HttpStatus.FORBIDDEN) == [code: 403, message: "The user with id '1' is not active"]
     }
 
     def "should not get user when id has wrong type"() {
         when:
-        def response = mockMvc.perform(get(API_BASE_URL + "/user/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response
+        def response = extractJson(mockMvc.perform(get(API_BASE_URL + "/user/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response,
+                HttpStatus.INTERNAL_SERVER_ERROR)
 
         then:
         with(response) {
-            status == HttpStatus.INTERNAL_SERVER_ERROR.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            def responseJson = getJsonFromString(contentAsString)
-            responseJson.code == 500
-            responseJson.message.contains("Failed to convert value of type 'java.lang.String' to required type 'long'")
+            code == 500
+            message.contains("Failed to convert value of type 'java.lang.String' to required type 'int'")
         }
     }
 
@@ -93,11 +76,7 @@ class UserControllerTest extends Specification {
         def response = createUser([name: "Homer", age: 39])
 
         then:
-        with(response) {
-            status == HttpStatus.CREATED.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
-        }
+        extractJson(response, HttpStatus.CREATED) == [id: HOMER_ID, name: "Homer", age: 39, active: true]
     }
 
     def "should not create user when name is empty"() {
@@ -105,15 +84,12 @@ class UserControllerTest extends Specification {
         service.create("", 39) >> user
 
         when:
-        def response = createUser([name: "", age: 39])
+        def response = extractJson(createUser([name: "", age: 39]), HttpStatus.BAD_REQUEST)
 
         then:
         with(response) {
-            status == HttpStatus.INTERNAL_SERVER_ERROR.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            def responseJson = getJsonFromString(contentAsString)
-            responseJson.code == 500
-            responseJson.message.contains("Field error in object 'user' on field 'name': rejected value [];")
+            code == 400
+            message.contains("Field error in object 'user' on field 'name': rejected value [];")
         }
     }
 
@@ -128,16 +104,13 @@ class UserControllerTest extends Specification {
 
     def "should not update user with empty name"() {
         when:
-        def response = updateName([id: HOMER_ID, name: ""])
+        def response = extractJson(updateName([id: HOMER_ID, name: ""]), HttpStatus.BAD_REQUEST)
 
         then:
         0 * service.updateName(HOMER_ID, "")
         with(response) {
-            status == HttpStatus.INTERNAL_SERVER_ERROR.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            def responseJson = getJsonFromString(contentAsString)
-            responseJson.code == 500
-            responseJson.message.contains("Field error in object 'user' on field 'name': rejected value [];")
+            code == 400
+            message.contains("Field error in object 'user' on field 'name': rejected value [];")
         }
     }
 
@@ -149,11 +122,7 @@ class UserControllerTest extends Specification {
         def response = updateName([id: NOT_EXISTING_USER_ID, name: "Homer the Genius"])
 
         then:
-        with(response) {
-            status == HttpStatus.NOT_FOUND.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
-        }
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The user with id '999' could not be found"]
     }
 
     def "should update user age"() {
@@ -182,11 +151,7 @@ class UserControllerTest extends Specification {
         def response = updateAge([id: NOT_EXISTING_USER_ID, age: 39])
 
         then:
-        with(response) {
-            status == HttpStatus.NOT_FOUND.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
-        }
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The user with id '999' could not be found"]
     }
 
     def "should deactivate user"() {
@@ -206,11 +171,7 @@ class UserControllerTest extends Specification {
         def response = deactivate(NOT_EXISTING_USER_ID)
 
         then:
-        with(response) {
-            status == HttpStatus.NOT_FOUND.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
-        }
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The user with id '999' could not be found"]
     }
 
     def "should activate user"() {
@@ -230,11 +191,7 @@ class UserControllerTest extends Specification {
         def response = activate(NOT_EXISTING_USER_ID)
 
         then:
-        with(response) {
-            status == HttpStatus.NOT_FOUND.value()
-            contentType == APPLICATION_JSON_UTF8_VALUE
-            getJsonFromString(contentAsString) == [code: 404, message: "The user with id '999' could not be found"]
-        }
+        extractJson(response, HttpStatus.NOT_FOUND) == [code: 404, message: "The user with id '999' could not be found"]
     }
 
     private MockHttpServletResponse getUserHomer() {
@@ -260,12 +217,12 @@ class UserControllerTest extends Specification {
                 .andReturn().response
     }
 
-    private MockHttpServletResponse deactivate(long id) {
+    private MockHttpServletResponse deactivate(int id) {
         mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
-    private MockHttpServletResponse activate(long id) {
+    private MockHttpServletResponse activate(int id) {
         mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/activate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
