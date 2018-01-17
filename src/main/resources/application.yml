@@ -1,0 +1,13 @@
+server:
+ port: ${port:8080}
+ contextPath: /v1/api
+spring:
+  datasource:
+    name: comments
+    username: h2
+    password: h2
+    url: jdbc:h2:~/comments;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      path: /h2-console
