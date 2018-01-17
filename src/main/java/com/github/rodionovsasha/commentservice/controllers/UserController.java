@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
-
 @RestController
 @AllArgsConstructor
-@RequestMapping(API_BASE_URL + "/user")
+@RequestMapping("/user")
 public class UserController {
     private final UserService service;
 

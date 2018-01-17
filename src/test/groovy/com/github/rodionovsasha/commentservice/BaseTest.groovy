@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 @ContextConfiguration
-@TestPropertySource(locations = "classpath:test.properties")
+@TestPropertySource("classpath:test.properties")
 @SpringBootTest
 @Transactional
 class BaseTest extends Specification {
