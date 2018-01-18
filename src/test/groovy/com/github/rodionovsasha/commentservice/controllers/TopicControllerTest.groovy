@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -209,43 +208,43 @@ class TopicControllerTest extends Specification {
     }
 
     private MockHttpServletResponse getById(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/" + id).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse getActiveTopic(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/active/" + id).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/topic/active/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse startTopic(Map json, int id) {
-        mockMvc.perform(post(API_BASE_URL + "/topic/user/" + id).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        mockMvc.perform(post("/topic/user/" + id).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
     private MockHttpServletResponse archive(int topicId, int userId) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/archive/" + topicId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/topic/archive/" + topicId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse checkTopicExists(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/" + id + "/check").contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/topic/" + id + "/check").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse listForUser(int userId) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/topic/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse listForUserSorted(int userId, String sorting) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/user/" + userId + "?sort=" + sorting)
+        mockMvc.perform(get("/topic/user/" + userId + "?sort=" + sorting)
                 .contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse search(String  titleFragment, int size) {
-        mockMvc.perform(get(API_BASE_URL + "/topic/search/")
+        mockMvc.perform(get("/topic/search/")
                 .param("query", titleFragment)
                 .param("size", size as String)
                 .contentType(APPLICATION_JSON_VALUE))

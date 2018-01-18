@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
@@ -231,23 +230,23 @@ class CommentControllerTest extends Specification {
     }
 
     private MockHttpServletResponse findByTopic(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/comment/topic/" + id).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/comment/topic/" + id).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse addComment(Map json, int topicId, int userId) {
-        mockMvc.perform(post(API_BASE_URL + "/comment/topic/" + topicId + "/user/" + userId)
+        mockMvc.perform(post("/comment/topic/" + topicId + "/user/" + userId)
                 .contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
     private MockHttpServletResponse update(int commentId, int userId, Map json) {
-        mockMvc.perform(put(API_BASE_URL + "/comment/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        mockMvc.perform(put("/comment/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
     private MockHttpServletResponse archive(int commentId, int userId) {
-        mockMvc.perform(get(API_BASE_URL + "/comment/archive/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/comment/archive/" + commentId + "/user/" + userId).contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }
