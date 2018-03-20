@@ -106,7 +106,7 @@ class TopicControllerTest extends Specification {
         0 * service.start("", USER_ID)
         with(response) {
             code == 400
-            message.contains("may not be empty")
+            message.contains("must not be blank")
         }
     }
 

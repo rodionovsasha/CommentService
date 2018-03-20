@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module SYSTEM "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+<!DOCTYPE module [
+        <!ELEMENT module (module|property|metadata|message)*>
+        <!ATTLIST module name NMTOKEN #REQUIRED>
 
+        <!ELEMENT property EMPTY>
+        <!ATTLIST property
+                name NMTOKEN #REQUIRED
+                value CDATA #REQUIRED
+                default CDATA #IMPLIED
+                >
+
+        <!ELEMENT metadata EMPTY>
+        <!ATTLIST metadata
+                name NMTOKEN #REQUIRED
+                value CDATA #REQUIRED
+                >
+
+        <!ELEMENT message EMPTY>
+        <!ATTLIST message
+                key NMTOKEN #REQUIRED
+                value CDATA #REQUIRED
+                >
+        ]>
 <module name="Checker">
     <property name="fileExtensions" value="java, properties, yml, yaml, xml"/>
     <!-- Checks whether files end with a new line.                        -->

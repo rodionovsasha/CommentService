@@ -66,6 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getById(int id) {
-        return repository.findOne(id).orElseThrow(() -> UserNotFoundException.forId(id));
+        return repository.findById(id).orElseThrow(() -> UserNotFoundException.forId(id));
     }
 }
