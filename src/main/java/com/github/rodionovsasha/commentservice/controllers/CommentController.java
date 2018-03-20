@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
-
 @RestController
 @AllArgsConstructor
-@RequestMapping(API_BASE_URL + "/comment")
+@RequestMapping("/comment")
 public class CommentController {
     private final CommentService service;
 
@@ -35,5 +33,10 @@ public class CommentController {
                        @PathVariable int commentId,
                        @PathVariable int userId) {
         service.update(commentId, userId, comment.getContent());
+    }
+
+    @GetMapping("/archive/{commentId}/user/{userId}")
+    public void archive(@PathVariable int commentId, @PathVariable int userId) {
+        service.archive(commentId, userId);
     }
 }

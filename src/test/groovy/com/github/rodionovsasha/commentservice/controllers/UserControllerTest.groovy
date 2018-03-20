@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
@@ -58,7 +57,7 @@ class UserControllerTest extends Specification {
 
     def "should not get user when id has wrong type"() {
         when:
-        def response = extractJson(mockMvc.perform(get(API_BASE_URL + "/user/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response,
+        def response = extractJson(mockMvc.perform(get("/user/null").contentType(APPLICATION_JSON_VALUE)).andReturn().response,
                 HttpStatus.INTERNAL_SERVER_ERROR)
 
         then:
@@ -195,12 +194,12 @@ class UserControllerTest extends Specification {
     }
 
     private MockHttpServletResponse getUserHomer() {
-        mockMvc.perform(get(API_BASE_URL + "/user/1").contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/user/1").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse createUser(Map json) {
-        mockMvc.perform(post(API_BASE_URL + "/user").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        mockMvc.perform(post("/user").contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
@@ -213,17 +212,17 @@ class UserControllerTest extends Specification {
     }
 
     private MockHttpServletResponse update(String path, Map json) {
-        mockMvc.perform(put(API_BASE_URL + path).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
+        mockMvc.perform(put(path).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
                 .andReturn().response
     }
 
     private MockHttpServletResponse deactivate(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/user/" + id + "/deactivate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 
     private MockHttpServletResponse activate(int id) {
-        mockMvc.perform(get(API_BASE_URL + "/user/" + id + "/activate").contentType(APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/user/" + id + "/activate").contentType(APPLICATION_JSON_VALUE))
                 .andReturn().response
     }
 }

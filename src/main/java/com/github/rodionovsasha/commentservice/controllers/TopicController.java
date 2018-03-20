@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.github.rodionovsasha.commentservice.Application.API_BASE_URL;
-
 @RestController
 @AllArgsConstructor
-@RequestMapping(API_BASE_URL + "/topic")
+@RequestMapping("/topic")
 public class TopicController {
     private final TopicService service;
 
