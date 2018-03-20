@@ -1,6 +1,7 @@
 server:
  port: ${port:8080}
- contextPath: /v1/api
+ servlet:
+    context-path: /v1/api
 spring:
   datasource:
     name: comments
@@ -11,3 +12,6 @@ spring:
   h2:
     console:
       path: /h2-console
+  output:
+    ansi:
+      enabled: ALWAYS

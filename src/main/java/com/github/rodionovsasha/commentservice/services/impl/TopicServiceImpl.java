@@ -48,13 +48,13 @@ public class TopicServiceImpl implements TopicService {
     @Override
     @Transactional(readOnly = true)
     public List<Topic> search(String titleFragment, int size) {
-        return repository.findByTitleContainingIgnoreCaseOrderByDateDesc(titleFragment, new PageRequest(0, size));
+        return repository.findByTitleContainingIgnoreCaseOrderByDateDesc(titleFragment, PageRequest.of(0, size));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Topic getById(int id) {
-        return repository.findOne(id).orElseThrow(() -> TopicNotFoundException.forId(id));
+        return repository.findById(id).orElseThrow(() -> TopicNotFoundException.forId(id));
     }
 
     @Override

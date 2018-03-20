@@ -71,13 +71,13 @@ class UserServiceTest extends BaseTest {
 
     def "updateName does update user's name"() {
         given:
-        userRepository.getOne(HOMER_ID).name == "Homer"
+        userRepository.findById(HOMER_ID).get().name == "Homer"
 
         when:
         userService.updateName(HOMER_ID, "Maggie")
 
         then:
-        userRepository.getOne(HOMER_ID).name == "Maggie"
+        userRepository.findById(HOMER_ID).get().name == "Maggie"
     }
 
     def "updateName throws when user is not active"() {
@@ -91,13 +91,13 @@ class UserServiceTest extends BaseTest {
 
     def "updateAge does update user's age"() {
         given:
-        userRepository.getOne(HOMER_ID).age == 39
+        userRepository.findById(HOMER_ID).get().age == 39
 
         when:
         userService.updateAge(HOMER_ID, 35)
 
         then:
-        userRepository.getOne(HOMER_ID).age == 35
+        userRepository.findById(HOMER_ID).get().age == 35
     }
 
     def "updateAge throws when user is not active"() {
@@ -111,13 +111,13 @@ class UserServiceTest extends BaseTest {
 
     def "deactivate makes user inactive"() {
         given:
-        userRepository.getOne(HOMER_ID).active
+        userRepository.findById(HOMER_ID).get().active
 
         when:
         userService.deactivate(HOMER_ID)
 
         then:
-        !userRepository.getOne(HOMER_ID).active
+        !userRepository.findById(HOMER_ID).get().active
     }
 
     def "deactivate throws when user is not active"() {
@@ -131,13 +131,13 @@ class UserServiceTest extends BaseTest {
 
     def "activate does user active"() {
         given:
-        !userRepository.getOne(BART_ID).active
+        !userRepository.findById(BART_ID).get().active
 
         when:
         userService.activate(BART_ID)
 
         then:
-        userRepository.getOne(BART_ID).active
+        userRepository.findById(BART_ID).get().active
     }
 
     def "activate throws when user is not found"() {

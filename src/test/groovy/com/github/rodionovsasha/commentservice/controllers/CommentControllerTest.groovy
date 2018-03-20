@@ -129,7 +129,7 @@ class CommentControllerTest extends Specification {
         0 * service.add("", TOPIC_ID, USER_ID)
         with(response) {
             code == 400
-            message.contains("may not be empty")
+            message.contains("must not be blank")
         }
     }
 
@@ -161,7 +161,7 @@ class CommentControllerTest extends Specification {
         0 * service.update(COMMENT_ID, USER_ID, "")
         with(response) {
             code == 400
-            message.contains("may not be empty")
+            message.contains("must not be blank")
         }
     }
 

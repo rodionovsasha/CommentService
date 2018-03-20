@@ -70,13 +70,13 @@ class CommentServiceTest extends BaseTest {
 
     def "update updates a comment"() {
         given:
-        def oldContent = repository.getOne(COMMENT_ID).content
+        def oldContent = repository.findById(COMMENT_ID).get().content
 
         when:
         commentService.update(COMMENT_ID, HOMER_ID, COMMENT_CONTENT)
 
         then:
-        def content = repository.getOne(COMMENT_ID).content
+        def content = repository.findById(COMMENT_ID).get().content
         content == COMMENT_CONTENT
 
         and:
@@ -119,24 +119,24 @@ class CommentServiceTest extends BaseTest {
 
     def "archive makes a comment archived"() {
         given:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         when:
         commentService.archive(COMMENT_ID, HOMER_ID)
 
         then:
-        repository.getOne(COMMENT_ID).archived
+        repository.findById(COMMENT_ID).get().archived
     }
 
     def "archive throws when user is inactive"() {
         given:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         when:
         commentService.archive(COMMENT_ID, BART_ID)
 
         then:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         and:
         thrown(InactiveUserException)
@@ -144,13 +144,13 @@ class CommentServiceTest extends BaseTest {
 
     def "archive throws when user not found"() {
         given:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         when:
         commentService.archive(COMMENT_ID, NOT_EXISTING_USER_ID)
 
         then:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         and:
         thrown(UserNotFoundException)
@@ -168,13 +168,13 @@ class CommentServiceTest extends BaseTest {
     def "archive throws when user updates not own comment"() {
         given:
         def COMMENT_ID = IntId.one("comment2")
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         when:
         commentService.archive(COMMENT_ID, HOMER_ID)
 
         then:
-        !repository.getOne(COMMENT_ID).archived
+        !repository.findById(COMMENT_ID).get().archived
 
         and:
         def e = thrown(CommentAccessException)
@@ -183,13 +183,13 @@ class CommentServiceTest extends BaseTest {
 
     def "archive does not change already archived comment"() {
         given:
-        repository.getOne(ARCHIVED_COMMENT_ID).archived
+        repository.findById(ARCHIVED_COMMENT_ID).get().archived
 
         when:
         commentService.archive(ARCHIVED_COMMENT_ID, HOMER_ID)
 
         then:
-        repository.getOne(ARCHIVED_COMMENT_ID).archived
+        repository.findById(ARCHIVED_COMMENT_ID).get().archived
     }
 
     def "findByTopic returns comments for topic"() {
@@ -212,7 +212,7 @@ class CommentServiceTest extends BaseTest {
 
     def "findByTopic does not return archived comments for topic"() {
         given:
-        def archivedComment = repository.getOne(ARCHIVED_COMMENT_ID)
+        def archivedComment = repository.findById(ARCHIVED_COMMENT_ID).get()
         archivedComment.archived
 
         expect:

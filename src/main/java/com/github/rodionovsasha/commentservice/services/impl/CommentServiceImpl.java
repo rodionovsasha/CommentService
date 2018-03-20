@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment getById(int id) {
-        return repository.findOne(id).orElseThrow(() -> CommentNotFoundException.forId(id));
+        return repository.findById(id).orElseThrow(() -> CommentNotFoundException.forId(id));
     }
 
     private void update(int commentId, int userId, Consumer<Comment> consumer) {

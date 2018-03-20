@@ -41,7 +41,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <version>2.0.0.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -50,10 +50,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <jfixtures.version>1.0.31</jfixtures.version>
+        <jfixtures.version>1.0.34</jfixtures.version>
         <spock.version>1.1-groovy-2.4</spock.version>
-        <groovy.version>2.4.13</groovy.version>
-        <cglib-nodep.version>3.2.5</cglib-nodep.version>
+        <groovy.version>2.4.14</groovy.version>
+        <cglib-nodep.version>3.2.6</cglib-nodep.version>
 
         <gmavenplus-plugin.version>1.6</gmavenplus-plugin.version>
         <jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
