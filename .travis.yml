@@ -3,6 +3,11 @@ language: java
 jdk:
   - oraclejdk8
 
+script: mvn clean install coveralls:report
+
+branches:
+  only: master
+
 cache:
   directories:
     - $HOME/.m2/repository/
