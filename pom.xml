@@ -59,6 +59,7 @@
         <jacoco-maven-plugin.version>0.8.0</jacoco-maven-plugin.version>
         <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -229,6 +230,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

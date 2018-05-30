@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/rodionovsasha/CommentService.svg?branch=master)](https://travis-ci.org/rodionovsasha/CommentService)
+[![Coverage Status](https://coveralls.io/repos/github/rodionovsasha/CommentService/badge.svg?branch=master)](https://coveralls.io/github/rodionovsasha/CommentService?branch=master)
 
 # Comment Service
 This is a demo project to show how JFixtures works on practice  
