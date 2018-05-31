@@ -8,6 +8,9 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.JdbcTemplate
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
@@ -17,7 +20,13 @@ class TestConfig implements CommandLineRunner {
 
     @Override
     void run(String... strings) throws Exception {
-        String sql = JFixtures.sql99("src/test/resources/yaml/user").asString()
+        Path fixturesPath = Paths.get("src/test/resources/yaml/user")
+        String sql = JFixtures
+                .withConfig(fixturesPath.resolve('.conf.yml'))
+                .load(fixturesPath)
+                .compile()
+                .toSql99()
+                .toString()
         jdbcTemplate.execute(sql)
     }
 }

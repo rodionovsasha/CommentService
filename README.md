@@ -22,7 +22,13 @@ The main goal of this demo project to show how we can use JFixtures for populati
 ```java
     import com.github.vkorobkov.jfixtures.JFixtures;
 
-    String sql = JFixtures.sql99("src/test/resources/yaml/user").asString()
+    Path fixturesPath = Paths.get("src/test/resources/yaml/user")
+    String sql = JFixtures
+            .withConfig(fixturesPath.resolve('.conf.yml'))
+            .load(fixturesPath)
+            .compile()
+            .toSql99()
+            .toString()
     jdbcTemplate.execute(sql)
 ``` 
  * That's all! Now you can use it anywhere you need in the project.
