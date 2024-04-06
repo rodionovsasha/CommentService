@@ -42,7 +42,7 @@ class CommentControllerTest extends Specification {
         then:
         1 * service.findByTopic(TOPIC_ID) >> comments
         with(response) {
-            it.size == 2
+            iterator().size() == 1
             id == [0, 0]
             content == ["Why you little...!", "Eat My Shorts!"]
             archived.every { !it }

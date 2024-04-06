@@ -5,8 +5,6 @@ import com.github.rodionovsasha.commentservice.services.TopicService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @AllArgsConstructor
@@ -35,9 +36,10 @@ public class TopicController {
         return service.getActiveTopic(id);
     }
 
+    @ResponseStatus(CREATED)
     @PostMapping("/user/{id}")
-    public ResponseEntity<Topic> start(@Valid @RequestBody Topic topic, @PathVariable int id) {
-        return new ResponseEntity<>(service.start(topic.getTitle(), id), HttpStatus.CREATED);
+    public Topic start(@Valid @RequestBody Topic topic, @PathVariable int id) {
+        return service.start(topic.getTitle(), id);
     }
 
     @GetMapping("/archive/{topicId}/user/{userId}")

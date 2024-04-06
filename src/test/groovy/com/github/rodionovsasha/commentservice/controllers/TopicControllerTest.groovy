@@ -218,8 +218,11 @@ class TopicControllerTest extends Specification {
     }
 
     private MockHttpServletResponse startTopic(Map json, int id) {
-        mockMvc.perform(post("/topic/user/" + id).contentType(APPLICATION_JSON_VALUE).content(JsonOutput.toJson(json)))
-                .andReturn().response
+        mockMvc.perform(post("/topic/user/" + id)
+                .contentType(APPLICATION_JSON_VALUE)
+                .content(JsonOutput.toJson(json)))
+                .andReturn()
+                .response
     }
 
     private MockHttpServletResponse archive(int topicId, int userId) {
