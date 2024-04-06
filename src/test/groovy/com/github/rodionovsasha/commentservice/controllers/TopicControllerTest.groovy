@@ -186,7 +186,7 @@ class TopicControllerTest extends Specification {
 
         then:
         1 * service.listForUser(USER_ID, _ as Sort) >> topics
-        response.it.size == 4
+        response.iterator().size() == 4
     }
 
     def "#listForUser should work with sorting by title ASC"() {
@@ -195,7 +195,7 @@ class TopicControllerTest extends Specification {
 
         then:
         1 * service.listForUser(USER_ID, _ as Sort) >> topics
-        response.it.size == 4
+        response.iterator().size() == 4
     }
 
     def "#search returns topics by title fragment"() {
@@ -204,7 +204,7 @@ class TopicControllerTest extends Specification {
 
         then:
         1 * service.search("Flanders", 10) >> topics
-        response.it.size == 4
+        response.iterator().size() == 4
     }
 
     private MockHttpServletResponse getById(int id) {

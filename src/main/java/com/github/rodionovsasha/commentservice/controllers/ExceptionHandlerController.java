@@ -3,7 +3,6 @@ package com.github.rodionovsasha.commentservice.controllers;
 import com.github.rodionovsasha.commentservice.dto.MessageResponse;
 import com.github.rodionovsasha.commentservice.exceptions.AccessException;
 import com.github.rodionovsasha.commentservice.exceptions.NotFoundException;
-import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,7 +38,7 @@ public class ExceptionHandlerController {
     }
 
     private ResponseEntity<MessageResponse> handleException(HttpStatus httpStatus, String message) {
-        val messageResponse = new MessageResponse(httpStatus.value(), message);
+        var messageResponse = new MessageResponse(httpStatus.value(), message);
         return new ResponseEntity<>(messageResponse, httpStatus);
     }
 }

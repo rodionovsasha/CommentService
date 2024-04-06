@@ -116,19 +116,19 @@ class TopicServiceTest extends BaseTest {
 
     def "listForUser returns all topics for user ASC sorted"() {
         expect:
-        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.ASC, "id")).id ==
+        topicService.listForUser(HOMER_ID, Sort.by(Sort.Direction.ASC, "id")).id ==
                 IntId.many("stupid_flanders", "better_them", "shut_up_flanders", "woo_hoo", "why_you_little")
     }
 
     def "listForUser returns all topics for user DESC sorted"() {
         expect:
-        topicService.listForUser(HOMER_ID, new Sort(Sort.Direction.DESC, "id")).id ==
+        topicService.listForUser(HOMER_ID, Sort.by(Sort.Direction.DESC, "id")).id ==
                 IntId.many("why_you_little", "woo_hoo", "shut_up_flanders", "better_them", "stupid_flanders")
     }
 
     def "listForUser returns an empty list when user does not have own topics"() {
         expect:
-        topicService.listForUser(IntId.one("maggie"), new Sort(Sort.Direction.ASC, "id")).isEmpty()
+        topicService.listForUser(IntId.one("maggie"), Sort.by(Sort.Direction.ASC, "id")).isEmpty()
     }
 
     def "listForUser throws when user is inactive"() {

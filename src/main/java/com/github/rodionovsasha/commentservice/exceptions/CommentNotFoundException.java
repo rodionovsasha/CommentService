@@ -6,6 +6,6 @@ public final class CommentNotFoundException extends NotFoundException {
     }
 
     public static CommentNotFoundException forId(long id) {
-        return new CommentNotFoundException(String.format("The comment with id '%d' could not be found", id));
+        return new CommentNotFoundException("The comment with id '%d' could not be found".formatted(id));
     }
 }

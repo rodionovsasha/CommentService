@@ -6,8 +6,6 @@ public final class ArchivedTopicException extends ServiceException {
     }
 
     public static ArchivedTopicException forId(long id) {
-        return new ArchivedTopicException(
-                String.format("The topic with id '%d' is archived", id)
-        );
+        return new ArchivedTopicException("The topic with id '%d' is archived".formatted(id));
     }
 }

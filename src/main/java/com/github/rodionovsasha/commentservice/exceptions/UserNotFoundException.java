@@ -6,6 +6,6 @@ public final class UserNotFoundException extends NotFoundException {
     }
 
     public static UserNotFoundException forId(long id) {
-        return new UserNotFoundException(String.format("The user with id '%d' could not be found", id));
+        return new UserNotFoundException("The user with id '%d' could not be found".formatted(id));
     }
 }

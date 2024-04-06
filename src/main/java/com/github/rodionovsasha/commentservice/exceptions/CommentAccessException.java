@@ -6,8 +6,6 @@ public final class CommentAccessException extends AccessException {
     }
 
     public static CommentAccessException forId(long id) {
-        return new CommentAccessException(
-                String.format("Non-comment owner with id '%d' is trying to update the comment", id)
-        );
+        return new CommentAccessException("Non-comment owner with id '%d' is trying to update the comment".formatted(id));
     }
 }

@@ -3,7 +3,7 @@ package com.github.rodionovsasha.commentservice.controllers
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 class TestUtils {
     static Object getJsonFromString(String content) {
@@ -12,7 +12,7 @@ class TestUtils {
 
     static def extractJson(response, status = HttpStatus.OK) {
         assert response.status == status.value()
-        assert response.contentType == APPLICATION_JSON_UTF8_VALUE
+        assert response.contentType == APPLICATION_JSON_VALUE
         getJsonFromString(response.contentAsString)
     }
 }

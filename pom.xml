@@ -33,32 +33,32 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/vkorobkov/comment-service.git</connection>
-        <developerConnection>scm:git:ssh://github.com:vkorobkov/comment-service.git</developerConnection>
+        <connection>scm:git:git://github.com/rodionovsasha/comment-service.git</connection>
+        <developerConnection>scm:git:ssh://github.com:rodionovsasha/comment-service.git</developerConnection>
         <url>https://github.com/rodionovsasha/comment-service</url>
     </scm>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>3.2.4</version>
         <relativePath/>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 
         <jfixtures.version>2.0.0</jfixtures.version>
-        <spock.version>1.1-groovy-2.4</spock.version>
-        <groovy.version>2.4.15</groovy.version>
-        <cglib-nodep.version>3.2.6</cglib-nodep.version>
+        <spock.version>2.4-M1-groovy-4.0</spock.version>
+        <cglib-nodep.version>3.3.0</cglib-nodep.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <h2.version>1.4.197</h2.version>
 
-        <gmavenplus-plugin.version>1.6</gmavenplus-plugin.version>
-        <jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
-        <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
 
@@ -72,19 +72,20 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <version>${h2.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -111,9 +112,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>${groovy.version}</version>
+            <version>4.0.20</version>
+            <type>pom</type>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -126,6 +128,16 @@
 
     <build>
         <finalName>${project.name}</finalName>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -139,7 +151,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>addTestSources</goal>
                             <goal>compileTests</goal>
                         </goals>
                     </execution>
@@ -173,7 +184,7 @@
                         <rule>
                             <element>CLASS</element>
                             <limits>
-                                <limit >
+                                <limit>
                                     <counter>LINE</counter>
                                     <value>COVEREDRATIO</value>
                                     <minimum>1.00</minimum>
@@ -187,30 +198,6 @@
                         </rule>
                     </rules>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${findbugs-maven-plugin.version}</version>
-                <configuration>
-                    <!-- Enables analysis which takes more memory but finds more bugs.
-                    If you run out of memory, changes the value of the effort element to 'low'.-->
-                    <effort>Max</effort>
-                    <!-- Reports all bugs (other values are medium and max) -->
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                </configuration>
-                <executions>
-                    <!-- Ensures that FindBugs inspects source code when project is compiled.-->
-                    <execution>
-                        <id>analyze-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>

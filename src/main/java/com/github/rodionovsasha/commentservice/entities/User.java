@@ -1,12 +1,19 @@
 package com.github.rodionovsasha.commentservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +22,7 @@ import java.util.List;
 @Getter
 @Entity
 public class User implements Serializable {
+    @Serial
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

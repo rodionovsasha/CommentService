@@ -1,12 +1,21 @@
 package com.github.rodionovsasha.commentservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,12 +23,14 @@ import java.util.Date;
 @Getter
 @Entity
 public class Comment implements Serializable {
+    @Serial
     private static final long serialVersionUID = 28116440335967L;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank @Setter
+    @NotBlank
+    @Setter
     private String content;
 
     @Setter

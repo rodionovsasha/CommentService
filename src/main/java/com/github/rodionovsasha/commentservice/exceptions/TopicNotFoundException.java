@@ -6,6 +6,6 @@ public final class TopicNotFoundException extends NotFoundException {
     }
 
     public static TopicNotFoundException forId(long id) {
-        return new TopicNotFoundException(String.format("The topic with id '%d' could not be found", id));
+        return new TopicNotFoundException("The topic with id '%d' could not be found".formatted(id));
     }
 }

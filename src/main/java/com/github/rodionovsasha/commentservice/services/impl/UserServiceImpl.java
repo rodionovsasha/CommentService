@@ -6,7 +6,6 @@ import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException;
 import com.github.rodionovsasha.commentservice.repositories.UserRepository;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User getActiveUser(int userId) {
-        val user = getById(userId);
+        var user = getById(userId);
         if (!user.isActive()) {
             throw InactiveUserException.forId(userId);
         }
@@ -54,13 +53,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void activate(int id) {
-        val user = getById(id);
+        var user = getById(id);
         user.setActive(true);
         repository.save(user);
     }
 
     private void update(int id, Consumer<User> consumer) {
-        val user = getActiveUser(id);
+        var user = getActiveUser(id);
         consumer.accept(user);
         repository.save(user);
     }

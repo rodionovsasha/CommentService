@@ -8,7 +8,6 @@ import com.github.rodionovsasha.commentservice.repositories.TopicRepository;
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public void archive(int topicId, int userId) {
         userService.checkUserActive(userId);
-        val topic = getById(topicId);
+        var topic = getById(topicId);
         if (topic.getOwner().getId() != userId) {
             throw TopicAccessException.forId(userId);
         }
@@ -60,7 +59,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     @Transactional(readOnly = true)
     public Topic getActiveTopic(int id) {
-        val topic = getById(id);
+        var topic = getById(id);
         if (topic.isArchived()) {
             throw ArchivedTopicException.forId(id);
         }

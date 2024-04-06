@@ -6,6 +6,6 @@ public final class InactiveUserException extends AccessException {
     }
 
     public static InactiveUserException forId(long id) {
-        return new InactiveUserException(String.format("The user with id '%d' is not active", id));
+        return new InactiveUserException("The user with id '%d' is not active".formatted(id));
     }
 }

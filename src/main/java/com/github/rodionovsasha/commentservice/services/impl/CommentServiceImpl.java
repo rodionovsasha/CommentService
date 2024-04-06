@@ -8,7 +8,6 @@ import com.github.rodionovsasha.commentservice.services.CommentService;
 import com.github.rodionovsasha.commentservice.services.TopicService;
 import com.github.rodionovsasha.commentservice.services.UserService;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-@Service @Transactional
+@Transactional
+@Service
 public class CommentServiceImpl implements CommentService {
     private final UserService userService;
     private final TopicService topicService;
@@ -24,8 +24,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment add(String content, int topicId, int userId) {
-        val user = userService.getActiveUser(userId);
-        val topic = topicService.getActiveTopic(topicId);
+        var user = userService.getActiveUser(userId);
+        var topic = topicService.getActiveTopic(topicId);
         return repository.save(new Comment(content, user, topic));
     }
 
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
 
     private void update(int commentId, int userId, Consumer<Comment> consumer) {
         userService.checkUserActive(userId);
-        val comment = getById(commentId);
+        var comment = getById(commentId);
         if (comment.getUser().getId() != userId) {
             throw CommentAccessException.forId(userId);
         }
