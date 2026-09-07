@@ -22,7 +22,7 @@ class UserControllerTest extends Specification {
     def controller = new UserController(service)
     def user = new User(id: HOMER_ID, name: "Homer", age: 39, active: true)
 
-    def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
+    def mockMvc = standaloneSetup(controller).setMessageConverters(TestUtils.jsonConverter()).setControllerAdvice(new ExceptionHandlerController()).build()
 
     def "should get active user"() {
         when:

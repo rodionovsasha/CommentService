@@ -3,6 +3,12 @@ server:
  servlet:
     context-path: /v1/api
 spring:
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: false
+    datatype:
+      datetime:
+        write-dates-as-timestamps: true
   datasource:
     name: comments
     username: h2

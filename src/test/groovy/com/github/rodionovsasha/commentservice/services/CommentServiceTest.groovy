@@ -3,7 +3,7 @@ package com.github.rodionovsasha.commentservice.services
 import com.github.rodionovsasha.commentservice.BaseTest
 import com.github.rodionovsasha.commentservice.exceptions.*
 import com.github.rodionovsasha.commentservice.repositories.CommentRepository
-import com.github.vkorobkov.jfixtures.IntId
+import com.github.rodionovsasha.jfixtures.IntId
 import org.springframework.beans.factory.annotation.Autowired
 
 class CommentServiceTest extends BaseTest {

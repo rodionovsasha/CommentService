@@ -3,7 +3,7 @@
 
 # Comment Service
 This is a demo project to show how JFixtures works on practice  
-https://github.com/vkorobkov/jfixtures
+https://github.com/rodionovsasha/jfixtures
 
 ## Preparing a test data for integration tests
 The main goal of this demo project to show how we can use JFixtures for populating relational databases with yml-based test data
@@ -11,7 +11,7 @@ The main goal of this demo project to show how we can use JFixtures for populati
  * add maven dependency of JFixtures to your `pom.xml` file:
 ```code
     <dependency>
-        <groupId>com.github.vkorobkov</groupId>
+        <groupId>com.github.rodionovsasha</groupId>
         <artifactId>jfixtures</artifactId>
         <version>${jfixtures.version}</version>
         <scope>test</scope>
@@ -20,7 +20,7 @@ The main goal of this demo project to show how we can use JFixtures for populati
  * put a yaml based test data to `resources` folder
  * convert the test data using JFixtures to a string or a file and execute generated SQL query:
 ```java
-    import com.github.vkorobkov.jfixtures.JFixtures;
+    import com.github.rodionovsasha.jfixtures.JFixtures;
 
     Path fixturesPath = Paths.get("src/test/resources/yaml/user")
     String sql = JFixtures
