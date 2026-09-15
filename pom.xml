@@ -41,23 +41,23 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>4.1.1</version>
         <relativePath/>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
 
-        <jfixtures.version>2.0.0</jfixtures.version>
-        <spock.version>2.4-M1-groovy-4.0</spock.version>
+        <jfixtures.version>3.0.0</jfixtures.version>
+        <spock.version>2.4-groovy-5.0</spock.version>
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
         <h2.version>1.4.197</h2.version>
 
-        <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
-        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+        <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
@@ -92,7 +92,7 @@
         </dependency>
         <!--JFixtures-->
         <dependency>
-            <groupId>com.github.vkorobkov</groupId>
+            <groupId>com.github.rodionovsasha</groupId>
             <artifactId>jfixtures</artifactId>
             <version>${jfixtures.version}</version>
             <scope>test</scope>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>4.0.20</version>
+            <version>${groovy.version}</version>
             <type>pom</type>
             <scope>test</scope>
         </dependency>
@@ -144,6 +144,20 @@
 
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
@@ -152,6 +166,9 @@
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
                 <version>${gmavenplus-plugin.version}</version>
+                <configuration>
+                    <targetBytecode>${java.version}</targetBytecode>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

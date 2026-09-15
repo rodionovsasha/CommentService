@@ -6,7 +6,7 @@ import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
 import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
 import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
 import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
-import com.github.vkorobkov.jfixtures.IntId
+import com.github.rodionovsasha.jfixtures.IntId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
 

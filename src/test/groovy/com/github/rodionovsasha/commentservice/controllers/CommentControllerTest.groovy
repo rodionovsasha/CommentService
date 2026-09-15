@@ -33,7 +33,7 @@ class CommentControllerTest extends Specification {
     def defaultComment = new Comment(DEFAULT_CONTENT, user, topic)
     def comments = [defaultComment, new Comment("Eat My Shorts!", user, topic)]
 
-    def mockMvc = standaloneSetup(controller).setControllerAdvice(new ExceptionHandlerController()).build()
+    def mockMvc = standaloneSetup(controller).setMessageConverters(TestUtils.jsonConverter()).setControllerAdvice(new ExceptionHandlerController()).build()
 
     def "#findByTopic returns comments for topic"() {
         when:

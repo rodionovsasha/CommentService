@@ -32,7 +32,7 @@ class TopicControllerTest extends Specification {
                   new Topic("Shut up Flanders!", user),
                   new Topic("Why you little...!", user)]
 
-    def mockMvc = standaloneSetup(controller)
+    def mockMvc = standaloneSetup(controller).setMessageConverters(TestUtils.jsonConverter())
             .setControllerAdvice(new ExceptionHandlerController())
             .setCustomArgumentResolvers(new SortHandlerMethodArgumentResolver())
             .build()
@@ -247,7 +247,7 @@ class TopicControllerTest extends Specification {
     }
 
     private MockHttpServletResponse search(String  titleFragment, int size) {
-        mockMvc.perform(get("/topic/search/")
+        mockMvc.perform(get("/topic/search")
                 .param("query", titleFragment)
                 .param("size", size as String)
                 .contentType(APPLICATION_JSON_VALUE))
