@@ -35,7 +35,7 @@ The main goal of this demo project to show how we can use JFixtures for populati
  * That's all! Now you can use it anywhere you need in the project.
  Please see test examples here: `CommentService/src/test/groovy/com/github/rodionovsasha/commentservice/services`
 
-### JFixtures 3.0 examples
+### JFixtures 3.0.0 examples
 
 The examples in `src/test/resources/yaml/features` demonstrate the features added in JFixtures issues #24 and #74:
 
