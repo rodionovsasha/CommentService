@@ -1,5 +1,8 @@
 [![Build](https://github.com/rodionovsasha/CommentService/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/rodionovsasha/CommentService/actions/workflows/build.yml)
+
 [![Coverage Status](https://coveralls.io/repos/github/rodionovsasha/CommentService/badge.svg?branch=master)](https://coveralls.io/github/rodionovsasha/CommentService?branch=master)
+
+[![License](https://img.shields.io/github/license/rodionovsasha/CommentService)](https://github.com/rodionovsasha/CommentService/blob/master/LICENSE)
 
 # Comment Service
 This is a demo project to show how JFixtures works on practice  
