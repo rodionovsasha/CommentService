@@ -1,0 +1,8 @@
+users:
+  homer:
+    id: 100500
+    name: Homer
+
+  bart:
+    id: 100500
+    name: Bart

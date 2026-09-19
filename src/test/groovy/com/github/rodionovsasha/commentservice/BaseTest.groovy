@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice
 
-import com.github.rodionovsasha.jfixtures.IntId
+import io.github.rodionovsasha.jfixtures.IntId
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestPropertySource

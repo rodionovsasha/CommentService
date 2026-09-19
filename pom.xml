@@ -92,7 +92,7 @@
         </dependency>
         <!--JFixtures-->
         <dependency>
-            <groupId>com.github.rodionovsasha</groupId>
+            <groupId>io.github.rodionovsasha</groupId>
             <artifactId>jfixtures</artifactId>
             <version>${jfixtures.version}</version>
             <scope>test</scope>
@@ -160,6 +160,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>@{argLine} -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
+                </configuration>
             </plugin>
 
             <plugin>

@@ -2,7 +2,11 @@ package com.github.rodionovsasha.commentservice.controllers
 
 import com.github.rodionovsasha.commentservice.entities.Topic
 import com.github.rodionovsasha.commentservice.entities.User
-import com.github.rodionovsasha.commentservice.exceptions.*
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
+import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
+import com.github.rodionovsasha.commentservice.exceptions.TopicAccessException
+import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
+import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.services.TopicService
 import groovy.json.JsonOutput
 import org.springframework.data.domain.Sort

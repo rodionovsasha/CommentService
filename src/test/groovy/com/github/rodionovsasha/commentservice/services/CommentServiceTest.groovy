@@ -1,9 +1,14 @@
 package com.github.rodionovsasha.commentservice.services
 
 import com.github.rodionovsasha.commentservice.BaseTest
-import com.github.rodionovsasha.commentservice.exceptions.*
+import com.github.rodionovsasha.commentservice.exceptions.ArchivedTopicException
+import com.github.rodionovsasha.commentservice.exceptions.CommentAccessException
+import com.github.rodionovsasha.commentservice.exceptions.CommentNotFoundException
+import com.github.rodionovsasha.commentservice.exceptions.InactiveUserException
+import com.github.rodionovsasha.commentservice.exceptions.TopicNotFoundException
+import com.github.rodionovsasha.commentservice.exceptions.UserNotFoundException
 import com.github.rodionovsasha.commentservice.repositories.CommentRepository
-import com.github.rodionovsasha.jfixtures.IntId
+import io.github.rodionovsasha.jfixtures.IntId
 import org.springframework.beans.factory.annotation.Autowired
 
 class CommentServiceTest extends BaseTest {

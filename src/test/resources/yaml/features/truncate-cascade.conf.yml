@@ -1,0 +1,4 @@
+tables:
+  cascade_cleanup:
+    applies_to: users
+    clean_method: truncate_cascade

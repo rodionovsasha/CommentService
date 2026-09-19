@@ -16,7 +16,9 @@ import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Specification
 
 import static com.github.rodionovsasha.commentservice.controllers.TestUtils.extractJson
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE
 

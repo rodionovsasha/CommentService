@@ -1,6 +1,6 @@
 package com.github.rodionovsasha.commentservice.config
 
-import com.github.rodionovsasha.jfixtures.JFixtures
+import io.github.rodionovsasha.jfixtures.JFixtures
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
