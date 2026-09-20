@@ -1,0 +1,4 @@
+user_{{ number }}:
+  $template: number=1..3
+  name: User {{ number }}
+  position: "{{ number * 10 }}"

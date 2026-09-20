@@ -1,0 +1,14 @@
+tables:
+  uuid_users:
+    applies_to: [users, tenant.accounts]
+    pk:
+      type: uuid
+refs:
+  comments:
+    author_public_id:
+      table: users
+      column: public_id
+  tenant.comments:
+    author_public_id:
+      table: tenant.accounts
+      column: public_id

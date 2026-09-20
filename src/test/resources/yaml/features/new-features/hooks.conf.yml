@@ -1,0 +1,8 @@
+before_all: "file:hooks/before-all.sql"
+after_all: "file:hooks/after-all.sql"
+tables:
+  users:
+    applies_to: users
+    before_cleanup: "file:hooks/before-cleanup.sql"
+    before_inserts: "file:hooks/before-inserts.sql"
+    after_inserts: "file:hooks/after-inserts.sql"

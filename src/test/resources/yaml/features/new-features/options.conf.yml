@@ -1,0 +1,20 @@
+id_generator: io.github.rodionovsasha.jfixtures.StringId.one
+clean_tables: [orphaned]
+tables:
+  orphaned:
+    applies_to: orphaned
+    clean_method: truncate
+  users:
+    applies_to: users
+    requires: [roles]
+    timestamps:
+      enabled: true
+      value: "sql:CURRENT_TIMESTAMP"
+  audit_log:
+    applies_to: audit_log
+    pk:
+      column: ${TABLE}_ID
+  long_ids:
+    applies_to: long_ids
+    pk:
+      id_generator: io.github.rodionovsasha.jfixtures.LongId.one

@@ -1,0 +1,5 @@
+.base: &base
+  active: true
+alice:
+  <<: *base
+  name: Alice

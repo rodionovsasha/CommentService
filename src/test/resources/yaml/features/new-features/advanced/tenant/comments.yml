@@ -1,0 +1,4 @@
+welcome:
+  author_public_id: bob
+  inline_public_id: accounts:bob:public_id
+  author_uuid: accounts:bob

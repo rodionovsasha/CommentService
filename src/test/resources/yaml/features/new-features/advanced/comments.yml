@@ -1,0 +1,6 @@
+welcome:
+  author_public_id: alice
+  inline_public_id: users:alice:public_id
+  author_uuid: users:alice
+  slug: comment-$LABEL
+  related_id: $ID(alice)
