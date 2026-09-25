@@ -1,0 +1,3 @@
+!omap
+- grandparent: { name: Grandparent }
+- parent: { name: Parent, parent_id: grandparent }

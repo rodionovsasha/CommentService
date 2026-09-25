@@ -1,0 +1,14 @@
+polymorphic_refs:
+  fruits:
+    eater:
+      id_column: eater_id
+      type_column: eater_type
+      types:
+        Monkey: monkeys
+many_to_many:
+  posts:
+    tags:
+      join_table: posts_tags
+      source_column: post_id
+      target_table: tags
+      target_column: tag_id

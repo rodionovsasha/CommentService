@@ -1,0 +1,14 @@
+templates:
+  enabled: true
+tables:
+  orders:
+    applies_to: orders
+    pk:
+      columns: [tenant_id, order_id]
+refs:
+  line_items:
+    order:
+      table: orders
+      columns:
+        tenant_id: order_tenant_id
+        order_id: order_number

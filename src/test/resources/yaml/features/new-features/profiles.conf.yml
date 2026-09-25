@@ -1,0 +1,11 @@
+profiles:
+  default:
+    tables:
+      users:
+        applies_to: users
+        clean_method: none
+  integration:
+    tables:
+      users:
+        applies_to: users
+        clean_method: truncate
